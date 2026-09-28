@@ -1,0 +1,279 @@
+/* ------------------------------------------------------------------
+   StarDust docs — theme tokens.
+
+   Ports StarDustWebsite's design tokens (app/globals.css) onto
+   VitePress's CSS custom properties. The website is dark-only; the
+   light-mode values below are a derived palette in the same
+   neutral/monochrome spirit (no hue on backgrounds/text/borders,
+   colour reserved for the status ramp), not a copy of anything.
+
+   Overrides target VitePress's *primitive* palette scales
+   (--vp-c-indigo-*, --vp-c-yellow-*, --vp-c-red-*, --vp-c-green-*)
+   rather than the functional aliases built on top of them
+   (--vp-c-brand-*, --vp-c-tip-*, --vp-c-warning-*, --vp-c-danger-*,
+   --vp-c-success-*, --vp-c-caution-*) — those aliases already
+   reference the primitives via var(), so one override cascades
+   everywhere correctly instead of needing to be repeated per alias.
+
+   Status semantics carried over from the website (teal/amber/rose are
+   the one place colour carries meaning; everything else stays
+   neutral): teal = ready/indexed, amber = backfilling/pending,
+   rose = tombstoned/rejected/error.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* Backgrounds */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f7f7f7;
+  --vp-c-bg-elv: #f0f0f0;
+  --vp-c-bg-soft: #e8e8e8;
+
+  /* Borders */
+  --vp-c-border: #cccccc;
+  --vp-c-divider: #e0e0e0;
+  --vp-c-gutter: #e0e0e0;
+
+  /* Text */
+  --vp-c-text-1: #1a1a1a;
+  --vp-c-text-2: #595959;
+  --vp-c-text-3: #767676;
+
+  /* Accent scale (brand/tip/note derive from indigo) */
+  --vp-c-indigo-1: #3d3d3d;
+  --vp-c-indigo-2: #4a4a4a;
+  --vp-c-indigo-3: #3a3a3a;
+  --vp-c-indigo-soft: #3d3d3d22;
+
+  /* Status: pending/backfilling (warning derives from yellow) */
+  --vp-c-yellow-1: #b45309;
+  --vp-c-yellow-2: #b45309;
+  --vp-c-yellow-3: #b45309;
+  --vp-c-yellow-soft: #b4530922;
+
+  /* Status: tombstoned/error (danger + caution derive from red) */
+  --vp-c-red-1: #be123c;
+  --vp-c-red-2: #be123c;
+  --vp-c-red-3: #be123c;
+  --vp-c-red-soft: #be123c22;
+
+  /* Status: ready/indexed (success derives from green) */
+  --vp-c-green-1: #0f766e;
+  --vp-c-green-2: #0f766e;
+  --vp-c-green-3: #0f766e;
+  --vp-c-green-soft: #0f766e22;
+
+  /* Brand button text — the accent scale is a dark neutral in light
+     mode, so button text stays light regardless of state. */
+  --vp-button-brand-text: #f5f5f5;
+  --vp-button-brand-hover-text: #f5f5f5;
+  --vp-button-brand-active-text: #f5f5f5;
+
+  /* Reserved for content commits (lifecycle badges in concepts/). */
+  --sd-indexed: #0f766e;
+  --sd-pending: #b45309;
+  --sd-danger: #be123c;
+  --sd-well: #f5f5f5;
+
+  /* Landing page (see components/HomeHero.vue). */
+  --sd-accent-rgb: 61, 61, 61;
+  --sd-indexed-rgb: 15, 118, 110;
+  --sd-glow-alpha: 0.07;
+  --sd-border-hover: #adadad;
+  --sd-title-gradient: linear-gradient(
+    100deg,
+    #1a1a1a 0%,
+    #3d3d3d 42%,
+    #767676 100%
+  );
+  --sd-on-accent: #f5f5f5;
+  --sd-btn-gradient: linear-gradient(180deg, #3a3a3a, #262626);
+  --sd-btn-gradient-hover: linear-gradient(180deg, #4a4a4a, #333333);
+  --sd-btn-border: #1f1f1f;
+  --sd-btn-border-hover: #333333;
+}
+
+.dark {
+  /* Backgrounds — ported byte-for-byte from app/globals.css */
+  --vp-c-bg: #090909;
+  --vp-c-bg-alt: #111111;
+  --vp-c-bg-elv: #181818;
+  --vp-c-bg-soft: #1f1f1f;
+
+  /* Borders */
+  --vp-c-border: #3f3f3f;
+  --vp-c-divider: #2d2d2d;
+  --vp-c-gutter: #2d2d2d;
+
+  /* Text */
+  --vp-c-text-1: #ededed;
+  --vp-c-text-2: #aaaaaa;
+  --vp-c-text-3: #8a8a8a;
+
+  /* Accent scale — 1 is the website's --accent; 2/3 are the hover and
+     resting gradient stops of its primary button. */
+  --vp-c-indigo-1: #bebebe;
+  --vp-c-indigo-2: #c9c9c9;
+  --vp-c-indigo-3: #bfbfbf;
+  --vp-c-indigo-soft: #bebebe22;
+
+  /* Status: pending/backfilling */
+  --vp-c-yellow-1: #f0b429;
+  --vp-c-yellow-2: #f0b429;
+  --vp-c-yellow-3: #f0b429;
+  --vp-c-yellow-soft: #f0b4291f;
+
+  /* Status: tombstoned/error */
+  --vp-c-red-1: #ff6b81;
+  --vp-c-red-2: #ff6b81;
+  --vp-c-red-3: #ff6b81;
+  --vp-c-red-soft: #ff6b811f;
+
+  /* Status: ready/indexed */
+  --vp-c-green-1: #2fd4bd;
+  --vp-c-green-2: #2fd4bd;
+  --vp-c-green-3: #2fd4bd;
+  --vp-c-green-soft: #2fd4bd1f;
+
+  /* Brand button text — the accent scale is a light neutral in dark
+     mode (website's --on-accent), so button text stays dark. */
+  --vp-button-brand-text: #0f0f0f;
+  --vp-button-brand-hover-text: #0f0f0f;
+  --vp-button-brand-active-text: #0f0f0f;
+
+  --sd-indexed: #2fd4bd;
+  --sd-pending: #f0b429;
+  --sd-danger: #ff6b81;
+  --sd-well: #0e0e0e;
+
+  /* Landing page — the website's hero tokens, ported as-is. */
+  --sd-accent-rgb: 190, 190, 190;
+  --sd-indexed-rgb: 47, 212, 189;
+  --sd-glow-alpha: 0.16;
+  --sd-border-hover: #535353;
+  --sd-title-gradient: linear-gradient(
+    100deg,
+    #d4d4d4 0%,
+    #bebebe 42%,
+    #828282 100%
+  );
+  --sd-on-accent: #0f0f0f;
+  --sd-btn-gradient: linear-gradient(180deg, #bfbfbf, #a4a4a4);
+  --sd-btn-gradient-hover: linear-gradient(180deg, #c9c9c9, #b2b2b2);
+  --sd-btn-border: #c5c5c5;
+  --sd-btn-border-hover: #d1d1d1;
+}
+
+:root {
+  /* Poppins — "Konstelasi's brand typeface" per the website's own
+     comment. Loaded via Google Fonts link in config.mts; the fallback
+     stack below is the website's exact one. */
+  --vp-font-family-base:
+    "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   Navbar type, matched to the website's Nav.module.css: links are
+   13.5px regular weight in the dim text colour, brightening on hover
+   (VitePress defaults to 14px / 500 / full-strength text). Dropdown
+   group labels share the same treatment so no navbar entry stands out
+   from its neighbours.
+
+   VitePress declares these in scoped component styles, which compile to
+   `.VPNavBarMenuLink[data-v-…]` (specificity 0,2,0) and so beat a bare
+   class selector. Every rule below is anchored under `.VPNavBar` to
+   outrank them; the flyout hover/active rules are (0,3,0) upstream, so
+   theirs get one more level.
+   ------------------------------------------------------------------ */
+
+.VPNavBar .VPNavBarMenu .VPNavBarMenuLink,
+.VPNavBar .VPFlyout .text {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+}
+
+.VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNavBar .VPNavBarMenu .VPFlyout:hover .text {
+  color: var(--vp-c-text-1);
+}
+
+.VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active,
+.VPNavBar .VPNavBarMenu .VPFlyout.active .text {
+  color: var(--vp-c-brand-1);
+}
+
+/* ------------------------------------------------------------------
+   Landing page feature cards, restyled to the website's panels:
+   raised surface, hairline border, 10px radius.
+   ------------------------------------------------------------------ */
+
+.VPHome .VPFeatures .VPFeature {
+  border-color: var(--vp-c-divider);
+  border-radius: 10px;
+  background-color: var(--vp-c-bg-elv);
+}
+
+.VPHome .VPFeatures .VPFeature .icon {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background-color: var(--vp-c-bg-alt);
+  color: var(--vp-c-text-1);
+}
+
+.VPHome .VPFeatures .VPFeature .title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ------------------------------------------------------------------
+   Card icons. Feature `icon` strings are rendered with v-html, so each
+   card passes `<span class="sd-icon sd-icon-NAME"></span>` and the shape
+   lives here as a mask (same technique as VitePress's own `vpi-*`
+   icons, in the same Lucide/Feather stroke style). Colour follows the
+   website's status semantics: teal = ready, amber = backfilling; the
+   rest stay neutral.
+   ------------------------------------------------------------------ */
+
+.sd-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--sd-icon) no-repeat center / contain;
+  mask: var(--sd-icon) no-repeat center / contain;
+}
+
+.sd-icon-play {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolygon points='5 3 19 12 5 21 5 3'/%3E%3C/svg%3E");
+  color: var(--sd-indexed);
+}
+
+.sd-icon-layers {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'/%3E%3Cpolyline points='2 17 12 22 22 17'/%3E%3Cpolyline points='2 12 12 17 22 12'/%3E%3C/svg%3E");
+}
+
+.sd-icon-code {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E");
+}
+
+.sd-icon-refresh {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8'/%3E%3Cpath d='M21 3v5h-5'/%3E%3Cpath d='M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16'/%3E%3Cpath d='M8 16H3v5'/%3E%3C/svg%3E");
+  color: var(--sd-pending);
+}
+
+.sd-icon-server {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect x='2' y='2' width='20' height='8' rx='2' ry='2'/%3E%3Crect x='2' y='14' width='20' height='8' rx='2' ry='2'/%3E%3Cline x1='6' y1='6' x2='6.01' y2='6'/%3E%3Cline x1='6' y1='18' x2='6.01' y2='18'/%3E%3C/svg%3E");
+}
+
+.sd-icon-plus {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='16'/%3E%3Cline x1='8' y1='12' x2='16' y2='12'/%3E%3C/svg%3E");
+}
+
+.sd-icon-book {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E");
+}
+
+.sd-icon-info {
+  --sd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E");
+}
