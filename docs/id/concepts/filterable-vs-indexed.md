@@ -36,10 +36,12 @@ Engine menegakkan perbedaan ini lewat **pre-flight rejection**: memfilter atau m
 | :-- | :-- |
 | Nama field tidak terdaftar di model | `UnknownFieldException` |
 | Field tidak filterable (memang tidak pernah, atau sudah didemosikan) | `FieldNotFilterableException` |
-| Field filterable tetapi slotnya belum aktif | `FieldNotIndexedException` |
+| Field filterable tetapi slotnya belum aktif | `FieldNotFilterableException` |
 | Mengurutkan berdasarkan field yang tidak punya slot aktif | `FieldNotSortableException` |
 
 Inilah exception yang perlu Anda tangkap saat menyusun filter dari input pengguna. Daftar lengkapnya ada di [Error](/id/reference/errors).
+
+**Dua baris di tengah memunculkan exception yang sama, dan pesannya bisa menyesatkan.** Selama backfill window, registry menyatakan field itu filterable, tetapi filter padanya ditolak dengan `FieldNotFilterableException` ("not filterable on the active driver"). Registry-nya benar dan pesan itu sebenarnya menggambarkan index yang belum ada. Jangan memakai exception untuk membedakan kedua kasus. Baca `isIndexed` dari `describeModel()`. Kelas `FieldNotIndexedException` memang ada, tetapi engine saat ini tidak memunculkannya.
 
 ## Penulisan tidak pernah gagal karena kehabisan slot
 

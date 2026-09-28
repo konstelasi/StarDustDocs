@@ -42,7 +42,7 @@ Apa yang tetap berfungsi selama window itu disengaja:
 
 Perbedaannya menurut operasi:
 
-- **Promosi dan retype.** Field bisa dibaca dan ditulis, tetapi filter dan pengurutan padanya memunculkan `FieldNotIndexedException` sampai slotnya siap. Nilai hasil retype yang tidak bisa dikonversi menjadi null *hanya di slot*. Payload tetap menyimpan nilai aslinya.
+- **Promosi dan retype.** Field bisa dibaca dan ditulis, tetapi filter padanya memunculkan `FieldNotFilterableException` dan pengurutan memunculkan `FieldNotSortableException` sampai slotnya siap. Nilai hasil retype yang tidak bisa dikonversi menjadi null *hanya di slot*. Payload tetap menyimpan nilai aslinya.
 - **Rename field.** Pembacaan mengembalikan nilai dengan nama baru untuk setiap entry, baik yang sudah dimigrasi maupun belum. Klien yang masih mengirim nama lama tetap berfungsi, karena penulisan masuk ditulis ulang ke nama baru. Filter dengan nama baru langsung bekerja begitu pemanggilan kembali. Filter dengan nama lama ditolak dengan `UnknownFieldException`.
 - **Penghapusan field.** Field lenyap dari setiap pembacaan, penulisan, filter, dan ekspor CSV baru begitu pemanggilan kembali. Sampai proses pembersihan selesai, nilainya masih tersimpan secara fisik: tidak terjangkau lewat API tetapi terlihat di dump tabel mentah. Nama field itu belum bisa dipakai ulang sebelum pembersihan selesai.
 - **Penghapusan model.** Pembacaan menjadi gelap (halaman kosong, `null` dari `get()`), dan penulisan ditolak dengan `ModelDeletionInProgressException`.

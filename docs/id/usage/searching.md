@@ -78,7 +78,7 @@ Sebelum sebuah request mencapai database, ia melewati rangkaian pemeriksaan yang
 | Tahap | Yang diperiksa | Penolakan |
 | :-- | :-- | :-- |
 | Resolusi field | Setiap field dalam filter ada di model. | `UnknownFieldException` |
-| Kapabilitas | Driver aktif mendukung setiap operator dan bisa memfilter setiap field. Ini mencakup field yang tidak filterable dan slot yang belum aktif. | `FieldNotFilterableException`, `FieldNotIndexedException`, atau `QueryFilterValidationException` dengan `capability_unsupported` |
+| Kapabilitas | Driver aktif mendukung setiap operator dan bisa memfilter setiap field. Ini mencakup field yang tidak filterable dan slot yang belum aktif. | `FieldNotFilterableException`, atau `QueryFilterValidationException` dengan `capability_unsupported` |
 | Tipe nilai | Setiap nilai sesuai declared type field-nya dan batasannya. | `QueryFilterValidationException` dengan `value_type_mismatch` atau `value_out_of_bounds` |
 | Sort dan cursor | Key pengurut bisa diurutkan, dan cursor yang diberikan diterbitkan untuk urutan yang sama. | `UnknownFieldException`, `FieldNotSortableException`, `InvalidCursorException` |
 
@@ -96,7 +96,6 @@ Menolak sejak awal adalah pertukaran yang disengaja. Anda mendapat error yang je
 
 ```php
 use StarDust\Exception\FieldNotFilterableException;
-use StarDust\Exception\FieldNotIndexedException;
 use StarDust\Exception\UnknownFieldException;
 use StarDust\Filter\Json\JsonFilterDecoder;
 use StarDust\Filter\QueryFilterValidationException;
@@ -116,13 +115,13 @@ try {
         'pointer' => $e->jsonPointer,
         'details' => $e->details,
     ]);
-} catch (UnknownFieldException | FieldNotFilterableException | FieldNotIndexedException $e) {
+} catch (UnknownFieldException | FieldNotFilterableException $e) {
     // Masalah field memakai exception ini, bukan exception format wire.
     http_response_code(400);
     echo json_encode(['error' => $e::class, 'message' => $e->getMessage()]);
 }
 ```
 
-Dua kode format wire, `field_unknown` dan `field_not_filterable`, dilaporkan lewat `UnknownFieldException` dan `FieldNotFilterableException`, jadi tangkap keduanya juga. Field yang filterable tetapi belum indexed memunculkan `FieldNotIndexedException`. Kembalikan juga sebagai error klien, atau lebih baik lagi, hindari dengan menawarkan filter hanya pada field yang `isIndexed`-nya true. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed#mengecek-apakah-field-bisa-di-query-sebelum-menawarkan-filter).
+Dua kode format wire, `field_unknown` dan `field_not_filterable`, dilaporkan lewat `UnknownFieldException` dan `FieldNotFilterableException`, jadi tangkap keduanya juga. Field yang filterable tetapi belum indexed juga memunculkan `FieldNotFilterableException`, jadi 400 untuk kasus itu wajar terjadi selama backfill window. Lebih baik lagi, hindari dengan menawarkan filter hanya pada field yang `isIndexed`-nya true. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed#mengecek-apakah-field-bisa-di-query-sebelum-menawarkan-filter).
 
 Jangan menampilkan `getMessage()` begitu saja bila API Anda publik dan Anda tidak ingin menggambarkan skema Anda kepada orang asing. Kode error dan pointer sudah cukup bagi klien untuk memperbaiki request-nya. Lihat [Keamanan](/id/operations/security#menerima-filter-dari-sumber-yang-tidak-tepercaya).

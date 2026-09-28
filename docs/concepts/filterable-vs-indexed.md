@@ -36,10 +36,12 @@ The engine enforces the difference with **pre-flight rejection**: filtering or s
 | :-- | :-- |
 | The field name is not registered on the model | `UnknownFieldException` |
 | The field is not filterable (never was, or was demoted) | `FieldNotFilterableException` |
-| The field is filterable but its slot is not live yet | `FieldNotIndexedException` |
+| The field is filterable but its slot is not live yet | `FieldNotFilterableException` |
 | Sorting on a field that has no live slot | `FieldNotSortableException` |
 
 These are the exceptions to catch when you build filters from user input. [Errors](/reference/errors) lists them all.
+
+**The two middle rows raise the same exception, and its message can mislead.** During a backfill window the registry says the field is filterable, yet a filter on it is rejected with `FieldNotFilterableException` ("not filterable on the active driver"). The registry is right and the message is describing the missing index. Do not use the exception to tell the two cases apart. Read `isIndexed` from `describeModel()` instead. A `FieldNotIndexedException` class exists, but the engine does not currently raise it.
 
 ## Writes never fail for lack of a slot
 

@@ -78,7 +78,7 @@ Before a request reaches the database it goes through a fixed sequence of checks
 | Stage | Checks | Rejection |
 | :-- | :-- | :-- |
 | Field resolution | Every field in the filter exists on the model. | `UnknownFieldException` |
-| Capability | The active driver supports each operator and can filter on each field. That covers fields that are not filterable and slots that are not live yet. | `FieldNotFilterableException`, `FieldNotIndexedException`, or `QueryFilterValidationException` with `capability_unsupported` |
+| Capability | The active driver supports each operator and can filter on each field. That covers fields that are not filterable and slots that are not live yet. | `FieldNotFilterableException`, or `QueryFilterValidationException` with `capability_unsupported` |
 | Value type | Each value fits its field's declared type and the limits. | `QueryFilterValidationException` with `value_type_mismatch` or `value_out_of_bounds` |
 | Sort and cursor | The sort key can be ordered, and a supplied cursor was issued for this same ordering. | `UnknownFieldException`, `FieldNotSortableException`, `InvalidCursorException` |
 
@@ -96,7 +96,6 @@ Rejecting early is a deliberate trade. You get a loud, fast, catchable error rat
 
 ```php
 use StarDust\Exception\FieldNotFilterableException;
-use StarDust\Exception\FieldNotIndexedException;
 use StarDust\Exception\UnknownFieldException;
 use StarDust\Filter\Json\JsonFilterDecoder;
 use StarDust\Filter\QueryFilterValidationException;
@@ -116,13 +115,13 @@ try {
         'pointer' => $e->jsonPointer,
         'details' => $e->details,
     ]);
-} catch (UnknownFieldException | FieldNotFilterableException | FieldNotIndexedException $e) {
+} catch (UnknownFieldException | FieldNotFilterableException $e) {
     // Field problems reuse these exceptions rather than the wire-format one.
     http_response_code(400);
     echo json_encode(['error' => $e::class, 'message' => $e->getMessage()]);
 }
 ```
 
-Two of the wire-format codes, `field_unknown` and `field_not_filterable`, are reported through `UnknownFieldException` and `FieldNotFilterableException` instead, so catch those as well. A field that is filterable but not yet indexed raises `FieldNotIndexedException`. Return it as a client error too, or, better, avoid it by offering filters only on fields whose `isIndexed` is true. See [Filterable vs. indexed](/concepts/filterable-vs-indexed#checking-queryability-before-offering-a-filter).
+Two of the wire-format codes, `field_unknown` and `field_not_filterable`, are reported through `UnknownFieldException` and `FieldNotFilterableException` instead, so catch those as well. A field that is filterable but not yet indexed raises `FieldNotFilterableException` too, so a 400 for it is expected during a backfill window. Better, avoid it by offering filters only on fields whose `isIndexed` is true. See [Filterable vs. indexed](/concepts/filterable-vs-indexed#checking-queryability-before-offering-a-filter).
 
 Do not echo `getMessage()` blindly if your API is public and you would rather not describe your schema to strangers. The error code and pointer are enough for a client to fix its request. See [Security](/operations/security#accepting-untrusted-filters).

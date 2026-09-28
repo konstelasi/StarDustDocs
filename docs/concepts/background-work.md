@@ -42,7 +42,7 @@ What still works during a window is deliberate:
 
 What differs by operation:
 
-- **Promotion and retype.** The field is readable and writable, but filters and sorts on it raise `FieldNotIndexedException` until the slot is ready. A retyped value that cannot be converted becomes null *in the slot only*. The payload keeps the original.
+- **Promotion and retype.** The field is readable and writable, but filters on it raise `FieldNotFilterableException` and sorts raise `FieldNotSortableException` until the slot is ready. A retyped value that cannot be converted becomes null *in the slot only*. The payload keeps the original.
 - **Field rename.** Reads return the value under the new name for every entry, migrated or not. A client still sending the old name keeps working, because inbound writes are rewritten to the new name. Filters on the new name work from the moment the call returns. Filters on the old name are rejected with `UnknownFieldException`.
 - **Field deletion.** The field disappears from every read, write, filter and new CSV export the moment the call returns. Until the purge finishes the values are still physically stored, unreachable through the API but visible in a raw table dump. The field's name cannot be reused until the purge is done.
 - **Model deletion.** Reads go dark (an empty page, `null` from `get()`), and writes are refused with `ModelDeletionInProgressException`.
