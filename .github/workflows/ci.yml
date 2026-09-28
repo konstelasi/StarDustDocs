@@ -1,0 +1,60 @@
+name: Docs CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: VitePress build (dead-link check)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run docs:build
+
+  markdown-lint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Pinned: a floating version can turn CI red on an unrelated day
+      # when markdownlint adds or tightens a rule. Rule config lives in
+      # .markdownlint.json, copied from the main StarDust repo.
+      - name: Run markdownlint
+        run: npx --yes markdownlint-cli2@0.23.2 "*.md" "docs/**/*.md"
+
+  consumer-docs-guard:
+    name: No ADR citations or numbered build phases
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check consumer docs
+        run: node scripts/check-consumer-docs.mjs
