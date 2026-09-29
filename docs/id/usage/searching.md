@@ -1,6 +1,6 @@
 # Pencarian
 
-`search()` adalah pintu masuk pencarian terpadu di StarDust. Method ini menjalankan sebuah request melalui pipeline validasi lalu menyerahkannya ke **search driver** yang aktif, yang secara bawaan adalah driver bawaan yang meng-query MySQL atau MariaDB lewat slot terindeks. Halaman ini membahas cara menyusun request, menerima filter dalam bentuk JSON, dan mengubah penolakan menjadi error API yang berguna.
+`search()` adalah pintu masuk pencarian terpadu di StarDust. Method ini menjalankan sebuah request melalui pipeline validasi lalu menyerahkannya ke <Term id="search-driver">search driver</Term> yang aktif, yang secara bawaan adalah driver bawaan yang meng-query MySQL atau MariaDB lewat slot terindeks. Halaman ini membahas cara menyusun request, menerima filter dalam bentuk JSON, dan mengubah penolakan menjadi error API yang berguna.
 
 ## search() dan SearchRequest
 

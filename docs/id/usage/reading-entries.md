@@ -65,7 +65,7 @@ Pohon yang hanya berisi AND dijalankan sebagai join terindeks. Pohon yang memuat
 
 ## Paginasi cursor
 
-Halaman ditelusuri dengan **cursor** yang opaque. Oper `nextCursor` setiap halaman kembali untuk mendapat halaman berikutnya, dan berhenti ketika nilainya `null`:
+Halaman ditelusuri dengan <Term id="cursor">cursor</Term> yang opaque. Oper `nextCursor` setiap halaman kembali untuk mendapat halaman berikutnya, dan berhenti ketika nilainya `null`:
 
 ```php
 $cursor = null;

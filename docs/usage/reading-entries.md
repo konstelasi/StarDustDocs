@@ -65,7 +65,7 @@ A tree made only of ANDs runs as indexed joins. A tree containing OR or NOT swit
 
 ## Cursor pagination
 
-Pages are walked with an opaque **cursor**. Pass each page's `nextCursor` back in to get the next page, and stop when it is `null`:
+Pages are walked with an opaque <Term id="cursor">cursor</Term>. Pass each page's `nextCursor` back in to get the next page, and stop when it is `null`:
 
 ```php
 $cursor = null;

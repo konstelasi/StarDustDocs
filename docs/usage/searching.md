@@ -1,6 +1,6 @@
 # Searching
 
-`search()` is StarDust's unified search entry point. It runs a request through a validation pipeline and hands it to the active **search driver**, which by default is the built-in one that queries MySQL or MariaDB through the indexed slots. This page covers building requests, accepting filters as JSON, and turning rejections into useful API errors.
+`search()` is StarDust's unified search entry point. It runs a request through a validation pipeline and hands it to the active <Term id="search-driver">search driver</Term>, which by default is the built-in one that queries MySQL or MariaDB through the indexed slots. This page covers building requests, accepting filters as JSON, and turning rejections into useful API errors.
 
 ## search() and SearchRequest
 
