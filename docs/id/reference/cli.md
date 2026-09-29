@@ -78,11 +78,11 @@ Satu lintasan terbatas Watcher, Liberator, dan Reconciler lewat satu koneksi, un
 
 | Flag | Artinya |
 | :-- | :-- |
-| `--budget=N` | Detik yang boleh dipakai jalannya ini. Kembali ke `Config::$tickBudgetSeconds` (50) bila dihilangkan. |
+| `--budget=N` | Detik yang boleh dipakai run ini. Kembali ke `Config::$tickBudgetSeconds` (50) bila dihilangkan. |
 | `--advisories` | Memaksa advisory kardinalitas dan spread untuk sampling segera, terlepas dari jadwalnya (fleet-wide, tersimpan di database). |
-| `--exports` | Menyertakan Chronicler ke dalam jalannya, terakhir di setiap putaran. Nonaktif secara bawaan. |
+| `--exports` | Menyertakan Chronicler ke dalam run-nya, terakhir di setiap putaran. Nonaktif secara bawaan. |
 
-Jangan pernah menjalankan `tick` bersamaan dengan proses `watcher` yang persisten — jalan yang tumpang tindih hanya melaporkan skip dengan kode keluar `0`. `liberator` dan `chronicler` adalah pengecualian: keduanya multi-worker, sehingga jalan `tick` bisa hidup berdampingan dengan salah satunya. Lihat [Perintah tick](/id/operations/deployment#perintah-tick).
+Jangan pernah menjalankan `tick` bersamaan dengan proses `watcher` yang persisten — run yang tumpang tindih hanya melaporkan skip dengan kode keluar `0`. `liberator` dan `chronicler` adalah pengecualian: keduanya multi-worker, sehingga run `tick` bisa hidup berdampingan dengan salah satunya. Lihat [Perintah tick](/id/operations/deployment#perintah-tick).
 
 ## spread:report
 

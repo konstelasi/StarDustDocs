@@ -43,7 +43,7 @@ Di luar ini, setiap event membawa field apa pun yang berguna baginya — jumlah 
 | `low_cardinality_index` | Sample itu menemukan sebuah index dengan selektivitas rendah pada jumlah baris yang cukup berarti. |
 | `spread_sampled` | Advisory spread berkala atau on-demand berjalan. |
 | `high_spread_model` | Sample itu menemukan sebuah model yang tersebar di lebih banyak page daripada ambang batasnya. |
-| `tick_started` / `tick_complete` / `tick_skipped` | Sebuah jalan `tick()` dimulai, berakhir, atau dilewati sama sekali karena proses lain sudah memegang lock Watcher. Lihat [Satu tick adalah satu trace tersendiri](/id/operations/observability#satu-tick-adalah-satu-trace-tersendiri). |
+| `tick_started` / `tick_complete` / `tick_skipped` | Sebuah run `tick()` dimulai, berakhir, atau dilewati sama sekali karena proses lain sudah memegang lock Watcher. Lihat [Satu tick adalah satu trace tersendiri](/id/operations/observability#satu-tick-adalah-satu-trace-tersendiri). |
 
 Lihat [Perawatan slot](/id/operations/slot-maintenance) untuk arti kedua advisory itu dan cara menindaklanjutinya.
 

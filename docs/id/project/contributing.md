@@ -11,7 +11,7 @@ composer install
 cp phpunit.xml.dist phpunit.xml    # gitignored — isi dengan kredensial database Anda
 ```
 
-Arahkan kredensialnya ke **database sekali pakai** — test bootstrap menghapus setiap tabel StarDust di antara setiap jalan. Anda butuh PHP 8.1+ dan server MySQL 8.0.13+, Percona 8.0.13+, atau MariaDB 10.11+ untuk menjalankan smoke suite lengkap, tetapi suite-nya di-skip dengan bersih alih-alih gagal saat tidak ada kredensial yang dikonfigurasi, sehingga clone yang baru langsung hijau tanpa itu.
+Arahkan kredensialnya ke **database sekali pakai** — test bootstrap menghapus setiap tabel StarDust di antara setiap run. Anda butuh PHP 8.1+ dan server MySQL 8.0.13+, Percona 8.0.13+, atau MariaDB 10.11+ untuk menjalankan smoke suite lengkap, tetapi suite-nya di-skip dengan bersih alih-alih gagal saat tidak ada kredensial yang dikonfigurasi, sehingga clone yang baru langsung hijau tanpa itu.
 
 ## Sebelum melakukan push
 

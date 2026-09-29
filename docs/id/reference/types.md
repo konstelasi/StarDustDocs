@@ -74,7 +74,7 @@ DTO, value object, dan enum yang membentuk permukaan publik, dikelompokkan menur
 | `CompactionPlan` | `tenantId`, `modelId`, `pagesBefore`, `theoreticalMinPages`, `targetPageIds`, `relocations` (`list<FieldRelocation>`), `noopCount` | Hasil `compactModel()`, dry run maupun tidak. `isNoop()`, `relocationCount()`, `pagesAfter()`, dan `excessPagesRemoved()` adalah pembaca praktis. |
 | `FieldRelocation` | `fieldId`, `fieldName`, `slotType`, `fromPageId`, `toPageId` | Satu perpindahan field di dalam `CompactionPlan`. Hanya perpindahan sungguhan yang muncul di sini — field yang sudah berada di page target dianggap no-op dan tidak didaftarkan. |
 | `TickReport` | `rounds`, `elapsedSeconds`, `budgetSeconds`, `stopReason` (`TickStopReason`) | Hasil `tick()`. |
-| `TickStopReason` | enum: `IDLE`, `BUDGET_SPENT`, `SHUTDOWN`, `LOCK_CONTENDED` | Mengapa sebuah jalan `tick()` kembali. `LOCK_CONTENDED` berarti proses lain sudah memegang lock Watcher dan tidak ada putaran yang berjalan sama sekali. |
+| `TickStopReason` | enum: `IDLE`, `BUDGET_SPENT`, `SHUTDOWN`, `LOCK_CONTENDED` | Mengapa sebuah run `tick()` kembali. `LOCK_CONTENDED` berarti proses lain sudah memegang lock Watcher dan tidak ada putaran yang berjalan sama sekali. |
 
 ## Enum
 

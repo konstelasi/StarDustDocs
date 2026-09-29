@@ -32,7 +32,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 | `watcherCapacityThreshold` | 0.20 | Spare-capacity floor that triggers provisioning; a field waiting on an index provisions regardless of this. |
 | `watcherProvisionLockTimeoutSeconds` | 10 | How long the Watcher waits for its database-level advisory lock around provisioning. |
 | `cardinalityIntervalSeconds` | 86 400 (24 h) | Cadence of the cardinality advisory, shared fleet-wide through the database. |
-| `cardinalityJitterSeconds` | ~10 % of the interval (8 640 by default) | Randomised window the Watcher draws a fresh offset from each cycle, so a fleet started in lockstep doesn't stampede on the same schedule. |
+| `cardinalityJitterSeconds` | ~10% of the interval (8 640 by default) | Randomised window the Watcher draws a fresh offset from each cycle, so a fleet started in lockstep doesn't stampede on the same schedule. |
 | `cardinalitySelectivityThreshold` | 0.01 | Distinct-to-row ratio below which an index is flagged low-cardinality. |
 | `cardinalityRowFloor` | 10 000 | Minimum row count before an index is even considered for the cardinality check. |
 | `cardinalityDistinctFloor` | 10 | Minimum distinct-value count before the same check applies. |
@@ -71,7 +71,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 | `chroniclerInterChunkDelayMicros` | 0 | Pause between chunks. |
 | `chroniclerDeadlockRetryBudget` | 3 | Consecutive deadlock retries on one export chunk before it's skipped. |
 | `chroniclerSkipCountCap` | 1 000 | Combined per-row and per-chunk skip cap before a job fails as `excessive_skips`. |
-| `chroniclerArtifactSizeCapBytes` | 5 GiB | Per-artifact size cap; an export that would exceed it fails as `artifact_size_exceeded`. |
+| `chroniclerArtifactSizeCapBytes` | 5 GB | Per-artifact size cap; an export that would exceed it fails as `artifact_size_exceeded`. |
 | `chroniclerArtifactTtlSeconds` | 86 400 (24 h) | How long a completed artifact survives before garbage collection deletes it. |
 | `chroniclerOrphanedPartialTtlSeconds` | 3 600 (1 h) | TTL for a failed job's partial artifact. |
 | `chroniclerLowDiskThresholdPct` | 0.10 | Pre-claim disk gate: free-space ratio floor. |
