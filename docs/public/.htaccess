@@ -1,0 +1,8 @@
+# Ships alongside the build — VitePress copies docs/public/ verbatim to the
+# output root. StarDustWebsite's root .htaccess (its own public/.htaccess)
+# already covers HTTPS/www redirects, caching and compression for every path
+# under the domain, /docs/ included, since Apache merges .htaccess files
+# down the directory tree. Only ErrorDocument needs overriding here, so a
+# 404 under /docs/ serves this site's own themed page instead of the root
+# site's.
+ErrorDocument 404 /docs/404.html
