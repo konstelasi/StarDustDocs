@@ -1,10 +1,18 @@
 import { defineConfig } from 'vitepress'
 
+// Served at stardust.konstelasi.co.id/docs — every root-relative `head`
+// href below must be prefixed by hand, since `head` is injected as raw
+// <head> tags and is not passed through VitePress's `base` resolution
+// the way `themeConfig.logo` and sidebar/nav links are.
+const base = '/docs/'
+
 export default defineConfig({
   title: 'StarDust',
   description: 'Documentation for StarDust, a vertical schema partitioning engine.',
+  base,
 
   head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logo.svg` }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     [
@@ -21,6 +29,10 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/konstelasi/StarDust' },
     ],
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: `Copyright © ${new Date().getFullYear()} Konstelasi Teknologi Internasional`,
+    },
   },
 
   locales: {
@@ -149,6 +161,10 @@ export default defineConfig({
       lang: 'id',
       link: '/id/',
       themeConfig: {
+        footer: {
+          message: 'Dirilis di bawah Lisensi MIT.',
+          copyright: `Copyright © ${new Date().getFullYear()} Konstelasi Teknologi Internasional`,
+        },
         nav: [
           { text: 'Memulai', link: '/id/guide/what-is-stardust' },
           { text: 'Cara Kerja', link: '/id/concepts/architecture' },
