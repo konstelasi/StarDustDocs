@@ -1,0 +1,178 @@
+{
+  "artifact": {
+    "term": "Artifact",
+    "short": "File hasil sebuah export — CSV atau JSON — yang ditulis ke direktori yang Anda konfigurasi."
+  },
+  "backfill": {
+    "term": "Backfill",
+    "short": "Proses latar belakang yang mengisi kolom slot dengan nilai yang dibaca dari payload JSON yang sudah tersimpan."
+  },
+  "backfill-window": {
+    "term": "Backfill window",
+    "short": "Rentang waktu antara sebuah operasi skema selesai dijalankan dan proses latar belakangnya benar-benar tuntas — periode ketika perubahan sudah dinyatakan tapi belum sepenuhnya diterapkan ke data yang tersimpan."
+  },
+  "bounded-read": {
+    "term": "Bounded read",
+    "short": "Strategi dua-query di balik setiap read dan search: query pertama hanya mencari ID entry yang cocok, lalu query kedua mengambil baris lengkap untuk ID-ID itu saja."
+  },
+  "bulk-ingestion": {
+    "term": "Bulk ingestion",
+    "short": "Menulis banyak entry sekaligus dalam satu panggilan, dikomit per chunk, bukan sebagai satu transaksi raksasa."
+  },
+  "chronicler": {
+    "term": "Chronicler",
+    "short": "Daemon yang mengubah export job menjadi file, men-streaming CSV atau JSON ke disk."
+  },
+  "compaction": {
+    "term": "Compaction",
+    "short": "Perapian yang diinisiasi operator, yang memindahkan field filterable sebuah model ke jumlah page paling sedikit yang bisa menampungnya."
+  },
+  "correlation-id": {
+    "term": "Correlation ID",
+    "short": "Identifier yang mengikat setiap log event milik satu operasi menjadi satu, termasuk event yang dipancarkan sebuah daemon beberapa menit kemudian di proses yang berbeda."
+  },
+  "cursor": {
+    "term": "Cursor",
+    "short": "Token buram yang menandai posisi Anda dalam sebuah read berpaginasi — tidak ada parameter offset dan tidak ada total count."
+  },
+  "daemon": {
+    "term": "Daemon",
+    "short": "Pekerjaan latar belakang yang membuat penyaringan tetap mengejar ketertinggalan, dijalankan baik sebagai proses yang berjalan terus-menerus maupun dalam putaran singkat terjadwal — StarDust menyediakan empat, yang berkoordinasi hanya lewat database."
+  },
+  "dead-letter-queue": {
+    "term": "Dead-letter queue",
+    "short": "Tempat Reconciler menaruh satu record yang gagal diproses, supaya satu baris bermasalah tidak menyumbat seluruh antrean."
+  },
+  "declared-type": {
+    "term": "Declared type",
+    "short": "Tipe yang Anda daftarkan untuk sebuah field — string, int, numeric, atau datetime."
+  },
+  "demotion": {
+    "term": "Demotion",
+    "short": "Menandai field yang sebelumnya filterable menjadi non-filterable, dan berlaku seketika."
+  },
+  "entry": {
+    "term": "Entry",
+    "short": "Satu record dari sebuah model, milik satu tenant."
+  },
+  "exhaustion-fallback": {
+    "term": "Exhaustion fallback",
+    "short": "Yang terjadi saat Anda menulis field filterable tapi kapasitas slot sedang habis: nilainya tetap masuk ke payload JSON dan write-nya tetap berhasil."
+  },
+  "export-job": {
+    "term": "Export job",
+    "short": "Permintaan untuk mengekspor seluruh entry sebuah model ke sebuah file, ditangani secara asinkron supaya ekstraksi besar tidak menahan satu request."
+  },
+  "extension-page": {
+    "term": "Extension page",
+    "short": "Tabel sisi yang menyimpan kolom slot terindeks yang mencerminkan nilai field filterable, terhubung 1:1 ke tabel entry."
+  },
+  "field": {
+    "term": "Field",
+    "short": "Satu atribut bernama milik sebuah model, dengan declared type dan status filterable."
+  },
+  "filter-tree": {
+    "term": "Filter tree",
+    "short": "Struktur yang dibentuk sebuah filter: kondisi-kondisi individual yang digabungkan dengan AND, OR, dan NOT menjadi sebuah tree sedalam apa pun."
+  },
+  "filterable": {
+    "term": "Filterable",
+    "short": "Penanda yang menentukan apakah sebuah field mendapat slot dan karenanya bisa dipakai dalam filter dan sort."
+  },
+  "idempotency-key": {
+    "term": "Idempotency key",
+    "short": "String opsional yang Anda lampirkan pada submission bulk asinkron, supaya mencobanya ulang tidak pernah menulis batch yang sama dua kali."
+  },
+  "index-headroom": {
+    "term": "Index headroom",
+    "short": "Jumlah kolom terindeks cadangan yang dibangun ke setiap extension page baru, supaya beberapa field yang dipromosikan berurutan mendarat bersama, bukan tercecer."
+  },
+  "indexed": {
+    "term": "Indexed",
+    "short": "Apakah slot sebuah field sedang aktif saat ini — yaitu, apakah filter terhadapnya benar-benar akan berfungsi."
+  },
+  "liberator": {
+    "term": "Liberator",
+    "short": "Daemon yang mengambil kembali slot yang dibebaskan oleh field yang didemosikan atau dihapus, membersihkan nilai lamanya sebelum mengembalikannya ke pool bebas."
+  },
+  "model": {
+    "term": "Model",
+    "short": "Bentuk data bernama di dalam sebuah tenant — kurang lebih setara tabel, hanya saja Anda mendefinisikannya saat runtime."
+  },
+  "payload": {
+    "term": "Payload",
+    "short": "Objek JSON lengkap yang menyimpan seluruh nilai field sebuah entry — system of record yang otoritatif."
+  },
+  "pre-flight-rejection": {
+    "term": "Pre-flight rejection",
+    "short": "Kebijakan engine untuk menolak query yang mustahil di batas API, sebelum database sempat disentuh sama sekali."
+  },
+  "promotion": {
+    "term": "Promotion",
+    "short": "Mengubah field yang non-filterable menjadi filterable pada sistem yang sedang berjalan."
+  },
+  "queryfilter": {
+    "term": "QueryFilter",
+    "short": "Format wire JSON untuk filter, supaya sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda."
+  },
+  "reconciler": {
+    "term": "Reconciler",
+    "short": "Daemon yang mengejar ketertinggalan — ia mengalirkan semua jenis pekerjaan tertunda yang dihasilkan engine, dalam chunk yang terbatas."
+  },
+  "retype": {
+    "term": "Retype",
+    "short": "Mengubah declared type sebuah field pada sistem yang sedang berjalan, mengonversi nilai-nilai lamanya di latar belakang."
+  },
+  "schema-registry": {
+    "term": "Schema registry",
+    "short": "Kumpulan tabel yang mencatat model, field, page, dan slot assignment Anda — pembukuan engine itu sendiri."
+  },
+  "schema-version": {
+    "term": "Schema version",
+    "short": "Satu counter yang bertambah setiap kali state registry yang relevan untuk koordinasi berubah, sehingga perubahan skema langsung bisa dikenali tanpa me-restart aplikasi Anda."
+  },
+  "search-driver": {
+    "term": "Search driver",
+    "short": "Komponen yang dapat ditukar, yang benar-benar menjalankan sebuah read terfilter — MySQL secara default, atau milik Anda sendiri untuk mendelegasikan ke layanan pencarian eksternal."
+  },
+  "slot": {
+    "term": "Slot",
+    "short": "Satu kolom bertipe dan terindeks pada sebuah extension page yang mencerminkan nilai satu field filterable."
+  },
+  "soft-deletion": {
+    "term": "Soft deletion",
+    "short": "Cara kerja penghapusan sebuah entry: sebuah timestamp diset, bukan barisnya yang dihapus."
+  },
+  "sort": {
+    "term": "Sort",
+    "short": "Urutan sebuah read — berdasarkan entry ID, waktu pembuatan, atau satu field yang indexed."
+  },
+  "spread": {
+    "term": "Spread",
+    "short": "Berapa banyak extension page tempat slot filterable sebuah model tercecer, dan karenanya berapa banyak join tambahan yang dibayar setiap query terfilter."
+  },
+  "sync-queue": {
+    "term": "Sync queue",
+    "short": "Tabel kecil yang menampung entry yang pencerminan indeksnya tertunda, hampir selalu karena sebuah exhaustion fallback."
+  },
+  "system-of-record": {
+    "term": "System of record",
+    "short": "Salinan otoritatif data Anda — selalu payload JSON, tidak pernah slot yang terindeks."
+  },
+  "tenant": {
+    "term": "Tenant",
+    "short": "Batas isolasi tingkat tertinggi: setiap query yang dibangun engine membawa tenant ID, sehingga data satu tenant tidak terjangkau dari tenant lain."
+  },
+  "tombstoned-slot": {
+    "term": "Tombstoned slot",
+    "short": "Slot yang field-nya sudah tidak ada, tapi nilai lamanya masih tersimpan fisik di kolom itu, sehingga belum bisa dipakai ulang."
+  },
+  "vertical-schema-partitioning": {
+    "term": "Vertical schema partitioning",
+    "short": "Arsitektur di balik StarDust: setiap entry dipecah menjadi payload JSON lengkap untuk penyimpanan dan kolom slot terindeks terpisah untuk pencarian."
+  },
+  "watcher": {
+    "term": "Watcher",
+    "short": "Daemon yang menjaga kapasitas slot tetap unggul dari permintaan, menyediakan extension page baru sebelum Anda kehabisan."
+  }
+}

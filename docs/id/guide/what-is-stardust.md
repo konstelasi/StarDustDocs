@@ -29,7 +29,7 @@ Banyak aplikasi membiarkan setiap pelanggan mendefinisikan datanya sendiri: cust
 
 ## Cara StarDust mengatasinya
 
-StarDust menyimpan setiap entry dalam dua bentuk. Record lengkapnya disimpan sebagai JSON, yang selalu menjadi salinan otoritatif. Setiap field yang Anda tandai filterable *juga* disalin ke kolom bertipe dengan B-tree index sungguhan, di tabel samping yang berelasi satu-satu dengan entry. Penyimpanan tetap schemaless dan murah, sementara filter membaca index. Rancangan ini disebut **vertical schema partitioning**.
+StarDust menyimpan setiap entry dalam dua bentuk. Record lengkapnya disimpan sebagai JSON, yang selalu menjadi salinan otoritatif. Setiap field yang Anda tandai filterable *juga* disalin ke kolom bertipe dengan B-tree index sungguhan, di tabel samping yang berelasi satu-satu dengan entry. Penyimpanan tetap schemaless dan murah, sementara filter membaca index. Rancangan ini disebut <Term id="vertical-schema-partitioning">vertical schema partitioning</Term>.
 
 Di sekeliling gagasan itu, StarDust menambahkan bagian-bagian yang membuatnya layak dipakai di produksi:
 

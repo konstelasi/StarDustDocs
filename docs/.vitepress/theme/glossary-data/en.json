@@ -1,0 +1,178 @@
+{
+  "artifact": {
+    "term": "Artifact",
+    "short": "The file a completed export produces — CSV or JSON, written to the directory you configured."
+  },
+  "backfill": {
+    "term": "Backfill",
+    "short": "The background pass that fills a slot column with values read out of already-stored JSON payloads."
+  },
+  "backfill-window": {
+    "term": "Backfill window",
+    "short": "The interval between a schema operation returning and its background pass finishing — the period during which the change is declared but not yet applied to stored data."
+  },
+  "bounded-read": {
+    "term": "Bounded read",
+    "short": "The two-query strategy behind every read and search: the first query finds only the matching entry IDs, and the second fetches the full rows for just those IDs."
+  },
+  "bulk-ingestion": {
+    "term": "Bulk ingestion",
+    "short": "Writing many entries in one call, committed in chunks rather than as one giant transaction."
+  },
+  "chronicler": {
+    "term": "Chronicler",
+    "short": "The daemon that turns export jobs into files, streaming CSV or JSON to disk."
+  },
+  "compaction": {
+    "term": "Compaction",
+    "short": "The operator-initiated repack that relocates a model's filterable fields onto the fewest pages that can hold them."
+  },
+  "correlation-id": {
+    "term": "Correlation ID",
+    "short": "An identifier that ties every log event belonging to one operation together, including events a daemon emits minutes later in a different process."
+  },
+  "cursor": {
+    "term": "Cursor",
+    "short": "The opaque token that marks your position in a paginated read — there is no offset parameter and no total count."
+  },
+  "daemon": {
+    "term": "Daemon",
+    "short": "Background work that keeps filtering caught up, run either as a long-lived process or in bounded bursts from a schedule — StarDust ships four, coordinating only through the database."
+  },
+  "dead-letter-queue": {
+    "term": "Dead-letter queue",
+    "short": "Where the Reconciler parks an individual record it could not process, so one bad row cannot wedge the whole queue."
+  },
+  "declared-type": {
+    "term": "Declared type",
+    "short": "The type you register a field as — string, int, numeric, or datetime."
+  },
+  "demotion": {
+    "term": "Demotion",
+    "short": "Marking a previously filterable field as non-filterable, which takes effect immediately."
+  },
+  "entry": {
+    "term": "Entry",
+    "short": "One record of a model, belonging to one tenant."
+  },
+  "exhaustion-fallback": {
+    "term": "Exhaustion fallback",
+    "short": "What happens when you write a filterable field and no slot capacity is available: the value still lands in the JSON payload and the write succeeds."
+  },
+  "export-job": {
+    "term": "Export job",
+    "short": "A request to dump a model's entries to a file, handled asynchronously so a large extract never ties up a request."
+  },
+  "extension-page": {
+    "term": "Extension page",
+    "short": "A side table holding the indexed slot columns that mirror filterable field values, joined 1:1 to the entry table."
+  },
+  "field": {
+    "term": "Field",
+    "short": "One named attribute of a model, with a declared type and a filterable flag."
+  },
+  "filter-tree": {
+    "term": "Filter tree",
+    "short": "The structure a filter takes: individual conditions combined with AND, OR, and NOT into a tree of any depth."
+  },
+  "filterable": {
+    "term": "Filterable",
+    "short": "The flag that decides whether a field gets a slot and can therefore be used in filters and sorts."
+  },
+  "idempotency-key": {
+    "term": "Idempotency key",
+    "short": "An optional string you attach to an asynchronous bulk submission so retrying it never ingests the same batch twice."
+  },
+  "index-headroom": {
+    "term": "Index headroom",
+    "short": "The number of spare indexed columns built into every new extension page, so a handful of fields promoted in sequence land together rather than scattering."
+  },
+  "indexed": {
+    "term": "Indexed",
+    "short": "Whether a field's slot is live right now — that is, whether a filter on it would actually work."
+  },
+  "liberator": {
+    "term": "Liberator",
+    "short": "The daemon that reclaims slots freed by demoted or deleted fields, clearing their old values before returning them to the free pool."
+  },
+  "model": {
+    "term": "Model",
+    "short": "A named data shape within a tenant — the rough equivalent of a table, except you define it at runtime."
+  },
+  "payload": {
+    "term": "Payload",
+    "short": "The complete JSON object holding all of an entry's field values — the authoritative system of record."
+  },
+  "pre-flight-rejection": {
+    "term": "Pre-flight rejection",
+    "short": "The engine's policy of refusing an impossible query at the API boundary, before the database is touched at all."
+  },
+  "promotion": {
+    "term": "Promotion",
+    "short": "Turning a non-filterable field into a filterable one on a live system."
+  },
+  "queryfilter": {
+    "term": "QueryFilter",
+    "short": "The JSON wire format for filters, so a filter can travel from a browser or an API client and be validated before it reaches your database."
+  },
+  "reconciler": {
+    "term": "Reconciler",
+    "short": "The daemon that does the catching up — it drains every kind of deferred work the engine produces, in bounded chunks."
+  },
+  "retype": {
+    "term": "Retype",
+    "short": "Changing a field's declared type on a live system, converting its existing values in the background."
+  },
+  "schema-registry": {
+    "term": "Schema registry",
+    "short": "The set of tables recording your models, fields, pages, and slot assignments — the engine's own bookkeeping."
+  },
+  "schema-version": {
+    "term": "Schema version",
+    "short": "A single counter bumped every time coordination-relevant registry state changes, so a live schema change can be picked up without restarting your application."
+  },
+  "search-driver": {
+    "term": "Search driver",
+    "short": "The swappable component that actually executes a filtered read — MySQL by default, or your own to delegate to an external search service."
+  },
+  "slot": {
+    "term": "Slot",
+    "short": "One typed, indexed column on an extension page that mirrors one filterable field's value."
+  },
+  "soft-deletion": {
+    "term": "Soft deletion",
+    "short": "How deleting an entry works: a timestamp is set rather than the row removed."
+  },
+  "sort": {
+    "term": "Sort",
+    "short": "The ordering of a read — by entry ID, creation time, or a single indexed field."
+  },
+  "spread": {
+    "term": "Spread",
+    "short": "How many extension pages a single model's filterable slots are scattered across, and therefore how many extra joins a filtered query pays."
+  },
+  "sync-queue": {
+    "term": "Sync queue",
+    "short": "The small table holding entries whose indexed mirroring was deferred, almost always because of an exhaustion fallback."
+  },
+  "system-of-record": {
+    "term": "System of record",
+    "short": "The authoritative copy of your data — always the JSON payload, never the indexed slots."
+  },
+  "tenant": {
+    "term": "Tenant",
+    "short": "The top-level isolation boundary: every query the engine builds carries the tenant ID, so one tenant's data is unreachable from another's."
+  },
+  "tombstoned-slot": {
+    "term": "Tombstoned slot",
+    "short": "A slot whose field is gone but whose old values are still physically in the column, and so cannot yet be reused."
+  },
+  "vertical-schema-partitioning": {
+    "term": "Vertical schema partitioning",
+    "short": "The architecture behind StarDust: each entry is split across a complete JSON payload for storage and separate indexed slot columns for querying."
+  },
+  "watcher": {
+    "term": "Watcher",
+    "short": "The daemon that keeps slot capacity ahead of demand, provisioning new extension pages before you run out."
+  }
+}

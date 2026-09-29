@@ -1,18 +1,18 @@
 # Sekilas arsitektur
 
-StarDust adalah library PHP ditambah empat proses latar belakang kecil, semuanya berjalan di atas database MySQL atau MariaDB yang sudah Anda pakai. Tidak ada search cluster, message broker, atau layanan terpisah yang perlu di-deploy. Rancangannya punya nama: **vertical schema partitioning**. Setiap entry dipecah menjadi dua bagian, yaitu payload JSON lengkap untuk penyimpanan dan sekumpulan kolom bertipe yang terindeks untuk query.
+StarDust adalah library PHP ditambah empat proses latar belakang kecil, semuanya berjalan di atas database MySQL atau MariaDB yang sudah Anda pakai. Tidak ada search cluster, message broker, atau layanan terpisah yang perlu di-deploy. Rancangannya punya nama: <Term id="vertical-schema-partitioning">vertical schema partitioning</Term>. Setiap entry dipecah menjadi dua bagian, yaitu payload JSON lengkap untuk penyimpanan dan sekumpulan kolom bertipe yang terindeks untuk query.
 
 Kalau ada istilah di halaman ini yang belum Anda kenal, [glosarium](/id/reference/glossary) menjelaskan semuanya dengan bahasa sederhana. Bagian pembukanya, [Bagaimana semuanya saling terhubung](/id/reference/glossary#bagaimana-semuanya-saling-terhubung), merangkai istilah-istilah inti sekali jalan.
 
 ## System of record
 
-Payload lengkap setiap entry disimpan sebagai JSON di tabel bernama `entry_data`. Inilah **system of record**: tabel ini selalu memegang entry secara utuh, semua field, baik filterable maupun tidak, dan tidak ada bagian lain dari engine yang boleh berbeda dengannya.
+Payload lengkap setiap entry disimpan sebagai JSON di tabel bernama `entry_data`. Inilah <Term id="system-of-record">system of record</Term>: tabel ini selalu memegang entry secara utuh, semua field, baik filterable maupun tidak, dan tidak ada bagian lain dari engine yang boleh berbeda dengannya.
 
 Kalau hanya sampai di sini, hasilnya adalah document store yang tidak bisa di-query dengan efisien. Karena itu ada bagian kedua dari rancangannya.
 
 ## Extension page dan kolom slot
 
-Field yang Anda tandai **filterable** juga disalin ke sebuah kolom bertipe yang terindeks, disebut **slot**, di sebuah **extension page**. Extension page adalah tabel samping (`entry_slots_page_1`, `entry_slots_page_2`, dan seterusnya) yang berelasi satu-satu dengan `entry_data`. Filter pada field tersebut membaca B-tree index sungguhan, bukan memindai JSON.
+Field yang Anda tandai <Term id="filterable">filterable</Term> juga disalin ke sebuah kolom bertipe yang terindeks, disebut <Term id="slot">slot</Term>, di sebuah <Term id="extension-page">extension page</Term>. Extension page adalah tabel samping (`entry_slots_page_1`, `entry_slots_page_2`, dan seterusnya) yang berelasi satu-satu dengan `entry_data`. Filter pada field tersebut membaca B-tree index sungguhan, bukan memindai JSON.
 
 ```text
                        write(EntryPayload)

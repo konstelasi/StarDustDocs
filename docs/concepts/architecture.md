@@ -1,18 +1,18 @@
 # Architecture at a glance
 
-StarDust is a PHP library plus four small background processes, all sitting on top of the MySQL or MariaDB database you already run. There is no search cluster, no message broker and no separate service to deploy. The design has a name, **vertical schema partitioning**: each entry is split across a complete JSON payload used for storage and a set of typed, indexed columns used for querying.
+StarDust is a PHP library plus four small background processes, all sitting on top of the MySQL or MariaDB database you already run. There is no search cluster, no message broker and no separate service to deploy. The design has a name, <Term id="vertical-schema-partitioning">vertical schema partitioning</Term>: each entry is split across a complete JSON payload used for storage and a set of typed, indexed columns used for querying.
 
 If a term on this page is new, the [glossary](/reference/glossary) defines every one in plain language, and its opening section, [How the pieces fit](/reference/glossary#how-the-pieces-fit), threads the core terms together in one pass.
 
 ## The system of record
 
-Every entry's full payload is stored as JSON in a table called `entry_data`. This is the **system of record**: it always holds the complete entry, every field whether filterable or not, and nothing else in the engine is allowed to disagree with it.
+Every entry's full payload is stored as JSON in a table called `entry_data`. This is the <Term id="system-of-record">system of record</Term>: it always holds the complete entry, every field whether filterable or not, and nothing else in the engine is allowed to disagree with it.
 
 That alone would give you a document store you cannot query efficiently, which is where the second half of the design comes in.
 
 ## Extension pages and slot columns
 
-Any field you mark **filterable** is also mirrored into a typed, indexed column, called a **slot**, on an **extension page**. An extension page is a side table (`entry_slots_page_1`, `entry_slots_page_2`, and so on) joined one-to-one to `entry_data`. A filter on that field reads a real B-tree index instead of scanning JSON.
+Any field you mark <Term id="filterable">filterable</Term> is also mirrored into a typed, indexed column, called a <Term id="slot">slot</Term>, on an <Term id="extension-page">extension page</Term>. An extension page is a side table (`entry_slots_page_1`, `entry_slots_page_2`, and so on) joined one-to-one to `entry_data`. A filter on that field reads a real B-tree index instead of scanning JSON.
 
 ```text
                        write(EntryPayload)

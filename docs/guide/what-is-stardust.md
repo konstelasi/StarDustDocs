@@ -29,7 +29,7 @@ Many applications let each customer define their own data: custom fields on a co
 
 ## How StarDust solves it
 
-StarDust keeps each entry in two forms. The complete record is stored as JSON, which is always the authoritative copy. Any field you mark filterable is *also* mirrored into a typed column with a real B-tree index, on a side table joined one-to-one to the entry. Storage stays schemaless and cheap, and a filter reads an index. The design is called **vertical schema partitioning**.
+StarDust keeps each entry in two forms. The complete record is stored as JSON, which is always the authoritative copy. Any field you mark filterable is *also* mirrored into a typed column with a real B-tree index, on a side table joined one-to-one to the entry. Storage stays schemaless and cheap, and a filter reads an index. The design is called <Term id="vertical-schema-partitioning">vertical schema partitioning</Term>.
 
 Around that idea, StarDust adds the parts that make it workable in production:
 
