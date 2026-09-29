@@ -41,9 +41,9 @@ Daemons honour `SIGTERM`/`SIGINT` for graceful shutdown when `ext-pcntl` is load
 
 The Watcher runs as exactly one process — that's enforced, not a suggestion. The other three scale by running more copies:
 
-- **Reconciler** — `SELECT … FOR UPDATE SKIP LOCKED` keeps workers disjoint, so run as many as your drain backlog needs. There's no coordination cost between them beyond the usual lock waits on shared tables.
-- **Liberator** — since reclamation exclusion is per extension page rather than a process-wide lock, two workers never contend on the same page table; the real throughput ceiling is the number of distinct pages currently holding tombstoned slots, not the worker count.
-- **Chronicler** — claims one job per tick via `SELECT … FOR UPDATE SKIP LOCKED`, so more workers means more exports in flight and faster abandoned-job recovery.
+- <Term id="reconciler">Reconciler</Term> — `SELECT … FOR UPDATE SKIP LOCKED` keeps workers disjoint, so run as many as your drain backlog needs. There's no coordination cost between them beyond the usual lock waits on shared tables.
+- <Term id="liberator">Liberator</Term> — since reclamation exclusion is per extension page rather than a process-wide lock, two workers never contend on the same page table; the real throughput ceiling is the number of distinct pages currently holding tombstoned slots, not the worker count.
+- <Term id="chronicler">Chronicler</Term> — claims one job per tick via `SELECT … FOR UPDATE SKIP LOCKED`, so more workers means more exports in flight and faster abandoned-job recovery.
 
 Start with one of each and watch the signals in [Observability](/operations/observability) — a growing sync queue, a widening backfill window, or tombstoned slots aging past a cycle or two — before adding more.
 

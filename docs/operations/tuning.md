@@ -6,9 +6,9 @@ Most of StarDust runs well on its defaults. This page covers the settings worth 
 
 The Watcher is a strict singleton and isn't part of this conversation — see [Watcher](/operations/watcher#one-instance-only). The other three daemons scale by process count, not by a `Config` setting:
 
-- **Reconciler** — add workers when the sync queue, an import backlog, or a backfill window is taking longer to drain than you'd like. `SELECT … FOR UPDATE SKIP LOCKED` keeps them disjoint, so there's no coordination cost to adding more beyond the ordinary lock waits any concurrent writer sees.
-- **Liberator** — add workers when tombstoned slots are aging past a cycle or two. Throughput is capped by the number of distinct pages currently holding tombstones, not the worker count, so beyond that point extra workers cost nothing but buy nothing either.
-- **Chronicler** — add workers when exports are queuing up rather than draining, or when you want faster recovery of a job abandoned by a crashed worker.
+- <Term id="reconciler">Reconciler</Term> — add workers when the sync queue, an import backlog, or a backfill window is taking longer to drain than you'd like. `SELECT … FOR UPDATE SKIP LOCKED` keeps them disjoint, so there's no coordination cost to adding more beyond the ordinary lock waits any concurrent writer sees.
+- <Term id="liberator">Liberator</Term> — add workers when tombstoned slots are aging past a cycle or two. Throughput is capped by the number of distinct pages currently holding tombstones, not the worker count, so beyond that point extra workers cost nothing but buy nothing either.
+- <Term id="chronicler">Chronicler</Term> — add workers when exports are queuing up rather than draining, or when you want faster recovery of a job abandoned by a crashed worker.
 
 Start with one of each beyond the Watcher and watch the signals in [Observability](/operations/observability) before scaling up.
 

@@ -10,7 +10,7 @@ Setiap tick menghasilkan satu correlation id untuk ronde tersebut dan mengerjaka
 
 Dalam urutan yang dikunjungi setiap tick:
 
-1. **Sync queue** — entry yang mirroring terindeksnya ditunda karena tidak ada slot bebas saat ditulis (exhaustion fallback; lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed)). Reconciler mem-backfill slotnya dari payload yang tersimpan.
+1. <Term id="sync-queue">Sync queue</Term> — entry yang mirroring terindeksnya ditunda karena tidak ada slot bebas saat ditulis (exhaustion fallback; lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed)). Reconciler mem-backfill slotnya dari payload yang tersimpan.
 2. **Import job** — batch yang diajukan lewat `submitBulkWrite()`. Reconciler mengimpornya chunk demi chunk dan mencatat progres per chunk, sehingga worker yang crash melanjutkan dari chunk terakhir yang ter-commit alih-alih mengulang dari awal.
 3. **Backfill retype** — mengonversi nilai field yang sudah ada ke slot baru yang dipesan untuk tipe barunya.
 4. **Backfill rename** — menulis ulang setiap entry dalam sebuah model setelah field-nya diganti nama, memindahkan nilai tersimpan dari kunci lama ke kunci baru.

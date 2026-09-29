@@ -6,9 +6,9 @@ Sebagian besar StarDust berjalan baik dengan pengaturan defaultnya. Halaman ini 
 
 Watcher adalah singleton ketat dan tidak termasuk dalam pembahasan ini — lihat [Watcher](/id/operations/watcher#hanya-satu-instance). Tiga daemon lainnya diskalakan lewat jumlah proses, bukan lewat pengaturan `Config`:
 
-- **Reconciler** — tambah worker saat sync queue, backlog impor, atau backfill window butuh waktu lebih lama untuk tuntas daripada yang Anda inginkan. `SELECT … FOR UPDATE SKIP LOCKED` menjaga mereka tetap tidak tumpang tindih, sehingga tidak ada biaya koordinasi untuk menambah worker selain lock wait biasa yang dialami penulis konkuren mana pun.
-- **Liberator** — tambah worker saat slot tombstoned usianya melewati satu-dua siklus. Throughput dibatasi oleh jumlah page berbeda yang sedang menampung tombstone, bukan jumlah worker, sehingga melewati titik itu worker tambahan tidak merugikan tetapi juga tidak menguntungkan.
-- **Chronicler** — tambah worker saat ekspor menumpuk di antrean alih-alih tuntas, atau saat Anda ingin pemulihan lebih cepat untuk job yang ditinggalkan worker yang crash.
+- <Term id="reconciler">Reconciler</Term> — tambah worker saat sync queue, backlog impor, atau backfill window butuh waktu lebih lama untuk tuntas daripada yang Anda inginkan. `SELECT … FOR UPDATE SKIP LOCKED` menjaga mereka tetap tidak tumpang tindih, sehingga tidak ada biaya koordinasi untuk menambah worker selain lock wait biasa yang dialami penulis konkuren mana pun.
+- <Term id="liberator">Liberator</Term> — tambah worker saat slot tombstoned usianya melewati satu-dua siklus. Throughput dibatasi oleh jumlah page berbeda yang sedang menampung tombstone, bukan jumlah worker, sehingga melewati titik itu worker tambahan tidak merugikan tetapi juga tidak menguntungkan.
+- <Term id="chronicler">Chronicler</Term> — tambah worker saat ekspor menumpuk di antrean alih-alih tuntas, atau saat Anda ingin pemulihan lebih cepat untuk job yang ditinggalkan worker yang crash.
 
 Mulai dengan satu untuk masing-masing selain Watcher dan amati sinyal-sinyal di [Observabilitas](/id/operations/observability) sebelum menambah jumlahnya.
 

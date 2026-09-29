@@ -1,6 +1,6 @@
 # Slot maintenance
 
-A model's filterable fields can end up scattered across more extension pages than they strictly need — **spread** — simply because pages fill up over time and a field's slot lands wherever there's room when it's reserved. Spread isn't a bug; it's the natural consequence of pages being immutable once created. It costs something real, though: every extra page a filtered query touches is another join.
+A model's filterable fields can end up scattered across more extension pages than they strictly need — <Term id="spread">spread</Term> — simply because pages fill up over time and a field's slot lands wherever there's room when it's reserved. Spread isn't a bug; it's the natural consequence of pages being immutable once created. It costs something real, though: every extra page a filtered query touches is another join.
 
 Two read-only reports let you see this before it matters, and one operator-run command lets you fix it.
 

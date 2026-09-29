@@ -41,9 +41,9 @@ Daemon menghormati `SIGTERM`/`SIGINT` untuk shutdown yang rapi saat `ext-pcntl` 
 
 Watcher berjalan sebagai tepat satu proses — itu dipaksakan, bukan sekadar saran. Tiga lainnya diskalakan dengan menjalankan lebih banyak salinan:
 
-- **Reconciler** — `SELECT … FOR UPDATE SKIP LOCKED` menjaga worker tetap tidak saling tumpang tindih, jadi jalankan sebanyak yang dibutuhkan backlog drain Anda. Tidak ada biaya koordinasi antar-worker selain lock wait biasa pada tabel bersama.
-- **Liberator** — karena eksklusi reklamasi berbasis per extension page dan bukan lock seluruh proses, dua worker tidak pernah bertabrakan di tabel page yang sama; batas throughput sesungguhnya adalah jumlah page berbeda yang sedang menampung slot tombstoned, bukan jumlah worker.
-- **Chronicler** — mengambil satu job per tick lewat `SELECT … FOR UPDATE SKIP LOCKED`, sehingga lebih banyak worker berarti lebih banyak ekspor berjalan bersamaan dan pemulihan job terbengkalai yang lebih cepat.
+- <Term id="reconciler">Reconciler</Term> — `SELECT … FOR UPDATE SKIP LOCKED` menjaga worker tetap tidak saling tumpang tindih, jadi jalankan sebanyak yang dibutuhkan backlog drain Anda. Tidak ada biaya koordinasi antar-worker selain lock wait biasa pada tabel bersama.
+- <Term id="liberator">Liberator</Term> — karena eksklusi reklamasi berbasis per extension page dan bukan lock seluruh proses, dua worker tidak pernah bertabrakan di tabel page yang sama; batas throughput sesungguhnya adalah jumlah page berbeda yang sedang menampung slot tombstoned, bukan jumlah worker.
+- <Term id="chronicler">Chronicler</Term> — mengambil satu job per tick lewat `SELECT … FOR UPDATE SKIP LOCKED`, sehingga lebih banyak worker berarti lebih banyak ekspor berjalan bersamaan dan pemulihan job terbengkalai yang lebih cepat.
 
 Mulai dengan satu untuk masing-masing dan amati sinyal-sinyal di [Observabilitas](/id/operations/observability) — sync queue yang terus membesar, backfill window yang melebar, atau slot tombstoned yang usianya melewati satu-dua siklus — sebelum menambah jumlahnya.
 

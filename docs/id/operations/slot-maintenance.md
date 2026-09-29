@@ -1,6 +1,6 @@
 # Perawatan slot
 
-Field filterable sebuah model bisa berakhir tersebar di lebih banyak extension page daripada yang sebenarnya dibutuhkan — **spread** — semata-mata karena page terisi penuh seiring waktu dan slot sebuah field mendarat di mana pun ada ruang saat dipesan. Spread bukan bug; ia adalah konsekuensi alami dari page yang bersifat permanen begitu dibuat. Meski begitu, ada biaya nyata: setiap page ekstra yang disentuh sebuah query yang difilter berarti satu join tambahan.
+Field filterable sebuah model bisa berakhir tersebar di lebih banyak extension page daripada yang sebenarnya dibutuhkan — <Term id="spread">spread</Term> — semata-mata karena page terisi penuh seiring waktu dan slot sebuah field mendarat di mana pun ada ruang saat dipesan. Spread bukan bug; ia adalah konsekuensi alami dari page yang bersifat permanen begitu dibuat. Meski begitu, ada biaya nyata: setiap page ekstra yang disentuh sebuah query yang difilter berarti satu join tambahan.
 
 Dua laporan read-only memungkinkan Anda melihat ini sebelum jadi masalah, dan satu perintah yang dijalankan operator memungkinkan Anda memperbaikinya.
 
