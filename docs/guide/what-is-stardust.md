@@ -36,7 +36,7 @@ Around that idea, StarDust adds the parts that make it workable in production:
 - **Writes never fail for lack of an index slot.** If capacity runs out, the value still lands in the JSON and is mirrored later.
 - **Schema changes happen online.** Retyping, renaming, deleting or making a field filterable does not require downtime. Reads keep working from the JSON while the index catches up.
 - **Four small background processes** provision capacity, finish deferred work, reclaim unused columns and write exports. They coordinate only through the database.
-- **Bounded reads.** Every read is two queries whose size is capped by your page size, however large the tenant.
+- <Term id="bounded-read">Bounded reads</Term>. Every read is two queries whose size is capped by your page size, however large the tenant.
 
 [Architecture at a glance](/concepts/architecture) shows how the pieces fit, and the [glossary](/reference/glossary) defines every term.
 
