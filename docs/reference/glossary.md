@@ -78,15 +78,15 @@ The opaque token that marks your position in a paginated read. You pass the prev
 
 A long-lived background process you run alongside your app. StarDust ships four ([Watcher](#watcher), [Reconciler](#reconciler), [Liberator](#liberator), [Chronicler](#chronicler)), all launched through `bin/stardust`. They never talk to each other directly. The database is the only thing they coordinate through. Capacity replenishment and background work depend on this maintenance running one way or another: if your host cannot keep long-lived processes alive at all, `bin/stardust tick` runs one bounded pass of the Watcher, Liberator and Reconciler from a cron line instead, so the choice is which mode to run, not whether to run one.
 
-### Declared type
-
-The type you register a field as: `string`, `int`, `numeric`, or `datetime`. It decides which family of [slot](#slot) column the field can occupy and how filter values against it are validated. Changing it later is a [retype](#retype).
-
 ### Dead-letter queue
 
 Where the [Reconciler](#reconciler) parks an individual record it could not process, so one bad row cannot wedge the whole queue. Nothing is retried automatically and nothing expires on its own. This is a queue you are expected to look at. Once you have fixed the underlying cause, a CLI command replays rows back into the work queue, either one by one or by failure reason.
 
 **See also:** [Reconciler](#reconciler), [Sync queue](#sync-queue).
+
+### Declared type
+
+The type you register a field as: `string`, `int`, `numeric`, or `datetime`. It decides which family of [slot](#slot) column the field can occupy and how filter values against it are validated. Changing it later is a [retype](#retype).
 
 ### Demotion
 
@@ -124,6 +124,12 @@ One named attribute of a [model](#model). A field has a [declared type](#declare
 
 **See also:** [Filterable](#filterable), [Retype](#retype), [Declared type](#declared-type).
 
+### Filter tree
+
+The structure a filter takes: individual conditions (field, operator, value) combined with AND, OR, and NOT into a tree of any depth. You can build one directly in PHP, or hand the engine [QueryFilter](#queryfilter) JSON and have it decoded for you. The built-in operator vocabulary is deliberately small: equality, comparison, range, set membership, null checks, and anchored prefix matching, with no substring, fuzzy, or relevance-ranked matching. A custom [search driver](#search-driver) may declare operators of its own beyond that set.
+
+**See also:** [QueryFilter](#queryfilter), [Search driver](#search-driver).
+
 ### Filterable
 
 The flag that decides whether a field gets a [slot](#slot). A filterable field is mirrored into an indexed column and can be used in filters and sorts. A non-filterable field lives in the JSON [payload](#payload) only: still written, still returned by reads, just not queryable. Non-filterable is the cheaper default, since it costs no slot and no index maintenance.
@@ -131,12 +137,6 @@ The flag that decides whether a field gets a [slot](#slot). A filterable field i
 Note that declaring a field filterable and it *being* queryable are two different moments. See [Indexed](#indexed).
 
 **See also:** [Indexed](#indexed), [Promotion](#promotion), [Slot](#slot).
-
-### Filter tree
-
-The structure a filter takes: individual conditions (field, operator, value) combined with AND, OR, and NOT into a tree of any depth. You can build one directly in PHP, or hand the engine [QueryFilter](#queryfilter) JSON and have it decoded for you. The built-in operator vocabulary is deliberately small: equality, comparison, range, set membership, null checks, and anchored prefix matching, with no substring, fuzzy, or relevance-ranked matching. A custom [search driver](#search-driver) may declare operators of its own beyond that set.
-
-**See also:** [QueryFilter](#queryfilter), [Search driver](#search-driver).
 
 ### Idempotency key
 

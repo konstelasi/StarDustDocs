@@ -80,15 +80,15 @@ Token opaque yang menandai posisi Anda dalam pembacaan berhalaman. Anda mengoper
 
 Proses latar belakang yang berjalan lama dan Anda jalankan berdampingan dengan aplikasi. StarDust menyediakan empat ([Watcher](#watcher), [Reconciler](#reconciler), [Liberator](#liberator), [Chronicler](#chronicler)), semuanya dijalankan lewat `bin/stardust`. Mereka tidak pernah berbicara langsung satu sama lain. Database adalah satu-satunya tempat mereka berkoordinasi. Pengisian kapasitas dan pekerjaan latar belakang bergantung pada pemeliharaan ini berjalan dengan satu cara atau lainnya: jika host Anda sama sekali tidak bisa mempertahankan proses yang hidup lama, `bin/stardust tick` menjalankan satu putaran terbatas dari Watcher, Liberator, dan Reconciler lewat baris cron. Jadi pilihannya adalah mode mana yang dipakai, bukan apakah akan menjalankannya.
 
-### Declared type
-
-Tipe yang Anda daftarkan untuk sebuah field: `string`, `int`, `numeric`, atau `datetime`. Ia menentukan keluarga kolom [slot](#slot) mana yang bisa ditempati field itu dan bagaimana nilai filter terhadapnya divalidasi. Mengubahnya kemudian disebut [retype](#retype).
-
 ### Dead-letter queue
 
 Tempat [Reconciler](#reconciler) menaruh satu record yang tidak bisa ia proses, sehingga satu baris bermasalah tidak menyumbat seluruh antrean. Tidak ada yang dicoba ulang secara otomatis dan tidak ada yang kedaluwarsa dengan sendirinya. Antrean ini memang dimaksudkan untuk Anda periksa. Setelah penyebabnya Anda perbaiki, sebuah perintah CLI memproses ulang baris-baris itu kembali ke antrean kerja, satu per satu atau berdasarkan alasan kegagalan.
 
 **Lihat juga:** [Reconciler](#reconciler), [Sync queue](#sync-queue).
+
+### Declared type
+
+Tipe yang Anda daftarkan untuk sebuah field: `string`, `int`, `numeric`, atau `datetime`. Ia menentukan keluarga kolom [slot](#slot) mana yang bisa ditempati field itu dan bagaimana nilai filter terhadapnya divalidasi. Mengubahnya kemudian disebut [retype](#retype).
 
 ### Demotion
 
@@ -126,6 +126,12 @@ Satu atribut bernama milik sebuah [model](#model). Field punya [declared type](#
 
 **Lihat juga:** [Filterable](#filterable), [Retype](#retype), [Declared type](#declared-type).
 
+### Filter tree
+
+Struktur yang dibentuk sebuah filter: kondisi-kondisi individual (field, operator, nilai) yang digabung dengan AND, OR, dan NOT menjadi pohon dengan kedalaman berapa pun. Anda bisa membangunnya langsung di PHP, atau menyerahkan JSON [QueryFilter](#queryfilter) kepada engine untuk di-decode. Kosakata operator bawaannya sengaja kecil: kesamaan, perbandingan, rentang, keanggotaan himpunan, pengecekan null, dan pencocokan awalan (prefix), tanpa pencocokan substring, fuzzy, atau pemeringkatan relevansi. [Search driver](#search-driver) kustom boleh mendeklarasikan operatornya sendiri di luar himpunan itu.
+
+**Lihat juga:** [QueryFilter](#queryfilter), [Search driver](#search-driver).
+
 ### Filterable
 
 Flag yang menentukan apakah sebuah field mendapat [slot](#slot). Field filterable disalin ke kolom terindeks dan bisa dipakai dalam filter dan pengurutan. Field non-filterable hanya berada di [payload](#payload) JSON: tetap ditulis, tetap dikembalikan oleh pembacaan, hanya tidak bisa di-query. Non-filterable adalah pilihan bawaan yang lebih murah, karena tidak memakai slot dan tidak menambah beban pemeliharaan index.
@@ -133,12 +139,6 @@ Flag yang menentukan apakah sebuah field mendapat [slot](#slot). Field filterabl
 Perhatikan bahwa mendeklarasikan field sebagai filterable dan field itu *benar-benar bisa* di-query adalah dua saat yang berbeda. Lihat [Indexed](#indexed).
 
 **Lihat juga:** [Indexed](#indexed), [Promotion](#promotion), [Slot](#slot).
-
-### Filter tree
-
-Struktur yang dibentuk sebuah filter: kondisi-kondisi individual (field, operator, nilai) yang digabung dengan AND, OR, dan NOT menjadi pohon dengan kedalaman berapa pun. Anda bisa membangunnya langsung di PHP, atau menyerahkan JSON [QueryFilter](#queryfilter) kepada engine untuk di-decode. Kosakata operator bawaannya sengaja kecil: kesamaan, perbandingan, rentang, keanggotaan himpunan, pengecekan null, dan pencocokan awalan (prefix), tanpa pencocokan substring, fuzzy, atau pemeringkatan relevansi. [Search driver](#search-driver) kustom boleh mendeklarasikan operatornya sendiri di luar himpunan itu.
-
-**Lihat juga:** [QueryFilter](#queryfilter), [Search driver](#search-driver).
 
 ### Idempotency key
 
