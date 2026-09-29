@@ -48,9 +48,9 @@ A page is created with a fixed set of indexed columns and is never altered after
 
 ## The schema registry
 
-The engine keeps its own bookkeeping in a set of `stardust_`-prefixed tables: which models and fields exist, which pages exist, and which field currently holds which slot. This is the **schema registry**. You create it once with `bootstrap` and read it through the introspection API ([`listModels()` and `describeModel()`](/usage/defining-schema)), not by querying the tables.
+The engine keeps its own bookkeeping in a set of `stardust_`-prefixed tables: which models and fields exist, which pages exist, and which field currently holds which slot. This is the <Term id="schema-registry">schema registry</Term>. You create it once with `bootstrap` and read it through the introspection API ([`listModels()` and `describeModel()`](/usage/defining-schema)), not by querying the tables.
 
-The registry carries a single **schema version** counter that is bumped whenever coordination-relevant state changes. The read path caches schema lookups and uses the counter to know when its cache is stale, so a live schema change is picked up without restarting your application.
+The registry carries a single <Term id="schema-version">schema version</Term> counter that is bumped whenever coordination-relevant state changes. The read path caches schema lookups and uses the counter to know when its cache is stale, so a live schema change is picked up without restarting your application.
 
 ## Four background daemons
 
@@ -93,7 +93,7 @@ Here is what happens when you call `write()` for an entry whose model has two fi
 
 1. **Validation.** The tenant id is checked (it must be 1 or higher) and the model's fields are resolved from the registry.
 2. **One transaction.** The complete payload is inserted into `entry_data`. For each filterable field that has a live slot, its value is upserted into the matching extension-page row, one statement per page. Non-filterable fields are not mirrored at all.
-3. **If a filterable field has no slot yet,** its value still lands in the payload, the entry is added to a small **sync queue** in the same transaction, and the call succeeds. `EntryWriteResult::$enqueuedForBackfill` tells you this happened. This is the [exhaustion fallback](/concepts/filterable-vs-indexed#writes-never-fail-for-lack-of-a-slot).
+3. **If a filterable field has no slot yet,** its value still lands in the payload, the entry is added to a small <Term id="sync-queue">sync queue</Term> in the same transaction, and the call succeeds. `EntryWriteResult::$enqueuedForBackfill` tells you this happened. This is the [exhaustion fallback](/concepts/filterable-vs-indexed#writes-never-fail-for-lack-of-a-slot).
 4. **The call returns.** The entry is immediately readable and, for fields with a slot, immediately filterable.
 
 Later, in the background, the Watcher provisions a page with room for the missing slot and the Reconciler drains the sync queue, filling in the slot values. After that the entry is filterable on every field. Nothing you did in between needed to change.

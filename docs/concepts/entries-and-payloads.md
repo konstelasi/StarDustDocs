@@ -1,16 +1,16 @@
 # Entries and payloads
 
-An **entry** is one record of a [model](/concepts/tenants-models-fields), belonging to one tenant. Physically it is always one row in `entry_data` holding the complete payload, plus, if the model has filterable fields with slots, one mirrored row on each [extension page](/concepts/slots-and-pages) those slots live on.
+An <Term id="entry">entry</Term> is one record of a [model](/concepts/tenants-models-fields), belonging to one tenant. Physically it is always one row in `entry_data` holding the complete payload, plus, if the model has filterable fields with slots, one mirrored row on each [extension page](/concepts/slots-and-pages) those slots live on.
 
 ## The JSON payload holds everything
 
-The **payload** is the complete JSON object of an entry's field values. Every field is in it, filterable or not, keyed by field name:
+The <Term id="payload">payload</Term> is the complete JSON object of an entry's field values. Every field is in it, filterable or not, keyed by field name:
 
 ```json
 { "name": "Acme", "employees": 340, "city": "Berlin" }
 ```
 
-The payload is the **system of record**. It is always complete and always authoritative, which gives you three guarantees:
+The payload is the <Term id="system-of-record">system of record</Term>. It is always complete and always authoritative, which gives you three guarantees:
 
 - a field with no slot is still fully readable;
 - a backfill that has not run yet, or that fails, can never lose data;

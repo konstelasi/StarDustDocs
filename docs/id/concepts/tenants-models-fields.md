@@ -1,6 +1,6 @@
 # Tenant, model, dan field
 
-Tiga istilah menggambarkan bentuk data Anda. **Tenant** adalah batas isolasi, **model** adalah bentuk data yang diberi nama di dalam sebuah tenant, dan **field** adalah satu atribut bernama milik sebuah model. **Entry** adalah satu record dari sebuah model. Untuk memahami wujud fisik sebuah entry, lihat [Entry dan payload](/id/concepts/entries-and-payloads).
+Tiga istilah menggambarkan bentuk data Anda. <Term id="tenant">Tenant</Term> adalah batas isolasi, <Term id="model">model</Term> adalah bentuk data yang diberi nama di dalam sebuah tenant, dan <Term id="field">field</Term> adalah satu atribut bernama milik sebuah model. <Term id="entry">Entry</Term> adalah satu record dari sebuah model. Untuk memahami wujud fisik sebuah entry, lihat [Entry dan payload](/id/concepts/entries-and-payloads).
 
 ## Tenant dan isolasi data
 
@@ -24,8 +24,8 @@ Model adalah bentuk data bernama di dalam sebuah tenant, kira-kira setara dengan
 
 Field adalah satu atribut bernama milik sebuah model. Ada dua properti yang penting:
 
-- **declared type**, yang menentukan bagaimana nilai divalidasi dan keluarga slot mana yang bisa ditempati field tersebut;
-- flag **filterable**, yang menentukan apakah field itu mendapat slot atau tidak. Flag inilah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query secepat index". Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
+- <Term id="declared-type">declared type</Term>, yang menentukan bagaimana nilai divalidasi dan keluarga slot mana yang bisa ditempati field tersebut;
+- flag <Term id="filterable">filterable</Term>, yang menentukan apakah field itu mendapat slot atau tidak. Flag inilah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query secepat index". Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
 
 Nama field unik di dalam satu model. Field bisa diganti namanya, di-retype, dipromosikan, didemosikan, dan dihapus selagi sistem berjalan. Lihat [Mengubah skema](/id/schema-changes/).
 

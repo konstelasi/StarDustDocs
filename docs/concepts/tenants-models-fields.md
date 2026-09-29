@@ -1,6 +1,6 @@
 # Tenants, models and fields
 
-Three nouns describe the shape of your data. A **tenant** is your isolation boundary, a **model** is a named shape within a tenant, and a **field** is one named attribute of a model. An **entry** is one record of a model. See [Entries and payloads](/concepts/entries-and-payloads) for what an entry physically is.
+Three nouns describe the shape of your data. A <Term id="tenant">tenant</Term> is your isolation boundary, a <Term id="model">model</Term> is a named shape within a tenant, and a <Term id="field">field</Term> is one named attribute of a model. An <Term id="entry">entry</Term> is one record of a model. See [Entries and payloads](/concepts/entries-and-payloads) for what an entry physically is.
 
 ## Tenants and isolation
 
@@ -24,8 +24,8 @@ A model is a named data shape within a tenant, roughly the equivalent of a table
 
 A field is one named attribute of a model. It has two properties that matter:
 
-- a **declared type**, which decides how values are validated and which family of slot the field can occupy;
-- a **filterable** flag, which decides whether the field gets a slot at all. That flag is the entire difference between "stored and readable" and "stored, readable, and queryable at index speed". See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
+- a <Term id="declared-type">declared type</Term>, which decides how values are validated and which family of slot the field can occupy;
+- a <Term id="filterable">filterable</Term> flag, which decides whether the field gets a slot at all. That flag is the entire difference between "stored and readable" and "stored, readable, and queryable at index speed". See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
 
 Field names are unique within a model. Fields can be renamed, retyped, promoted, demoted and deleted while the system is live. See [Changing your schema](/schema-changes/).
 

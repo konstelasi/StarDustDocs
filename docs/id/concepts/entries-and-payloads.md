@@ -1,16 +1,16 @@
 # Entry dan payload
 
-**Entry** adalah satu record dari sebuah [model](/id/concepts/tenants-models-fields), milik satu tenant. Secara fisik, entry selalu berupa satu baris di `entry_data` yang menyimpan payload lengkapnya. Bila model itu punya field filterable yang sudah punya slot, ada juga satu baris salinan di setiap [extension page](/id/concepts/slots-and-pages) tempat slot-slot itu berada.
+<Term id="entry">Entry</Term> adalah satu record dari sebuah [model](/id/concepts/tenants-models-fields), milik satu tenant. Secara fisik, entry selalu berupa satu baris di `entry_data` yang menyimpan payload lengkapnya. Bila model itu punya field filterable yang sudah punya slot, ada juga satu baris salinan di setiap [extension page](/id/concepts/slots-and-pages) tempat slot-slot itu berada.
 
 ## Payload JSON menyimpan semuanya
 
-**Payload** adalah objek JSON lengkap berisi nilai semua field milik sebuah entry. Semua field ada di dalamnya, filterable maupun tidak, dengan nama field sebagai key:
+<Term id="payload">Payload</Term> adalah objek JSON lengkap berisi nilai semua field milik sebuah entry. Semua field ada di dalamnya, filterable maupun tidak, dengan nama field sebagai key:
 
 ```json
 { "name": "Acme", "employees": 340, "city": "Berlin" }
 ```
 
-Payload adalah **system of record**. Ia selalu lengkap dan selalu menjadi sumber yang sah, sehingga ada tiga jaminan:
+Payload adalah <Term id="system-of-record">system of record</Term>. Ia selalu lengkap dan selalu menjadi sumber yang sah, sehingga ada tiga jaminan:
 
 - field yang tidak punya slot tetap bisa dibaca sepenuhnya;
 - backfill yang belum berjalan, atau yang gagal, tidak akan pernah menghilangkan data;

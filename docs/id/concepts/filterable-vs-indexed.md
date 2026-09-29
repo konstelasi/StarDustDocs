@@ -4,7 +4,7 @@ Dua kata yang terdengar bersinonim ini sebenarnya menggambarkan dua saat yang be
 
 ## Filterable adalah niat
 
-**Filterable** adalah flag pada sebuah field. Flag ini mencatat bahwa Anda *ingin* field tersebut bisa dipakai dalam filter dan pengurutan, dan flag inilah yang menentukan apakah field itu mendapat [slot](/id/concepts/slots-and-pages) atau tidak.
+<Term id="filterable">Filterable</Term> adalah flag pada sebuah field. Flag ini mencatat bahwa Anda *ingin* field tersebut bisa dipakai dalam filter dan pengurutan, dan flag inilah yang menentukan apakah field itu mendapat [slot](/id/concepts/slots-and-pages) atau tidak.
 
 - Field filterable disalin ke kolom slot terindeks dan bisa dipakai di filter dan pengurutan.
 - Field non-filterable hanya berada di payload JSON. Ia tetap ditulis dan tetap dikembalikan oleh pembacaan, tetapi tidak bisa di-query. Itulah pilihan bawaan yang lebih murah: tidak memakai slot dan tidak menambah beban pemeliharaan index.
@@ -13,7 +13,7 @@ Menyalakan flag hanya mengubah apa yang tercatat di registry. Flag itu sendiri t
 
 ## Indexed adalah kenyataan
 
-Sebuah field berstatus **indexed** ketika slotnya aktif *saat ini juga*, artinya filter pada field itu benar-benar akan berfungsi. Inilah properti yang perlu dicek kode Anda sebelum menawarkan sebuah filter.
+Sebuah field berstatus <Term id="indexed">indexed</Term> ketika slotnya aktif *saat ini juga*, artinya filter pada field itu benar-benar akan berfungsi. Inilah properti yang perlu dicek kode Anda sebelum menawarkan sebuah filter.
 
 Setiap field yang dideskripsikan oleh `describeModel()` melaporkan keduanya:
 
@@ -30,7 +30,7 @@ Setiap field yang dideskripsikan oleh `describeModel()` melaporkan keduanya:
 - Anda me-[retype](/id/schema-changes/retype) field filterable. Slot lamanya di-tombstone dan slot baru diisi, jadi ia belum indexed sampai proses itu selesai.
 - Anda mendaftarkan field filterable pada sistem yang belum punya slot bebas untuknya. Ia baru menjadi indexed setelah Watcher menyediakan page dan Reconciler mengklaim slot.
 
-Engine menegakkan perbedaan ini lewat **pre-flight rejection**: memfilter atau mengurutkan berdasarkan field yang tidak dikenal, tidak filterable, atau belum indexed akan memunculkan exception bertipe di batas API, sebelum database disentuh sama sekali. Anda mendapat error yang jelas, cepat, dan bisa di-catch, bukan query yang tampak berjalan lalu melakukan table scan seiring tenant membesar.
+Engine menegakkan perbedaan ini lewat <Term id="pre-flight-rejection">pre-flight rejection</Term>: memfilter atau mengurutkan berdasarkan field yang tidak dikenal, tidak filterable, atau belum indexed akan memunculkan exception bertipe di batas API, sebelum database disentuh sama sekali. Anda mendapat error yang jelas, cepat, dan bisa di-catch, bukan query yang tampak berjalan lalu melakukan table scan seiring tenant membesar.
 
 | Situasi | Exception |
 | :-- | :-- |
@@ -51,7 +51,7 @@ Penulisan tetap tersedia meskipun kapasitas slot habis. Bila Anda menulis field 
 2. memasukkan entry ke sync queue kecil, dalam transaksi yang sama;
 3. mengembalikan sukses, dengan `EntryWriteResult::$enqueuedForBackfill` bernilai `true`.
 
-Inilah **exhaustion fallback**. Ia ada supaya page yang penuh tidak pernah berubah menjadi request yang gagal. Watcher kemudian menyediakan page yang punya ruang dan Reconciler menguras sync queue, menyalin nilai ke slotnya.
+Inilah <Term id="exhaustion-fallback">exhaustion fallback</Term>. Ia ada supaya page yang penuh tidak pernah berubah menjadi request yang gagal. Watcher kemudian menyediakan page yang punya ruang dan Reconciler menguras sync queue, menyalin nilai ke slotnya.
 
 Harganya, entry yang terdampak untuk sementara tidak terlihat oleh filter pada field itu. Mereka tetap dikembalikan oleh pembacaan dan oleh `get()`, karena keduanya berasal dari payload. Sync queue yang terus membesar berarti Reconciler tidak berjalan, atau Watcher tidak mengejar kebutuhan kapasitas. Lihat [Pemecahan masalah](/id/operations/troubleshooting).
 

@@ -1,6 +1,6 @@
 # Background work and eventual consistency
 
-Some operations cannot finish inside one request without holding locks on your whole table, so StarDust splits them. The call commits what it can, in the registry, and returns. A background **daemon** catches up on the rest in bounded chunks.
+Some operations cannot finish inside one request without holding locks on your whole table, so StarDust splits them. The call commits what it can, in the registry, and returns. A background <Term id="daemon">daemon</Term> catches up on the rest in bounded chunks.
 
 The gap between "the call returned" and "the background pass finished" is the single concept most worth internalising. This page says which operations have that gap, what you can and cannot do during it, and why a running Reconciler is not optional.
 
@@ -26,9 +26,9 @@ Operations that return before they finish record their progress durably, so a da
 
 ## Backfill windows
 
-A **backfill window** is the interval between a schema operation returning and its background pass finishing: the period during which the change is *declared* but not yet fully *applied* to stored data. Every asynchronous operation in the table above has one: promotion, retype, field rename, field deletion and model deletion.
+A <Term id="backfill-window">backfill window</Term> is the interval between a schema operation returning and its background pass finishing: the period during which the change is *declared* but not yet fully *applied* to stored data. Every asynchronous operation in the table above has one: promotion, retype, field rename, field deletion and model deletion.
 
-A **backfill** is the background pass that fills a slot with values read out of already-stored payloads, or rewrites the stored payloads. It runs in bounded chunks so it never locks up your database, and it is what turns a newly filterable field into an indexed one.
+A <Term id="backfill">backfill</Term> is the background pass that fills a slot with values read out of already-stored payloads, or rewrites the stored payloads. It runs in bounded chunks so it never locks up your database, and it is what turns a newly filterable field into an indexed one.
 
 ## What reads see during a window
 
@@ -51,7 +51,7 @@ What differs by operation:
 
 ## Why a running Reconciler matters
 
-Nearly every window in this section closes because a **Reconciler** closed it. It drains every kind of deferred work the engine produces: the sync queue, async imports, promotion and retype backfills, rename rewrites, and both deletion purges. Without one running, none of them progress, and the window stays open for ever.
+Nearly every window in this section closes because a <Term id="reconciler">Reconciler</Term> closed it. It drains every kind of deferred work the engine produces: the sync queue, async imports, promotion and retype backfills, rename rewrites, and both deletion purges. Without one running, none of them progress, and the window stays open for ever.
 
 The symptoms of a missing Reconciler are consistent:
 

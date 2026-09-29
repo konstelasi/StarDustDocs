@@ -4,7 +4,7 @@ Slot adalah sumber daya terbatas milik engine, dan sebagian besar perencanaan ka
 
 ## Extension page
 
-**Extension page** adalah tabel samping bernama `entry_slots_page_1`, `entry_slots_page_2`, dan seterusnya. Isinya kolom-kolom slot terindeks yang menyalin nilai field filterable, dan setiap barisnya berelasi satu-satu dengan satu baris di `entry_data`.
+<Term id="extension-page">Extension page</Term> adalah tabel samping bernama `entry_slots_page_1`, `entry_slots_page_2`, dan seterusnya. Isinya kolom-kolom slot terindeks yang menyalin nilai field filterable, dan setiap barisnya berelasi satu-satu dengan satu baris di `entry_data`.
 
 Sebuah page dibuat dengan sekumpulan kolom terindeks yang tetap dan **tidak pernah bisa diubah sesudahnya**. Sifat inilah yang membuat provisioning aman di database yang sedang berjalan: menambah page tidak pernah mengunci atau membangun ulang tabel yang sudah ada. Ini juga alasan kapasitas direncanakan lebih dulu, bukan disediakan pas saat dibutuhkan, seperti dijelaskan di [Kapasitas page dan index headroom](#kapasitas-page-dan-index-headroom).
 
@@ -12,7 +12,7 @@ Page baru disediakan oleh [Watcher](/id/operations/watcher). Setiap kolom di seb
 
 ## Kolom slot dan keluarganya
 
-**Slot** adalah satu kolom bertipe yang terindeks di sebuah extension page, yang menyalin nilai satu field filterable. Slot terbagi menjadi empat keluarga yang sesuai dengan [declared type](/id/concepts/tenants-models-fields#empat-keluarga-slot): string, integer, numeric, dan datetime. Sebuah field hanya bisa menempati slot dari keluarganya sendiri.
+<Term id="slot">Slot</Term> adalah satu kolom bertipe yang terindeks di sebuah extension page, yang menyalin nilai satu field filterable. Slot terbagi menjadi empat keluarga yang sesuai dengan [declared type](/id/concepts/tenants-models-fields#empat-keluarga-slot): string, integer, numeric, dan datetime. Sebuah field hanya bisa menempati slot dari keluarganya sendiri.
 
 Anda jarang perlu menyebut nama kolom slot. Namanya dibentuk dari keluarga dan urutan, misalnya `i_str_01` atau `i_int_02`, dan penetapannya dilakukan engine. Anda baru bertemu nama itu ketika menyediakan page secara manual di skrip seed atau test.
 
@@ -44,7 +44,7 @@ Ketika sebuah field [didemosikan](/id/schema-changes/filterability), [dihapus](/
 
 Sebuah page hanya memuat kolom yang memang diindeksnya, dan kapasitasnya adalah sebesar yang ditetapkan saat ia dibuat. Karena page tidak bisa dilebarkan, page yang dibuat hanya dengan kolom secukupnya untuk kebutuhan hari ini akan langsung penuh. Tiga field yang dipromosikan berturut-turut bisa masing-masing memicu page baru dan akhirnya tersebar di tiga page.
 
-**Index headroom** mencegah hal itu. Setiap page baru dibuat dengan kolom terindeks cadangan di tiap keluarga. Pengaturannya adalah `Config::$pageIndexHeadroom` dengan nilai bawaan empat per keluarga, sehingga page baru memuat hingga enam belas kolom terindeks. Pengaturan ini berlaku di proses mana pun yang menjalankan Watcher (lihat [Pengaturan dan daemon bawaan](/id/usage/configuration#pengaturan-dan-daemon-bawaan)). Beberapa promosi berikutnya pun jatuh ke page yang sama.
+<Term id="index-headroom">Index headroom</Term> mencegah hal itu. Setiap page baru dibuat dengan kolom terindeks cadangan di tiap keluarga. Pengaturannya adalah `Config::$pageIndexHeadroom` dengan nilai bawaan empat per keluarga, sehingga page baru memuat hingga enam belas kolom terindeks. Pengaturan ini berlaku di proses mana pun yang menjalankan Watcher (lihat [Pengaturan dan daemon bawaan](/id/usage/configuration#pengaturan-dan-daemon-bawaan)). Beberapa promosi berikutnya pun jatuh ke page yang sama.
 
 - Headroom ditetapkan saat sebuah page dibuat. Menaikkan pengaturannya hanya berpengaruh pada page yang dibuat sesudahnya.
 - Watcher menyediakan page baru ketika kapasitas bebas turun di bawah ambangnya (20% secara bawaan) atau ketika ada field filterable yang menunggu slot yang belum ada.
@@ -53,10 +53,10 @@ Kalau kapasitas habis sebelum Watcher sempat menyusul, penulisan tetap berhasil.
 
 ## Spread: lebih sedikit page, lebih sedikit join
 
-**Spread** adalah jumlah extension page tempat slot filterable milik satu model tersebar. Ini penting karena setiap page tambahan yang disentuh sebuah query terfilter menambah satu join.
+<Term id="spread">Spread</Term> adalah jumlah extension page tempat slot filterable milik satu model tersebar. Ini penting karena setiap page tambahan yang disentuh sebuah query terfilter menambah satu join.
 
 Spread bukan bug. Ia konsekuensi wajar dari page yang tidak bisa diubah dan slot yang dibagikan dari page mana pun yang masih punya ruang, dan model yang tumbuh field demi field selama setahun sangat mungkin akhirnya tersebar di beberapa page.
 
-Engine mengukurnya sebagai **excess pages**: jumlah page yang benar-benar ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan **compaction**, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
+Engine mengukurnya sebagai **excess pages**: jumlah page yang benar-benar ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan <Term id="compaction">compaction</Term>, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
 
 Laporan dan perintah compaction dibahas di [Perawatan slot](/id/operations/slot-maintenance).

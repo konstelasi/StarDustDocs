@@ -49,9 +49,9 @@ Sebuah page dibuat dengan sekumpulan kolom terindeks yang tetap dan tidak pernah
 
 ## Schema registry
 
-Engine mencatat pembukuannya sendiri di sekumpulan tabel berawalan `stardust_`: model dan field apa saja yang ada, page apa saja yang ada, dan field mana yang saat ini memegang slot mana. Inilah **schema registry**. Anda membuatnya sekali dengan `bootstrap` dan membacanya lewat API introspeksi ([`listModels()` dan `describeModel()`](/id/usage/defining-schema)), bukan dengan meng-query tabelnya.
+Engine mencatat pembukuannya sendiri di sekumpulan tabel berawalan `stardust_`: model dan field apa saja yang ada, page apa saja yang ada, dan field mana yang saat ini memegang slot mana. Inilah <Term id="schema-registry">schema registry</Term>. Anda membuatnya sekali dengan `bootstrap` dan membacanya lewat API introspeksi ([`listModels()` dan `describeModel()`](/id/usage/defining-schema)), bukan dengan meng-query tabelnya.
 
-Registry menyimpan satu penghitung **schema version** yang dinaikkan setiap kali ada perubahan state yang relevan bagi koordinasi. Jalur baca menyimpan cache hasil lookup skema dan memakai penghitung itu untuk tahu kapan cache-nya sudah usang, sehingga perubahan skema yang sedang berjalan langsung terbaca tanpa perlu me-restart aplikasi Anda.
+Registry menyimpan satu penghitung <Term id="schema-version">schema version</Term> yang dinaikkan setiap kali ada perubahan state yang relevan bagi koordinasi. Jalur baca menyimpan cache hasil lookup skema dan memakai penghitung itu untuk tahu kapan cache-nya sudah usang, sehingga perubahan skema yang sedang berjalan langsung terbaca tanpa perlu me-restart aplikasi Anda.
 
 ## Empat daemon latar belakang
 
@@ -94,7 +94,7 @@ Inilah yang terjadi ketika Anda memanggil `write()` untuk entry yang modelnya pu
 
 1. **Validasi.** Tenant id diperiksa (harus 1 atau lebih) dan field-field milik model diambil dari registry.
 2. **Satu transaksi.** Payload lengkap dimasukkan ke `entry_data`. Untuk setiap field filterable yang punya slot aktif, nilainya di-upsert ke baris extension page yang sesuai, satu statement per page. Field non-filterable tidak disalin sama sekali.
-3. **Kalau ada field filterable yang belum punya slot,** nilainya tetap masuk ke payload, entry ditambahkan ke **sync queue** kecil dalam transaksi yang sama, dan pemanggilan tetap berhasil. `EntryWriteResult::$enqueuedForBackfill` memberi tahu Anda bahwa hal ini terjadi. Inilah [exhaustion fallback](/id/concepts/filterable-vs-indexed#penulisan-tidak-pernah-gagal-karena-kehabisan-slot).
+3. **Kalau ada field filterable yang belum punya slot,** nilainya tetap masuk ke payload, entry ditambahkan ke <Term id="sync-queue">sync queue</Term> kecil dalam transaksi yang sama, dan pemanggilan tetap berhasil. `EntryWriteResult::$enqueuedForBackfill` memberi tahu Anda bahwa hal ini terjadi. Inilah [exhaustion fallback](/id/concepts/filterable-vs-indexed#penulisan-tidak-pernah-gagal-karena-kehabisan-slot).
 4. **Pemanggilan selesai.** Entry langsung bisa dibaca dan, untuk field yang punya slot, langsung bisa difilter.
 
 Kemudian, di latar belakang, Watcher menyediakan page yang punya ruang untuk slot yang belum ada itu, dan Reconciler menguras sync queue sambil mengisi nilai slot. Setelah itu entry bisa difilter pada semua field-nya. Tidak ada yang perlu Anda ubah di sela-selanya.

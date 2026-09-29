@@ -1,6 +1,6 @@
 # Pekerjaan latar belakang dan konsistensi eventual
 
-Sebagian operasi tidak bisa selesai dalam satu request tanpa mengunci seluruh tabel Anda, sehingga StarDust membaginya. Pemanggilan meng-commit apa yang bisa di registry, lalu kembali. Sebuah **daemon** di latar belakang menyusul mengerjakan sisanya dalam chunk yang terbatas.
+Sebagian operasi tidak bisa selesai dalam satu request tanpa mengunci seluruh tabel Anda, sehingga StarDust membaginya. Pemanggilan meng-commit apa yang bisa di registry, lalu kembali. Sebuah <Term id="daemon">daemon</Term> di latar belakang menyusul mengerjakan sisanya dalam chunk yang terbatas.
 
 Jeda antara "pemanggilan sudah kembali" dan "proses latar belakang sudah selesai" adalah konsep yang paling layak Anda pahami betul. Halaman ini menyebutkan operasi mana saja yang punya jeda itu, apa yang bisa dan tidak bisa Anda lakukan selama jeda tersebut, dan mengapa Reconciler yang berjalan bukanlah hal opsional.
 
@@ -26,9 +26,9 @@ Operasi yang kembali sebelum selesai mencatat progresnya secara permanen, sehing
 
 ## Backfill window
 
-**Backfill window** adalah rentang antara saat sebuah operasi skema kembali dan saat proses latar belakangnya selesai: periode ketika perubahan sudah *dideklarasikan* tetapi belum sepenuhnya *diterapkan* ke data yang tersimpan. Setiap operasi asinkron pada tabel di atas punya window: promosi, retype, rename field, penghapusan field, dan penghapusan model.
+<Term id="backfill-window">Backfill window</Term> adalah rentang antara saat sebuah operasi skema kembali dan saat proses latar belakangnya selesai: periode ketika perubahan sudah *dideklarasikan* tetapi belum sepenuhnya *diterapkan* ke data yang tersimpan. Setiap operasi asinkron pada tabel di atas punya window: promosi, retype, rename field, penghapusan field, dan penghapusan model.
 
-**Backfill** adalah proses latar belakang yang mengisi slot dengan nilai yang dibaca dari payload yang sudah tersimpan, atau menulis ulang payload yang tersimpan. Prosesnya berjalan dalam chunk yang terbatas sehingga tidak pernah mengunci database Anda, dan inilah yang mengubah field yang baru filterable menjadi indexed.
+<Term id="backfill">Backfill</Term> adalah proses latar belakang yang mengisi slot dengan nilai yang dibaca dari payload yang sudah tersimpan, atau menulis ulang payload yang tersimpan. Prosesnya berjalan dalam chunk yang terbatas sehingga tidak pernah mengunci database Anda, dan inilah yang mengubah field yang baru filterable menjadi indexed.
 
 ## Apa yang terlihat oleh pembacaan selama window
 
@@ -51,7 +51,7 @@ Perbedaannya menurut operasi:
 
 ## Mengapa Reconciler harus selalu berjalan
 
-Hampir setiap window di bagian ini tertutup karena sebuah **Reconciler** yang menutupnya. Ia menguras semua jenis pekerjaan tertunda yang dihasilkan engine: sync queue, impor asinkron, backfill promosi dan retype, penulisan ulang akibat rename, dan kedua proses pembersihan akibat penghapusan. Tanpa Reconciler yang berjalan, tidak satu pun dari itu maju, dan window-nya tetap terbuka selamanya.
+Hampir setiap window di bagian ini tertutup karena sebuah <Term id="reconciler">Reconciler</Term> yang menutupnya. Ia menguras semua jenis pekerjaan tertunda yang dihasilkan engine: sync queue, impor asinkron, backfill promosi dan retype, penulisan ulang akibat rename, dan kedua proses pembersihan akibat penghapusan. Tanpa Reconciler yang berjalan, tidak satu pun dari itu maju, dan window-nya tetap terbuka selamanya.
 
 Gejala Reconciler yang tidak berjalan selalu serupa:
 

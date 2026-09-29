@@ -4,7 +4,7 @@ Slots are the engine's finite resource, and most capacity planning in StarDust i
 
 ## Extension pages
 
-An **extension page** is a side table named `entry_slots_page_1`, `entry_slots_page_2` and so on. It holds the indexed slot columns that mirror filterable field values, and each row lines up one-to-one with a row in `entry_data`.
+An <Term id="extension-page">extension page</Term> is a side table named `entry_slots_page_1`, `entry_slots_page_2` and so on. It holds the indexed slot columns that mirror filterable field values, and each row lines up one-to-one with a row in `entry_data`.
 
 A page is created with a fixed set of indexed columns and **can never be altered afterwards**. That immutability is what makes provisioning safe on a live database: adding a page never locks or rebuilds an existing table. It is also why capacity is planned in advance rather than exactly on demand, as described under [Page capacity and index headroom](#page-capacity-and-index-headroom).
 
@@ -12,7 +12,7 @@ New pages are provisioned by the [Watcher](/operations/watcher). Every column on
 
 ## Slot columns and their families
 
-A **slot** is one typed, indexed column on an extension page that mirrors one filterable field's value. Slots come in four families that match the [declared types](/concepts/tenants-models-fields#the-four-slot-families): string, integer, numeric and datetime. A field can only occupy a slot of its own family.
+A <Term id="slot">slot</Term> is one typed, indexed column on an extension page that mirrors one filterable field's value. Slots come in four families that match the [declared types](/concepts/tenants-models-fields#the-four-slot-families): string, integer, numeric and datetime. A field can only occupy a slot of its own family.
 
 You rarely need to name a slot column. They are named by family and position, such as `i_str_01` or `i_int_02`, and the engine assigns them. You meet the names only when you provision a page by hand in a seed script or test.
 
@@ -44,7 +44,7 @@ The [Liberator](/operations/liberator) clears the column in bounded chunks and o
 
 A page carries exactly the columns it indexes, and its capacity is whatever it was created with. Because pages cannot be widened, a page created with only enough columns for today's demand would fill straight away. Three fields promoted one after another could each trigger a fresh page and end up on three of them.
 
-**Index headroom** prevents that. Every new page is created with spare indexed columns in each family. The setting is `Config::$pageIndexHeadroom` and defaults to four per family, so a fresh page carries up to sixteen indexed columns. It takes effect in whichever process runs the Watcher (see [Settings and the bundled daemons](/usage/configuration#settings-and-the-bundled-daemons)). The next few promotions then land together on the same page.
+<Term id="index-headroom">Index headroom</Term> prevents that. Every new page is created with spare indexed columns in each family. The setting is `Config::$pageIndexHeadroom` and defaults to four per family, so a fresh page carries up to sixteen indexed columns. It takes effect in whichever process runs the Watcher (see [Settings and the bundled daemons](/usage/configuration#settings-and-the-bundled-daemons)). The next few promotions then land together on the same page.
 
 - Headroom is fixed at the moment a page is created. Raising the setting affects only pages created afterwards.
 - The Watcher provisions a new page when free capacity drops below its threshold (20% by default) or when a filterable field is waiting for a slot that does not exist yet.
@@ -53,10 +53,10 @@ If capacity runs out before the Watcher catches up, writes still succeed. See [W
 
 ## Spread: why fewer pages means fewer joins
 
-**Spread** is how many extension pages a single model's filterable slots are scattered across. It matters because every extra page a filtered query touches costs another join.
+<Term id="spread">Spread</Term> is how many extension pages a single model's filterable slots are scattered across. It matters because every extra page a filtered query touches costs another join.
 
 Spread is not a bug. It is the natural consequence of pages being immutable and slots being handed out from whichever page has room, and a model that grew field by field over a year can easily end up spread across several pages.
 
-The engine measures it as **excess pages**: the pages a model actually occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run **compaction**, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
+The engine measures it as **excess pages**: the pages a model actually occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run <Term id="compaction">compaction</Term>, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
 
 The reports and the compaction command are covered in [Slot maintenance](/operations/slot-maintenance).
