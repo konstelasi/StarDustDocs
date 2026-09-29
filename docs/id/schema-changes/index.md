@@ -4,7 +4,7 @@ Ada lima operasi yang mengubah bentuk sebuah model setelah entry-nya sudah ada: 
 
 ## Perubahan instan dan perubahan di latar belakang
 
-Mengganti nama model dan mendemosikan field langsung berlaku begitu method-nya kembali. Semua operasi lainnya membuka **backfill window** — registry langsung diperbarui, tetapi data yang tersimpan baru menyusul, dan proses menyusul itu **membutuhkan Reconciler yang berjalan**. Lihat [Pekerjaan latar belakang dan konsistensi eventual](/id/concepts/background-work) untuk tabel lengkap tentang apa yang selesai saat method kembali dan apa yang tersisa untuk daemon, serta apa yang terlihat oleh pembacaan, penulisan, dan filter selama window itu.
+Mengganti nama model dan mendemosikan field langsung berlaku begitu method-nya kembali. Semua operasi lainnya membuka <Term id="backfill-window">backfill window</Term> — registry langsung diperbarui, tetapi data yang tersimpan baru menyusul, dan proses menyusul itu **membutuhkan Reconciler yang berjalan**. Lihat [Pekerjaan latar belakang dan konsistensi eventual](/id/concepts/background-work) untuk tabel lengkap tentang apa yang selesai saat method kembali dan apa yang tersisa untuk daemon, serta apa yang terlihat oleh pembacaan, penulisan, dan filter selama window itu.
 
 Versi singkatnya, khusus untuk perubahan skema:
 

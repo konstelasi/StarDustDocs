@@ -15,7 +15,7 @@ $engine->retypeField(
 What happens depends on whether the field is filterable right now:
 
 - **Not filterable.** Registry-only and complete when the call returns. There is no slot to replace and the JSON payload was already the only copy, so there is nothing to backfill.
-- **Filterable.** The current live slot is [tombstoned](/concepts/slots-and-pages#tombstoned-and-reclaimed) for the [Liberator](/operations/liberator) to reclaim, and a new slot in the target family goes to `backfilling` — or the reservation is deferred if no matching indexed slot is free yet. The [Reconciler](/operations/reconciler) then converts the field's stored values into the new slot, chunk by chunk, and flips it to `ready` on the last one.
+- <Term id="filterable">Filterable</Term>. The current live slot is [tombstoned](/concepts/slots-and-pages#tombstoned-and-reclaimed) for the [Liberator](/operations/liberator) to reclaim, and a new slot in the target family goes to `backfilling` — or the reservation is deferred if no matching indexed slot is free yet. The [Reconciler](/operations/reconciler) then converts the field's stored values into the new slot, chunk by chunk, and flips it to `ready` on the last one.
 
 A second retype started on a field that already has one running throws `RetypeInProgressException`. A field with a rename in flight refuses with `RenameInProgressException` instead — retyping by name would read every un-migrated row as if the field were absent. A field already being deleted refuses either way, with `FieldDeletionInProgressException`. See [Operations that block each other](/schema-changes/#operations-that-block-each-other) for the full guard table.
 

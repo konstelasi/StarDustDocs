@@ -4,7 +4,7 @@ Five operations change a model's shape after entries already exist: [changing a 
 
 ## Instant changes and background changes
 
-A model rename and a field demotion take effect the moment the call returns. Everything else opens a **backfill window** — the registry is updated immediately, but the stored data catches up afterwards, and that catch-up **needs a running Reconciler**. See [Background work and eventual consistency](/concepts/background-work) for the full table of what completes on return versus what is left to a daemon, and for what reads, writes and filters see during the window.
+A model rename and a field demotion take effect the moment the call returns. Everything else opens a <Term id="backfill-window">backfill window</Term> — the registry is updated immediately, but the stored data catches up afterwards, and that catch-up **needs a running Reconciler**. See [Background work and eventual consistency](/concepts/background-work) for the full table of what completes on return versus what is left to a daemon, and for what reads, writes and filters see during the window.
 
 The short version, specific to schema changes:
 
