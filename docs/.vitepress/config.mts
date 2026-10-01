@@ -33,6 +33,35 @@ export default defineConfig({
       message: 'Released under the MIT License.',
       copyright: `Copyright © ${new Date().getFullYear()} Konstelasi Teknologi Internasional`,
     },
+    // Off unless opted into. Local search indexes each locale separately,
+    // so an English query never surfaces an /id/ page and vice versa;
+    // `locales` below only translates the search UI's own strings.
+    search: {
+      provider: 'local',
+      options: {
+        locales: {
+          id: {
+            translations: {
+              button: {
+                buttonText: 'Cari',
+                buttonAriaLabel: 'Cari dokumentasi',
+              },
+              modal: {
+                displayDetails: 'Tampilkan detail',
+                resetButtonTitle: 'Hapus pencarian',
+                backButtonTitle: 'Tutup pencarian',
+                noResultsText: 'Tidak ada hasil untuk',
+                footer: {
+                  selectText: 'pilih',
+                  navigateText: 'navigasi',
+                  closeText: 'tutup',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 
   locales: {
