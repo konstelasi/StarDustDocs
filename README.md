@@ -15,7 +15,7 @@ npm run docs:dev
 npm run docs:build
 ```
 
-VitePress fails the build on a dead internal link, so this doubles as the site's link-integrity check. Deploying is a separate manual step — see `deploy.sh`.
+VitePress fails the build on a dead internal link, so this doubles as the site's link-integrity check. Deploying is a separate manual step with `deploy.sh`. On Windows, run `bash deploy.sh` from Git Bash. From PowerShell or cmd, `npm run deploy` picks up Windows' WSL `bash` stub first and fails before the script starts.
 
 ## Glossary content
 
