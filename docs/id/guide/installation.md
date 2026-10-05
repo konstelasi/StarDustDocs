@@ -14,16 +14,16 @@ Package ini hanya menarik `psr/log` dan `psr/clock`, dua package yang hanya beri
 
 ## Menyiapkan koneksi PDO
 
-StarDust menerima PDO yang Anda buat sendiri. Dua atribut wajib:
+StarDust menerima PDO yang Anda buat sendiri. Satu atribut wajib dan satu lagi pilihan:
 
 ```php
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
-    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION, // wajib
+    PDO::ATTR_EMULATE_PREPARES => false, // opsional, keduanya bisa dipakai
 ]);
 ```
 
-Dengan prepared statement emulasi bawaan PHP, `read()` atau `search()` pertama gagal dengan syntax error MySQL. Lihat [Konfigurasi](/id/usage/configuration#atribut-pdo-yang-wajib) untuk alasannya, dan [Integrasi dengan aplikasi Anda](/id/usage/integrating#memakai-pdo-yang-sama-dengan-aplikasi-anda) bila aplikasi Anda sudah punya PDO yang berencana Anda pakai ulang.
+`ERRMODE_EXCEPTION` wajib karena beberapa pengaman di engine membutuhkan statement yang gagal untuk melempar exception. Native prepares (`false`) dipakai test suite secara bawaan, jadi contoh di sini memakainya, tetapi emulasi bawaan PHP juga bisa dipakai. Lihat [Konfigurasi](/id/usage/configuration#pengaturan-koneksi-pdo) untuk rinciannya, dan [Integrasi dengan aplikasi Anda](/id/usage/integrating#memakai-pdo-yang-sama-dengan-aplikasi-anda) bila aplikasi Anda sudah punya PDO yang berencana Anda pakai ulang.
 
 Database yang disebut di DSN harus sudah ada. StarDust membuat tabel di dalamnya tetapi tidak membuat databasenya sendiri. User database harus punya hak untuk membuat tabel: bootstrap membuat skemanya, dan Watcher kemudian membuat tabel tambahan saat menambah kapasitas.
 

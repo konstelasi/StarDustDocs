@@ -6,7 +6,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 
 | Field | Default | Governs |
 | :-- | :-- | :-- |
-| `pdo` | — (required) | The connection. Must be constructed with `ATTR_EMULATE_PREPARES => false` and `ATTR_ERRMODE => ERRMODE_EXCEPTION`. See [Prepare the PDO connection](/guide/installation#prepare-the-pdo-connection). |
+| `pdo` | — (required) | The connection. Must be constructed with `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) are the tested default, and emulation works too. See [Prepare the PDO connection](/guide/installation#prepare-the-pdo-connection). |
 | `logger` | `StdoutNdjsonLogger` | A PSR-3 logger. Inject your own to route events somewhere other than stdout NDJSON. |
 | `clock` | `SystemClock` | A `psr/clock` implementation. Inject a frozen clock in tests. |
 

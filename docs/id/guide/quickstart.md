@@ -30,7 +30,7 @@ Container MySQL juga dipublikasikan di host Anda pada port **3307**, kalau Anda 
 
 Service `init` menjalankan [`docker/seed.php`](https://github.com/damarbob/StarDust/blob/main/docker/seed.php), yaitu seluruh alur StarDust dalam satu skrip pendek:
 
-1. Ia terhubung dengan atribut PDO yang wajib lalu mem-bootstrap skema.
+1. Ia terhubung dengan PDO yang diatur untuk melempar exception lalu mem-bootstrap skema.
 2. Ia mendaftarkan model `company` dengan empat field filterable: `name`, `industry`, `employees`, dan `founded`.
 3. Ia menyediakan satu page terindeks dan memesan satu slot untuk setiap field, sehingga query pertama pun sudah memakai index. Pada deployment sungguhan, Watcher yang mengerjakan ini secara otomatis.
 4. Ia menulis lima perusahaan dari array JSON mentah, seperti yang dilakukan CMS atau lapisan HTTP saat menyerahkan entry.

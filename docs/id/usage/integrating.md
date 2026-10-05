@@ -15,7 +15,7 @@ Sebuah instance `StarDust` membungkus satu `Config` dan karenanya satu koneksi P
 
 Anda punya dua pilihan: menyerahkan PDO yang sudah dipakai aplikasi kepada StarDust, atau memberinya koneksi khusus. **Koneksi khusus biasanya pilihan yang lebih baik.**
 
-StarDust membutuhkan PDO yang dibuat dengan `PDO::ERRMODE_EXCEPTION` dan `PDO::ATTR_EMULATE_PREPARES => false`, seperti dijelaskan di [Konfigurasi](/id/usage/configuration#atribut-pdo-yang-wajib). Tidak ada atribut lain yang diwajibkan. Kalau Anda berbagi koneksi aplikasi, kedua atribut itu berlaku untuk *semua* kode yang memakainya. Mematikan emulasi mengubah cara nilai terikat diberi tipe dan cara sebagian statement berperilaku, jadi kode yang ditulis untuk koneksi yang meniru prepared statement bisa berperilaku berbeda. Berbagi hanya aman bila aplikasi Anda memang sudah berjalan dengan kedua pengaturan itu.
+StarDust membutuhkan PDO yang dibuat dengan `PDO::ERRMODE_EXCEPTION`, seperti dijelaskan di [Konfigurasi](/id/usage/configuration#pengaturan-koneksi-pdo). Tidak ada atribut lain yang diwajibkan, dan emulasi prepared statement boleh tetap di bawaan PHP. Kalau Anda berbagi koneksi aplikasi, atribut itu berlaku untuk *semua* kode yang memakainya, jadi kode yang mengandalkan statement gagal yang diam-diam mengembalikan `false` akan mulai melempar exception. Berbagi hanya aman bila aplikasi Anda memang sudah berjalan dengan exception menyala.
 
 Koneksi khusus menghindari semua itu:
 

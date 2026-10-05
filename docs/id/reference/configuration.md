@@ -6,7 +6,7 @@ Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [K
 
 | Field | Bawaan | Mengatur |
 | :-- | :-- | :-- |
-| `pdo` | — (wajib) | Koneksinya. Harus dibuat dengan `ATTR_EMULATE_PREPARES => false` dan `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Lihat [Menyiapkan koneksi PDO](/id/guide/installation#menyiapkan-koneksi-pdo). |
+| `pdo` | — (wajib) | Koneksinya. Harus dibuat dengan `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) adalah bawaan yang diuji, dan emulasi juga bisa dipakai. Lihat [Menyiapkan koneksi PDO](/id/guide/installation#menyiapkan-koneksi-pdo). |
 | `logger` | `StdoutNdjsonLogger` | Logger PSR-3. Suntikkan milik Anda sendiri untuk mengarahkan event ke tempat lain selain stdout NDJSON. |
 | `clock` | `SystemClock` | Implementasi `psr/clock`. Suntikkan clock yang dibekukan dalam test. |
 

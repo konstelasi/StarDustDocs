@@ -30,7 +30,7 @@ The MySQL container is also published on your host at port **3307**, in case you
 
 The `init` service ran [`docker/seed.php`](https://github.com/damarbob/StarDust/blob/main/docker/seed.php), which is the whole StarDust flow in one short script:
 
-1. It connected with the required PDO attributes and bootstrapped the schema.
+1. It connected with a PDO set to raise exceptions and bootstrapped the schema.
 2. It registered a `company` model with four filterable fields: `name`, `industry`, `employees` and `founded`.
 3. It provisioned an indexed page and reserved a slot for each field, so the very first query already uses indexes. In a real deployment the Watcher does this for you automatically.
 4. It wrote five companies from a raw JSON array, the way a CMS or HTTP layer would hand entries over.

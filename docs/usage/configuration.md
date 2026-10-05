@@ -23,23 +23,20 @@ A few things to know about it:
 
 `bootstrap()` provisions every table the engine needs, and it is safe to re-run. It never drops or rewrites existing data, so calling it on every deploy is the normal pattern. See [Installation](/guide/installation#bootstrap-the-schema).
 
-## Required PDO attributes
+## PDO connection settings
 
-The PDO you pass in must be created with both of these attributes:
+The PDO you pass in needs one attribute, and a second is a choice:
 
 ```php
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
-    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION, // required, see below
+    PDO::ATTR_EMULATE_PREPARES => false, // optional, either setting works
 ]);
 ```
 
-**Both are required, not decoration.**
+**`ERRMODE_EXCEPTION` is required, not decoration.** Several of the engine's guards need a failed statement to raise rather than quietly return `false`. If your application shares one connection with other code, create a separate PDO for StarDust rather than changing that attribute under that code. [Integrating with your application](/usage/integrating#sharing-your-applications-pdo) explains why a dedicated connection is usually the better choice anyway.
 
-- **`ATTR_EMULATE_PREPARES => false`.** PHP's MySQL driver emulates prepared statements by default, which sends every bound value as a quoted string. That breaks StarDust's paginated reads, which bind the page size into `LIMIT`: the first `read()` or `search()` fails with a MySQL syntax error (errno 1064). Turning emulation off also makes values come back from the database with their native types, which the engine relies on.
-- **`ATTR_ERRMODE => ERRMODE_EXCEPTION`.** Several of the engine's guards need a failed statement to raise rather than quietly return `false`.
-
-If your application shares one connection with other code, create a separate PDO for StarDust rather than changing these attributes under that code. [Integrating with your application](/usage/integrating#sharing-your-applications-pdo) explains why a dedicated connection is usually the better choice anyway.
+**Prepared-statement emulation can be on or off.** PHP's MySQL driver emulates prepared statements by default, and StarDust works either way. Every value that must reach the server unquoted, such as the page size in a paginated read's `LIMIT`, is bound with an explicit integer type, and values read back arrive with the same PHP types in both modes. Native prepares (`PDO::ATTR_EMULATE_PREPARES => false`, as above) are the tested default. The full test suite runs that way against every supported server, and it also runs once in full against MySQL with emulation on, so leaving PHP's default in place is supported too.
 
 ## Logging
 

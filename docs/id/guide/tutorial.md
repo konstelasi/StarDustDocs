@@ -10,8 +10,8 @@ Anda membutuhkan database yang siap di-bootstrap dan package yang sudah terpasan
 use StarDust\Config\Config;
 use StarDust\StarDust;
 
-// Kedua atribut wajib. Dengan prepared statement emulasi (bawaan PHP),
-// pembacaan pertama gagal dengan syntax error MySQL.
+// ERRMODE_EXCEPTION wajib. Emulated prepares (bawaan PHP) juga bisa dipakai,
+// dan tutorial ini memakai native prepares.
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
     PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_EMULATE_PREPARES => false,

@@ -14,16 +14,16 @@ The package pulls in only `psr/log` and `psr/clock`, both interface-only package
 
 ## Prepare the PDO connection
 
-StarDust takes a PDO you create. Two attributes are required:
+StarDust takes a PDO you create. One attribute is required and one is a choice:
 
 ```php
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
-    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION, // required
+    PDO::ATTR_EMULATE_PREPARES => false, // optional, either setting works
 ]);
 ```
 
-With PHP's default emulated prepares, the first `read()` or `search()` fails with a MySQL syntax error. See [Configuration](/usage/configuration#required-pdo-attributes) for why, and [Integrating with your application](/usage/integrating#sharing-your-applications-pdo) if your application already has a PDO you were planning to reuse.
+`ERRMODE_EXCEPTION` is required because several of the engine's guards need a failed statement to raise. Native prepares (`false`) are what the test suite uses by default, so the examples here use them, but PHP's emulated default works too. See [Configuration](/usage/configuration#pdo-connection-settings) for details, and [Integrating with your application](/usage/integrating#sharing-your-applications-pdo) if your application already has a PDO you were planning to reuse.
 
 The database named in the DSN must already exist. StarDust creates tables in it but does not create the database itself. The database user needs the privileges to create tables: bootstrap creates the schema, and the Watcher later creates further tables as it adds capacity.
 

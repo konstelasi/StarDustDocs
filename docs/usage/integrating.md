@@ -15,7 +15,7 @@ A `StarDust` instance wraps one `Config` and therefore one PDO connection. Creat
 
 You have two options: hand StarDust the PDO your application already uses, or give it a dedicated connection. **A dedicated connection is usually the better choice.**
 
-StarDust needs a PDO created with `PDO::ERRMODE_EXCEPTION` and `PDO::ATTR_EMULATE_PREPARES => false`, as described in [Configuration](/usage/configuration#required-pdo-attributes). No other attributes are required. If you share your application's connection, those two attributes apply to *all* the code using it. Turning emulation off changes how bound values are typed and how some statements behave, so code written against an emulating connection can behave differently. Sharing is only safe if your application already runs with both settings.
+StarDust needs a PDO created with `PDO::ERRMODE_EXCEPTION`, as described in [Configuration](/usage/configuration#pdo-connection-settings). No other attribute is required, and prepared-statement emulation can stay at PHP's default. If you share your application's connection, that attribute applies to *all* the code using it, so code that relied on a failed statement quietly returning `false` would start to throw. Sharing is only safe if your application already runs with exceptions on.
 
 A dedicated connection avoids that entirely:
 

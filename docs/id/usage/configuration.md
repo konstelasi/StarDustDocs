@@ -23,23 +23,20 @@ Beberapa hal yang perlu diketahui:
 
 `bootstrap()` menyediakan semua tabel yang dibutuhkan engine, dan aman dijalankan ulang. Ia tidak pernah menghapus atau menulis ulang data yang sudah ada, jadi memanggilnya di setiap deploy adalah pola yang wajar. Lihat [Instalasi](/id/guide/installation#bootstrap-skema).
 
-## Atribut PDO yang wajib
+## Pengaturan koneksi PDO
 
-PDO yang Anda berikan harus dibuat dengan kedua atribut berikut:
+PDO yang Anda berikan membutuhkan satu atribut, dan atribut kedua adalah pilihan:
 
 ```php
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
-    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION, // wajib, lihat di bawah
+    PDO::ATTR_EMULATE_PREPARES => false, // opsional, keduanya bisa dipakai
 ]);
 ```
 
-**Keduanya wajib, bukan sekadar hiasan.**
+**`ERRMODE_EXCEPTION` wajib, bukan sekadar hiasan.** Beberapa pengaman di engine membutuhkan statement yang gagal untuk melempar exception, bukan diam-diam mengembalikan `false`. Jika aplikasi Anda berbagi satu koneksi dengan kode lain, buatlah PDO terpisah untuk StarDust, jangan mengubah atribut itu di bawah kode tersebut. [Integrasi dengan aplikasi Anda](/id/usage/integrating#memakai-pdo-yang-sama-dengan-aplikasi-anda) menjelaskan mengapa koneksi khusus biasanya pilihan yang lebih baik.
 
-- **`ATTR_EMULATE_PREPARES => false`.** Driver MySQL milik PHP secara bawaan meniru prepared statement, yang mengirim setiap nilai terikat sebagai string berkutip. Itu merusak pembacaan berhalaman StarDust, yang mengikat ukuran halaman ke `LIMIT`: `read()` atau `search()` pertama gagal dengan syntax error MySQL (errno 1064). Mematikan emulasi juga membuat nilai kembali dari database dengan tipe aslinya, yang diandalkan engine.
-- **`ATTR_ERRMODE => ERRMODE_EXCEPTION`.** Beberapa pengaman di engine membutuhkan statement yang gagal untuk melempar exception, bukan diam-diam mengembalikan `false`.
-
-Jika aplikasi Anda berbagi satu koneksi dengan kode lain, buatlah PDO terpisah untuk StarDust, jangan mengubah atribut ini di bawah kode tersebut. [Integrasi dengan aplikasi Anda](/id/usage/integrating#memakai-pdo-yang-sama-dengan-aplikasi-anda) menjelaskan mengapa koneksi khusus biasanya pilihan yang lebih baik.
+**Emulasi prepared statement boleh hidup atau mati.** Driver MySQL milik PHP secara bawaan meniru prepared statement, dan StarDust berjalan baik dengan keduanya. Setiap nilai yang harus sampai ke server tanpa kutip, seperti ukuran halaman di `LIMIT` pembacaan berhalaman, diikat dengan tipe integer yang eksplisit, dan nilai yang dibaca kembali punya tipe PHP yang sama di kedua mode. Native prepares (`PDO::ATTR_EMULATE_PREPARES => false`, seperti di atas) adalah bawaan yang diuji. Seluruh test suite berjalan seperti itu di setiap server yang didukung, dan sekali lagi penuh di MySQL dengan emulasi menyala, jadi membiarkan bawaan PHP tetap dipakai juga didukung.
 
 ## Logging
 

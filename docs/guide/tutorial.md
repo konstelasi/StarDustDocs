@@ -10,8 +10,8 @@ You need a bootstrap-ready database and the package installed. See [Installation
 use StarDust\Config\Config;
 use StarDust\StarDust;
 
-// Both attributes are required. With emulated prepares (PHP's default)
-// the first read fails with a MySQL syntax error.
+// ERRMODE_EXCEPTION is required. Emulated prepares work too (PHP's
+// default), and native ones are what this walkthrough uses.
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=app', $user, $pass, [
     PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_EMULATE_PREPARES => false,
