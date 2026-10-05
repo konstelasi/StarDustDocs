@@ -25,7 +25,7 @@ A model is a named data shape within a tenant, roughly the equivalent of a table
 A field is one named attribute of a model. It has two properties that matter:
 
 - a <Term id="declared-type">declared type</Term>, which decides how values are validated and which family of slot the field can occupy;
-- a <Term id="filterable">filterable</Term> flag, which decides whether the field gets a slot at all. That flag is the entire difference between "stored and readable" and "stored, readable, and queryable at index speed". See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
+- a <Term id="filterable">filterable</Term> flag, which decides whether the field gets a slot at all. That flag is the entire difference between "stored and readable" and "stored, readable, and queryable through an index". See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
 
 Field names are unique within a model. Fields can be renamed, retyped, promoted, demoted and deleted while the system is live. See [Changing your schema](/schema-changes/).
 

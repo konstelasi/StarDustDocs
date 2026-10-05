@@ -120,7 +120,7 @@ A side table, physically named `entry_slots_page_1`, `entry_slots_page_2` and so
 
 ### Field
 
-One named attribute of a [model](#model). A field has a [declared type](#declared-type) and a [filterable](#filterable) flag, and that flag is the entire difference between "stored and readable" and "stored, readable, and queryable at index speed". Fields can be renamed, retyped, promoted, demoted, and deleted while the system is live.
+One named attribute of a [model](#model). A field has a [declared type](#declared-type) and a [filterable](#filterable) flag, and that flag is the entire difference between "stored and readable" and "stored, readable, and queryable through an index". Fields can be renamed, retyped, promoted, demoted, and deleted while the system is live.
 
 **See also:** [Filterable](#filterable), [Retype](#retype), [Declared type](#declared-type).
 

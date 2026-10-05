@@ -36,7 +36,7 @@ Di sekeliling gagasan itu, StarDust menambahkan bagian-bagian yang membuatnya la
 - **Penulisan tidak pernah gagal karena kehabisan slot index.** Jika kapasitas habis, nilai tetap masuk ke JSON dan disalin kemudian.
 - **Perubahan skema berlangsung online.** Me-retype, mengganti nama, menghapus, atau menjadikan sebuah field filterable tidak membutuhkan downtime. Pembacaan tetap berjalan dari JSON selagi index menyusul.
 - **Empat proses latar belakang kecil** menyediakan kapasitas, menuntaskan pekerjaan yang tertunda, mereklamasi kolom yang tidak terpakai, dan menulis ekspor. Mereka hanya berkoordinasi lewat database.
-- <Term id="bounded-read">Bounded read</Term>. Setiap pembacaan terdiri dari dua query yang ukurannya dibatasi oleh ukuran halaman Anda, berapa pun besar tenant-nya.
+- <Term id="bounded-read">Bounded read</Term>. Setiap pembacaan terdiri dari dua query, dan baris yang dikembalikannya dibatasi oleh ukuran halaman Anda.
 
 [Sekilas arsitektur](/id/concepts/architecture) menunjukkan bagaimana bagian-bagiannya saling terhubung, dan [glosarium](/id/reference/glossary) menjelaskan setiap istilah.
 

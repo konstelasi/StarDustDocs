@@ -122,7 +122,7 @@ Tabel samping, secara fisik bernama `entry_slots_page_1`, `entry_slots_page_2`, 
 
 ### Field
 
-Satu atribut bernama milik sebuah [model](#model). Field punya [declared type](#declared-type) dan flag [filterable](#filterable), dan flag itu adalah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query secepat index". Field bisa diganti namanya, di-retype, dipromosikan, didemosikan, dan dihapus selagi sistem berjalan.
+Satu atribut bernama milik sebuah [model](#model). Field punya [declared type](#declared-type) dan flag [filterable](#filterable), dan flag itu adalah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query lewat index". Field bisa diganti namanya, di-retype, dipromosikan, didemosikan, dan dihapus selagi sistem berjalan.
 
 **Lihat juga:** [Filterable](#filterable), [Retype](#retype), [Declared type](#declared-type).
 

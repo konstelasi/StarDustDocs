@@ -10,7 +10,7 @@ landing:
     link: /id/project/changelog
   titleLine1: Dokumentasi StarDust,
   titleLine2: dari query pertama sampai produksi.
-  lede: Panduan, konsep, dan referensi untuk memfilter field dinamis dengan kecepatan indeks SQL asli di MySQL dan MariaDB. Mulai dari instalasi dan perubahan skema, daemon latar belakang, sampai API lengkap.
+  lede: Panduan, konsep, dan referensi untuk memfilter field dinamis lewat indeks SQL asli di MySQL dan MariaDB. Mulai dari instalasi dan perubahan skema, daemon latar belakang, sampai API lengkap.
   actions:
     - text: Mulai
       link: /id/guide/installation

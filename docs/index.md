@@ -10,7 +10,7 @@ landing:
     link: /project/changelog
   titleLine1: The StarDust documentation,
   titleLine2: from first query to production.
-  lede: Guides, concepts and reference for filtering dynamic fields at native SQL index speed on MySQL and MariaDB. From installation and schema changes to the background daemons and the full API.
+  lede: Guides, concepts and reference for filtering dynamic fields through native SQL indexes on MySQL and MariaDB. From installation and schema changes to the background daemons and the full API.
   actions:
     - text: Get Started
       link: /guide/installation

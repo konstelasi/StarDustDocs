@@ -25,7 +25,7 @@ Model adalah bentuk data bernama di dalam sebuah tenant, kira-kira setara dengan
 Field adalah satu atribut bernama milik sebuah model. Ada dua properti yang penting:
 
 - <Term id="declared-type">declared type</Term>, yang menentukan bagaimana nilai divalidasi dan keluarga slot mana yang bisa ditempati field tersebut;
-- flag <Term id="filterable">filterable</Term>, yang menentukan apakah field itu mendapat slot atau tidak. Flag inilah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query secepat index". Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
+- flag <Term id="filterable">filterable</Term>, yang menentukan apakah field itu mendapat slot atau tidak. Flag inilah satu-satunya pembeda antara "tersimpan dan bisa dibaca" dengan "tersimpan, bisa dibaca, dan bisa di-query lewat index". Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
 
 Nama field unik di dalam satu model. Field bisa diganti namanya, di-retype, dipromosikan, didemosikan, dan dihapus selagi sistem berjalan. Lihat [Mengubah skema](/id/schema-changes/).
 
