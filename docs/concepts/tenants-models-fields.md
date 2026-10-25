@@ -35,7 +35,7 @@ The declared type is one of four values, and each maps to a family of slot colum
 
 | Declared type | Slot family | Notes |
 | :-- | :-- | :-- |
-| `string` | string | Values up to 4 096 characters. The index covers a prefix of each value, but matching is still exact. |
+| `string` | string | Values up to 4 096 characters. Matching is exact on a newly created page. An older page indexes only the first 766 characters, with one rare exception described in the [glossary](/reference/glossary#slot). |
 | `int` | integer | Signed 64-bit. |
 | `numeric` | numeric | Finite numbers only. |
 | `datetime` | datetime | Stored in UTC at whole-second precision. |

@@ -35,7 +35,7 @@ Declared type berupa salah satu dari empat nilai, dan masing-masing dipetakan ke
 
 | Declared type | Keluarga slot | Catatan |
 | :-- | :-- | :-- |
-| `string` | string | Nilai hingga 4 096 karakter. Index hanya mencakup awalan dari setiap nilai, tetapi pencocokan tetap persis. |
+| `string` | string | Nilai hingga 4 096 karakter. Pencocokan persis di page yang baru dibuat. Page yang lebih lama hanya mengindeks 766 karakter pertama, dengan satu pengecualian langka yang dijelaskan di [glosarium](/id/reference/glossary#slot). |
 | `int` | integer | Signed 64-bit. |
 | `numeric` | numeric | Hanya angka yang terhingga (finite). |
 | `datetime` | datetime | Disimpan dalam UTC dengan ketelitian detik penuh. |

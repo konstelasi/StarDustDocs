@@ -228,7 +228,7 @@ Komponen yang bisa diganti yang benar-benar menjalankan pembacaan terfilter. Baw
 
 Satu kolom bertipe yang terindeks di sebuah [extension page](#extension-page) yang menyalin nilai satu field filterable. Slot terbagi menjadi empat keluarga yang sesuai dengan [declared type](#declared-type), string, integer, numeric, dan datetime, dan sebuah field hanya bisa menempati slot dari keluarganya sendiri, itulah sebabnya [retype](#retype) membutuhkan slot baru, bukan konversi di tempat. Sebuah page memuat jumlah terbatas dari tiap keluarga, sehingga slot adalah sumber daya terbatas milik engine dan menjadi pokok perencanaan kapasitas.
 
-Slot string menyimpan nilai yang panjang (batas nilai filter hingga 4 096 karakter) dan dicocokkan secara persis meskipun index hanya mencakup awalan dari setiap nilai.
+Slot string menyimpan nilai yang panjang (batas nilai filter hingga 4 096 karakter). Di page yang baru dibuat, slot string diindeks lewat key yang dihitung database dari seluruh nilainya, sehingga filter teks cocok secara persis berapa pun panjangnya. Di page yang lebih lama, index hanya mencakup 766 karakter pertama, dan setiap baris yang ditemukannya diperiksa ulang secara penuh. Hasilnya persis kecuali pada satu kasus yang jarang. Nilai yang lebih panjang dari 766 karakter bisa terlewat bila collation menganggapnya sama dengan nilai lain yang berbeda di dalam 766 karakter itu, misalnya `ß` dan `ss`. Page tidak pernah diubah setelah berisi data, jadi deployment yang berjalan lama bisa memiliki kedua jenis page tersebut.
 
 **Lihat juga:** [Extension page](#extension-page), [Filterable](#filterable), [Tombstoned slot](#tombstoned-slot).
 
