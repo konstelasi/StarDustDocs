@@ -1,7 +1,7 @@
 {
   "artifact": {
     "term": "Artifact",
-    "short": "The file a completed export produces — CSV or JSON, written to the directory you configured."
+    "short": "The file a completed export produces, in CSV or JSON, written to the directory you configured."
   },
   "backfill": {
     "term": "Backfill",
@@ -9,7 +9,7 @@
   },
   "backfill-window": {
     "term": "Backfill window",
-    "short": "The interval between a schema operation returning and its background pass finishing — the period during which the change is declared but not yet applied to stored data."
+    "short": "The interval between a schema operation returning and its background pass finishing, during which the change is declared but not yet applied to stored data."
   },
   "bounded-read": {
     "term": "Bounded read",
@@ -33,11 +33,11 @@
   },
   "cursor": {
     "term": "Cursor",
-    "short": "The opaque token that marks your position in a paginated read — there is no offset parameter and no total count."
+    "short": "The opaque token that marks your position in a paginated read, since there is no offset parameter and no total count."
   },
   "daemon": {
     "term": "Daemon",
-    "short": "Background work that keeps filtering caught up, run either as a long-lived process or in bounded bursts from a schedule — StarDust ships four, coordinating only through the database."
+    "short": "Background work that keeps filtering caught up, run either as a long-lived process or in bounded bursts from a schedule, and StarDust ships four that coordinate only through the database."
   },
   "dead-letter-queue": {
     "term": "Dead-letter queue",
@@ -45,7 +45,7 @@
   },
   "declared-type": {
     "term": "Declared type",
-    "short": "The type you register a field as — string, int, numeric, or datetime."
+    "short": "The type you register a field as, which is one of string, int, numeric, or datetime."
   },
   "demotion": {
     "term": "Demotion",
@@ -89,7 +89,7 @@
   },
   "indexed": {
     "term": "Indexed",
-    "short": "Whether a field's slot is live right now — that is, whether a filter on it would actually work."
+    "short": "Whether a field's slot is live right now, meaning whether a filter on it would actually work."
   },
   "liberator": {
     "term": "Liberator",
@@ -97,11 +97,11 @@
   },
   "model": {
     "term": "Model",
-    "short": "A named data shape within a tenant — the rough equivalent of a table, except you define it at runtime."
+    "short": "A named data shape within a tenant, the rough equivalent of a table except that you define it at runtime."
   },
   "payload": {
     "term": "Payload",
-    "short": "The complete JSON object holding all of an entry's field values — the authoritative system of record."
+    "short": "The complete JSON object holding all of an entry's field values, which is the authoritative system of record."
   },
   "pre-flight-rejection": {
     "term": "Pre-flight rejection",
@@ -117,7 +117,7 @@
   },
   "reconciler": {
     "term": "Reconciler",
-    "short": "The daemon that does the catching up — it drains every kind of deferred work the engine produces, in bounded chunks."
+    "short": "The daemon that does the catching up, draining every kind of deferred work the engine produces in bounded chunks."
   },
   "retype": {
     "term": "Retype",
@@ -125,7 +125,7 @@
   },
   "schema-registry": {
     "term": "Schema registry",
-    "short": "The set of tables recording your models, fields, pages, and slot assignments — the engine's own bookkeeping."
+    "short": "The set of tables recording your models, fields, pages, and slot assignments, which is the engine's own bookkeeping."
   },
   "schema-version": {
     "term": "Schema version",
@@ -133,7 +133,7 @@
   },
   "search-driver": {
     "term": "Search driver",
-    "short": "The swappable component that actually executes a filtered read — MySQL by default, or your own to delegate to an external search service."
+    "short": "The swappable component that actually executes a filtered read, which defaults to MySQL and can be your own to delegate to an external search service."
   },
   "slot": {
     "term": "Slot",
@@ -145,7 +145,7 @@
   },
   "sort": {
     "term": "Sort",
-    "short": "The ordering of a read — by entry ID, creation time, or a single indexed field."
+    "short": "The ordering of a read, which is by entry ID, creation time, or a single indexed field."
   },
   "spread": {
     "term": "Spread",
@@ -157,7 +157,7 @@
   },
   "system-of-record": {
     "term": "System of record",
-    "short": "The authoritative copy of your data — always the JSON payload, never the indexed slots."
+    "short": "The authoritative copy of your data, which is always the JSON payload and never the indexed slots."
   },
   "tenant": {
     "term": "Tenant",

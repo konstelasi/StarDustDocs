@@ -1,7 +1,7 @@
 {
   "artifact": {
     "term": "Artifact",
-    "short": "File hasil sebuah export — CSV atau JSON — yang ditulis ke direktori yang Anda konfigurasi."
+    "short": "File hasil sebuah export, berformat CSV atau JSON, yang ditulis ke direktori yang Anda konfigurasi."
   },
   "backfill": {
     "term": "Backfill",
@@ -9,7 +9,7 @@
   },
   "backfill-window": {
     "term": "Backfill window",
-    "short": "Rentang waktu antara sebuah operasi skema selesai dijalankan dan proses latar belakangnya benar-benar tuntas — periode ketika perubahan sudah dinyatakan tapi belum sepenuhnya diterapkan ke data yang tersimpan."
+    "short": "Rentang waktu antara sebuah operasi skema selesai dijalankan dan proses latar belakangnya benar-benar tuntas, yaitu periode ketika perubahan sudah dinyatakan tapi belum sepenuhnya diterapkan ke data yang tersimpan."
   },
   "bounded-read": {
     "term": "Bounded read",
@@ -33,11 +33,11 @@
   },
   "cursor": {
     "term": "Cursor",
-    "short": "Token buram yang menandai posisi Anda dalam sebuah read berpaginasi — tidak ada parameter offset dan tidak ada total count."
+    "short": "Token buram yang menandai posisi Anda dalam sebuah read berpaginasi, karena tidak ada parameter offset dan tidak ada total count."
   },
   "daemon": {
     "term": "Daemon",
-    "short": "Pekerjaan latar belakang yang membuat penyaringan tetap mengejar ketertinggalan, dijalankan baik sebagai proses yang berjalan terus-menerus maupun dalam putaran singkat terjadwal — StarDust menyediakan empat, yang berkoordinasi hanya lewat database."
+    "short": "Pekerjaan latar belakang yang membuat penyaringan tetap mengejar ketertinggalan, dijalankan baik sebagai proses yang berjalan terus-menerus maupun dalam putaran singkat terjadwal, dan StarDust menyediakan empat yang berkoordinasi hanya lewat database."
   },
   "dead-letter-queue": {
     "term": "Dead-letter queue",
@@ -45,7 +45,7 @@
   },
   "declared-type": {
     "term": "Declared type",
-    "short": "Tipe yang Anda daftarkan untuk sebuah field — string, int, numeric, atau datetime."
+    "short": "Tipe yang Anda daftarkan untuk sebuah field, yaitu salah satu dari string, int, numeric, atau datetime."
   },
   "demotion": {
     "term": "Demotion",
@@ -89,7 +89,7 @@
   },
   "indexed": {
     "term": "Indexed",
-    "short": "Apakah slot sebuah field sedang aktif saat ini — yaitu, apakah filter terhadapnya benar-benar akan berfungsi."
+    "short": "Apakah slot sebuah field sedang aktif saat ini, yaitu apakah filter terhadapnya benar-benar akan berfungsi."
   },
   "liberator": {
     "term": "Liberator",
@@ -97,11 +97,11 @@
   },
   "model": {
     "term": "Model",
-    "short": "Bentuk data bernama di dalam sebuah tenant — kurang lebih setara tabel, hanya saja Anda mendefinisikannya saat runtime."
+    "short": "Bentuk data bernama di dalam sebuah tenant, kurang lebih setara tabel, hanya saja Anda mendefinisikannya saat runtime."
   },
   "payload": {
     "term": "Payload",
-    "short": "Objek JSON lengkap yang menyimpan seluruh nilai field sebuah entry — system of record yang otoritatif."
+    "short": "Objek JSON lengkap yang menyimpan seluruh nilai field sebuah entry dan menjadi system of record yang otoritatif."
   },
   "pre-flight-rejection": {
     "term": "Pre-flight rejection",
@@ -117,7 +117,7 @@
   },
   "reconciler": {
     "term": "Reconciler",
-    "short": "Daemon yang mengejar ketertinggalan — ia mengalirkan semua jenis pekerjaan tertunda yang dihasilkan engine, dalam chunk yang terbatas."
+    "short": "Daemon yang mengejar ketertinggalan dengan mengalirkan semua jenis pekerjaan tertunda yang dihasilkan engine, dalam chunk yang terbatas."
   },
   "retype": {
     "term": "Retype",
@@ -125,7 +125,7 @@
   },
   "schema-registry": {
     "term": "Schema registry",
-    "short": "Kumpulan tabel yang mencatat model, field, page, dan slot assignment Anda — pembukuan engine itu sendiri."
+    "short": "Kumpulan tabel yang mencatat model, field, page, dan slot assignment Anda, yaitu pembukuan engine itu sendiri."
   },
   "schema-version": {
     "term": "Schema version",
@@ -133,7 +133,7 @@
   },
   "search-driver": {
     "term": "Search driver",
-    "short": "Komponen yang dapat ditukar, yang benar-benar menjalankan sebuah read terfilter — MySQL secara default, atau milik Anda sendiri untuk mendelegasikan ke layanan pencarian eksternal."
+    "short": "Komponen yang dapat ditukar, yang benar-benar menjalankan sebuah read terfilter, secara default MySQL atau milik Anda sendiri untuk mendelegasikan ke layanan pencarian eksternal."
   },
   "slot": {
     "term": "Slot",
@@ -145,7 +145,7 @@
   },
   "sort": {
     "term": "Sort",
-    "short": "Urutan sebuah read — berdasarkan entry ID, waktu pembuatan, atau satu field yang indexed."
+    "short": "Urutan sebuah read, yaitu berdasarkan entry ID, waktu pembuatan, atau satu field yang indexed."
   },
   "spread": {
     "term": "Spread",
@@ -157,7 +157,7 @@
   },
   "system-of-record": {
     "term": "System of record",
-    "short": "Salinan otoritatif data Anda — selalu payload JSON, tidak pernah slot yang terindeks."
+    "short": "Salinan otoritatif data Anda, yaitu selalu payload JSON dan tidak pernah slot yang terindeks."
   },
   "tenant": {
     "term": "Tenant",
