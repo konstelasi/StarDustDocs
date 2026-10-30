@@ -2,14 +2,14 @@
 
 ## Field filterable ditolak saat difilter
 
-Filter pada field yang Anda yakin filterable tetap saja memunculkan `FieldNotFilterableException` atau `FieldNotSortableException`. Ini hampir selalu soal backfill window: `isFilterable` (apa yang dideklarasikan registry) dan `isIndexed` (apakah filter padanya benar-benar bekerja *saat ini*) adalah dua flag yang berbeda, dan keduanya tidak sinkron selama backfill promosi atau retype berlangsung. Periksa keduanya:
+Filter pada field yang Anda yakin filterable tetap saja memunculkan `FieldNotFilterableException` atau `FieldNotSortableException`. Ini hampir selalu soal backfill window: `isFilterable` (apa yang dideklarasikan registry) dan `isIndexed` (apakah filter padanya benar-benar bekerja *saat ini*) adalah dua flag yang berbeda, dan keduanya tidak sinkron selama backfill promosi atau retype berlangsung, juga pada field yang baru didaftarkan sampai penulisan pertamanya selesai diproses. Periksa keduanya:
 
 ```php
 $field = $engine->describeModel($tenantId, $modelId)?->fields[...];
 var_dump($field->isFilterable, $field->isIndexed);
 ```
 
-Jika `isFilterable` bernilai `true` dan `isIndexed` bernilai `false`, field itu masih menunggu penyalinan latar belakangnya selesai — lihat [Rename, retype, atau penghapusan tidak kunjung selesai](#rename-retype-atau-penghapusan-tidak-kunjung-selesai) di bawah, karena solusinya sama: pastikan Reconciler berjalan. Bangun UI filter Anda berdasarkan `isIndexed`, bukan `isFilterable`, dan Anda tidak akan pernah menawarkan filter yang saat ini ditolak engine.
+Jika `isFilterable` bernilai `true` dan `isIndexed` bernilai `false`, field itu masih menunggu penyalinan latar belakangnya selesai. Lihat [Rename, retype, atau penghapusan tidak kunjung selesai](#rename-retype-atau-penghapusan-tidak-kunjung-selesai) di bawah, karena solusinya sama, yaitu memastikan Reconciler berjalan. Field yang benar-benar baru tidak punya penyalinan untuk ditunggu, hanya penulisan pertama yang harus diproses. Tulis satu entry yang menyentuhnya, dengan Reconciler berjalan, dan ia bisa di-query sesaat kemudian. Bangun UI filter Anda berdasarkan `isIndexed`, bukan `isFilterable`, dan Anda tidak akan pernah menawarkan filter yang saat ini ditolak engine.
 
 ## Rename, retype, atau penghapusan tidak kunjung selesai
 

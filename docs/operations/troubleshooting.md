@@ -2,14 +2,14 @@
 
 ## A filterable field is rejected in filters
 
-A filter against a field you're sure is filterable raises `FieldNotFilterableException` or `FieldNotSortableException` anyway. This is almost always the backfill window: `isFilterable` (what the registry declares) and `isIndexed` (whether a filter against it works *right now*) are different flags, and they disagree for the whole of a promotion or retype backfill. Check both:
+A filter against a field you're sure is filterable raises `FieldNotFilterableException` or `FieldNotSortableException` anyway. This is almost always the backfill window: `isFilterable` (what the registry declares) and `isIndexed` (whether a filter against it works *right now*) are different flags, and they disagree for the whole of a promotion or retype backfill, and for a newly registered field until its first write has been processed. Check both:
 
 ```php
 $field = $engine->describeModel($tenantId, $modelId)?->fields[...];
 var_dump($field->isFilterable, $field->isIndexed);
 ```
 
-If `isFilterable` is `true` and `isIndexed` is `false`, the field is still waiting on its background copy to finish — see [A rename, retype or deletion never finishes](#a-rename-retype-or-deletion-never-finishes) below, since the fix is the same: make sure a Reconciler is running. Build your filter UI against `isIndexed`, not `isFilterable`, and you'll never offer a filter the engine currently rejects.
+If `isFilterable` is `true` and `isIndexed` is `false`, the field is still waiting on its background copy to finish. See [A rename, retype or deletion never finishes](#a-rename-retype-or-deletion-never-finishes) below, since the fix is the same, which is to make sure a Reconciler is running. A brand-new field has no copy to wait for, only a first write to be processed. Write an entry that touches it, with a Reconciler running, and it becomes queryable a moment later. Build your filter UI against `isIndexed`, not `isFilterable`, and you'll never offer a filter the engine currently rejects.
 
 ## A rename, retype or deletion never finishes
 

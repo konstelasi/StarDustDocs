@@ -24,11 +24,11 @@ Setiap field yang dideskripsikan oleh `describeModel()` melaporkan keduanya:
 
 ## Saat keduanya tidak sama
 
-`isFilterable` dan `isIndexed` berbeda selama seluruh [backfill window](/id/concepts/background-work#backfill-window), dan juga selama field filterable yang baru didaftarkan masih menunggu kapasitas. Contoh yang umum:
+`isFilterable` dan `isIndexed` berbeda selama seluruh [backfill window](/id/concepts/background-work#backfill-window), dan juga pada field filterable yang baru didaftarkan, sampai penulisan pertamanya selesai diproses. Contoh yang umum:
 
 - Anda [mempromosikan](/id/schema-changes/filterability) field yang sudah ada menjadi filterable. Ia langsung `isFilterable: true`, dan `isIndexed: false` sampai Reconciler selesai menyalin semua nilai tersimpan ke slot baru.
 - Anda me-[retype](/id/schema-changes/retype) field filterable. Slot lamanya di-tombstone dan slot baru diisi, jadi ia belum indexed sampai proses itu selesai.
-- Anda mendaftarkan field filterable pada sistem yang belum punya slot bebas untuknya. Ia baru menjadi indexed setelah Watcher menyediakan page dan Reconciler mengklaim slot.
+- Anda mendaftarkan field filterable. Ia langsung `isFilterable: true`, dan `isIndexed: false` sampai penulisan pertamanya selesai diproses. Watcher menyediakan page, dan Reconciler yang berjalan mengklaim slot untuk field itu saat memproses penulisan tersebut. Karena itu, bahkan model yang belum punya entry menolak filter pada field itu sampai saat itu.
 
 Engine menegakkan perbedaan ini lewat <Term id="pre-flight-rejection">pre-flight rejection</Term>: memfilter atau mengurutkan berdasarkan field yang tidak dikenal, tidak filterable, atau belum indexed akan memunculkan exception bertipe di batas API, sebelum database disentuh sama sekali. Anda mendapat error yang jelas, cepat, dan bisa di-catch, bukan query yang tampak berjalan lalu melakukan table scan seiring tenant membesar.
 
@@ -41,7 +41,7 @@ Engine menegakkan perbedaan ini lewat <Term id="pre-flight-rejection">pre-flight
 
 Inilah exception yang perlu Anda tangkap saat menyusun filter dari input pengguna. Daftar lengkapnya ada di [Error](/id/reference/errors).
 
-**Dua baris di tengah memunculkan exception yang sama, dan pesannya bisa menyesatkan.** Selama backfill window, registry menyatakan field itu filterable, tetapi filter padanya ditolak dengan `FieldNotFilterableException` ("not filterable on the active driver"). Registry-nya benar dan pesan itu sebenarnya menggambarkan index yang belum ada. Jangan memakai exception untuk membedakan kedua kasus. Baca `isIndexed` dari `describeModel()`. Kelas `FieldNotIndexedException` memang ada, tetapi engine saat ini tidak memunculkannya.
+**Dua baris di tengah memunculkan exception yang sama.** Selama sebuah field menunggu slot atau backfill-nya, registry menyatakan field itu filterable, dan filter padanya ditolak dengan `FieldNotFilterableException`. Pesannya menyebutkan kasus mana yang Anda hadapi ("declared filterable but is not indexed yet", berbeda dari "not filterable on the active driver" untuk field yang memang tidak filterable), tetapi jangan menentukan apa pun dari teks pesan itu. Baca `isIndexed` dari `describeModel()`. Kelas `FieldNotIndexedException` memang ada, tetapi engine saat ini tidak memunculkannya, jadi tangkap `FieldNotFilterableException`.
 
 ## Penulisan tidak pernah gagal karena kehabisan slot
 

@@ -24,8 +24,8 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | Exception | Muncul ketika |
 | :-- | :-- |
 | `UnknownFieldException` | Filter atau sort merujuk field yang tidak terdaftar di model. |
-| `FieldNotFilterableException` | Filter menargetkan field yang menurut driver aktif non-filterable. |
-| `FieldNotIndexedException` | Filter menargetkan field yang slot-nya backfilling, tombstoned, atau belum dipetakan — field itu filterable dalam niat tetapi belum indexed dalam kenyataan. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
+| `FieldNotFilterableException` | Filter menargetkan field yang tidak bisa difilter oleh driver aktif. Pada driver MySQL bawaan, itu berarti field yang tidak filterable, dan juga field yang dideklarasikan filterable tetapi belum punya index yang bisa dipakai (belum ada slot, atau slotnya backfilling atau tombstoned). Pesannya menyebutkan yang mana. |
+| `FieldNotIndexedException` | Tidak dimunculkan oleh engine bawaan. Filter pada field yang dideklarasikan filterable tetapi belum indexed memunculkan `FieldNotFilterableException`, jadi tangkap yang itu. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
 | `FieldNotSortableException` | Sort menyebut field yang saat ini tidak indexed — persyaratan yang sama seperti memfilter. Daftar field terindeks pada `describeModel()` melaporkan field mana yang memenuhi syarat sekarang. |
 | `PageSizeOutOfRangeException` | `pageSize` di luar rentang `[1, 1000]`. |
 | `InvalidCursorException` | Cursor opaque gagal di-decode secara struktural, atau dipakai ulang setelah sort key atau arahnya berubah. |

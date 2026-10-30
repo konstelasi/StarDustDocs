@@ -40,7 +40,7 @@ $modelId = $company->modelId;
 
 Mendaftarkan field hanya mencatat *niat*. Field baru menjadi filterable setelah nilainya masuk ke kolom slot terindeks.
 
-**Pada deployment yang berjalan, ini otomatis.** Watcher menyadari field yang menunggu slot dan menyediakan page yang diindeks untuknya, lalu Reconciler mengklaim slot bagi setiap field filterable yang ia temukan belum terpetakan. Tulis satu entry yang menyentuh field itu dan ia bisa di-query sesaat kemudian, tanpa Anda memesan apa pun.
+**Pada deployment yang berjalan, ini otomatis.** Watcher menyadari field yang menunggu slot dan menyediakan page yang diindeks untuknya, lalu Reconciler mengklaim slot bagi setiap field filterable yang ia temukan belum terpetakan. Tulis satu entry yang menyentuh field itu dan ia bisa di-query sesaat kemudian, tanpa Anda memesan apa pun. Sampai penulisan pertama itu diproses, filter pada field tersebut ditolak dengan `FieldNotFilterableException`, bahkan pada model yang belum punya entry, dan `describeModel()` melaporkan field itu dengan `isIndexed` bernilai false. Munculkan kontrol filter berdasarkan `isIndexed`, bukan `isFilterable`.
 
 Cara manual di bawah ini untuk setup sekali jalan: skrip seed, fixture test, atau deployment yang menghendaki slot sudah tersedia sebelum penulisan pertama. Sebuah page dibuat dengan persis kolom slot yang Anda sebutkan, dan semuanya diindeks, jadi sebutkan slot yang akan dipakai field filterable Anda, lalu pesan satu slot per field:
 

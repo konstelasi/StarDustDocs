@@ -24,8 +24,8 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | Exception | Thrown when |
 | :-- | :-- |
 | `UnknownFieldException` | A filter or sort references a field not registered on the model. |
-| `FieldNotFilterableException` | A filter targets a field the active driver reports as non-filterable. |
-| `FieldNotIndexedException` | A filter targets a field whose slot is backfilling, tombstoned, or unmapped — the field is filterable in intent but not yet indexed in fact. See [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
+| `FieldNotFilterableException` | A filter targets a field the active driver cannot filter on. For the default MySQL driver that is a field that is not filterable, and also a field declared filterable that has no usable index yet (no slot reserved, or the slot is backfilling or tombstoned). The message says which. |
+| `FieldNotIndexedException` | Not thrown by the built-in engine. A filter on a field that is declared filterable but not indexed yet raises `FieldNotFilterableException` instead, so catch that one. See [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
 | `FieldNotSortableException` | A sort names a field that isn't currently indexed — the same requirement filtering has. `describeModel()`'s indexed-fields list reports which fields qualify right now. |
 | `PageSizeOutOfRangeException` | `pageSize` is outside `[1, 1000]`. |
 | `InvalidCursorException` | An opaque cursor fails its structural decode, or is reused after its sort key or direction changed. |

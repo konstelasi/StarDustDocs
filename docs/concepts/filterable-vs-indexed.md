@@ -24,11 +24,11 @@ Every field described by `describeModel()` reports both:
 
 ## When the two diverge
 
-`isFilterable` and `isIndexed` disagree for the whole of a [backfill window](/concepts/background-work#backfill-windows), and also while a newly registered filterable field is still waiting for capacity. Typical cases:
+`isFilterable` and `isIndexed` disagree for the whole of a [backfill window](/concepts/background-work#backfill-windows), and also for a newly registered filterable field until its first write has been processed. Typical cases:
 
 - You [promote](/schema-changes/filterability) an existing field to filterable. It is `isFilterable: true` at once, and `isIndexed: false` until the Reconciler has copied every stored value into the new slot.
 - You [retype](/schema-changes/retype) a filterable field. Its old slot is tombstoned and a new one is filled, so it is not indexed until that finishes.
-- You register a filterable field on a system that has no free slot for it yet. It becomes indexed once the Watcher has provisioned a page and the Reconciler has claimed a slot.
+- You register a filterable field. It is `isFilterable: true` at once, and `isIndexed: false` until its first write has been processed. The Watcher provisions a page, and a running Reconciler claims a slot for the field while it drains that write, so even a model with no entries rejects filters on the field until then.
 
 The engine enforces the difference with <Term id="pre-flight-rejection">pre-flight rejection</Term>: filtering or sorting on a field that is unknown, not filterable, or not yet indexed raises a typed exception at the API boundary, before the database is touched. You get a loud, fast, catchable error rather than a query that appears to work and then table-scans as the tenant grows.
 
@@ -41,7 +41,7 @@ The engine enforces the difference with <Term id="pre-flight-rejection">pre-flig
 
 These are the exceptions to catch when you build filters from user input. [Errors](/reference/errors) lists them all.
 
-**The two middle rows raise the same exception, and its message can mislead.** During a backfill window the registry says the field is filterable, yet a filter on it is rejected with `FieldNotFilterableException` ("not filterable on the active driver"). The registry is right and the message is describing the missing index. Do not use the exception to tell the two cases apart. Read `isIndexed` from `describeModel()` instead. A `FieldNotIndexedException` class exists, but the engine does not currently raise it.
+**The two middle rows raise the same exception.** While a field waits for its slot or its backfill, the registry says it is filterable, and a filter on it is rejected with `FieldNotFilterableException`. The message says which case you hit ("declared filterable but is not indexed yet", against "not filterable on the active driver" for a field that is not filterable), but do not decide anything from the message text. Read `isIndexed` from `describeModel()` instead. A `FieldNotIndexedException` class exists, but the engine does not currently raise it, so catch `FieldNotFilterableException`.
 
 ## Writes never fail for lack of a slot
 
