@@ -55,6 +55,10 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | `ExportJobActiveCapExceededException` | A tenant is already at its active-export cap. Carries `$tenantId`, `$activeCount`, `$cap`. |
 | `ExportFilterNotSupportedException` | `submitExport()` was given a non-empty `filter`; an export always covers the whole model. Carries `$tenantId`, `$modelId`, `$filterKeys`. |
 
+## Database errors
+
+The connection must use `ERRMODE_EXCEPTION`, so an error from the database reaches your code as a `PDOException`. One of them points at the page layout. MySQL error 1713, "Undo log record is too big", from `updateEntry()` or in the log of a background job, means the row sits on an older page and holds several long values in filterable text fields. [Text fields on older and newer pages](/operations/deployment#text-fields-on-older-and-newer-pages) explains the limit and what to do about it.
+
 ## Handling wire-format rejections
 
 `QueryFilterValidationException` is deliberately discriminator-style: one `catch` handles every wire-format and pre-flight failure, because all of them share one caller response — fix the filter JSON and retry. It carries enough to render a precise HTTP 4xx without a per-code handler:

@@ -11,6 +11,10 @@ var_dump($field->isFilterable, $field->isIndexed);
 
 If `isFilterable` is `true` and `isIndexed` is `false`, the field is still waiting on its background copy to finish. See [A rename, retype or deletion never finishes](#a-rename-retype-or-deletion-never-finishes) below, since the fix is the same, which is to make sure a Reconciler is running. A brand-new field has no copy to wait for, only a first write to be processed. Write an entry that touches it, with a Reconciler running, and it becomes queryable a moment later. Build your filter UI against `isIndexed`, not `isFilterable`, and you'll never offer a filter the engine currently rejects.
 
+## An update fails with "Undo log record is too big"
+
+`updateEntry()` throws a `PDOException` with MySQL error 1713, or a background job logs the same error for one entry, while inserts of similar entries work. The entry's row sits on an older page, where an indexed text value stored outside the row's page adds up to 766 characters to the copy InnoDB keeps for rollback, and a row with several long values outgrows the limit. Keep long free text in fields that are not filterable, since those never take a slot. [Text fields on older and newer pages](/operations/deployment#text-fields-on-older-and-newer-pages) has the details, including how to tell an older page from a newer one.
+
 ## A rename, retype or deletion never finishes
 
 You called `renameField()`, `retypeField()`, `promoteFieldToFilterable()`, `deleteField()`, or `deleteModel()`, the call returned, and the change never seems to complete — reads still show the old name, filters still reject the field, a deleted field's row is still visible in a raw table dump. All five of these return as soon as the registry is updated; a background pass does the rest, and **that pass is the Reconciler's job**. Without one running, none of these windows ever close.

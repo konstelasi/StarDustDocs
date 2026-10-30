@@ -11,6 +11,10 @@ var_dump($field->isFilterable, $field->isIndexed);
 
 Jika `isFilterable` bernilai `true` dan `isIndexed` bernilai `false`, field itu masih menunggu penyalinan latar belakangnya selesai. Lihat [Rename, retype, atau penghapusan tidak kunjung selesai](#rename-retype-atau-penghapusan-tidak-kunjung-selesai) di bawah, karena solusinya sama, yaitu memastikan Reconciler berjalan. Field yang benar-benar baru tidak punya penyalinan untuk ditunggu, hanya penulisan pertama yang harus diproses. Tulis satu entry yang menyentuhnya, dengan Reconciler berjalan, dan ia bisa di-query sesaat kemudian. Bangun UI filter Anda berdasarkan `isIndexed`, bukan `isFilterable`, dan Anda tidak akan pernah menawarkan filter yang saat ini ditolak engine.
 
+## Update gagal dengan "Undo log record is too big"
+
+`updateEntry()` memunculkan `PDOException` dengan error MySQL 1713, atau sebuah background job mencatat error yang sama untuk satu entry, padahal insert entry serupa berhasil. Baris entry itu berada di page yang lebih lama. Di sana, nilai teks terindeks yang disimpan di luar page baris menambahkan hingga 766 karakter ke salinan yang disimpan InnoDB untuk rollback, dan baris dengan beberapa nilai panjang melewati batasnya. Simpan teks bebas yang panjang di field yang tidak filterable, karena field itu tidak pernah memakai slot. [Field teks di page lama dan baru](/id/operations/deployment#field-teks-di-page-lama-dan-baru) memuat rinciannya, termasuk cara membedakan page lama dari page baru.
+
 ## Rename, retype, atau penghapusan tidak kunjung selesai
 
 Anda memanggil `renameField()`, `retypeField()`, `promoteFieldToFilterable()`, `deleteField()`, atau `deleteModel()`, pemanggilannya kembali, dan perubahannya tampak tidak pernah tuntas — pembacaan masih menampilkan nama lama, filter masih menolak field itu, baris field yang sudah dihapus masih terlihat di dump tabel mentah. Kelima operasi ini kembali begitu registry diperbarui; sisanya dikerjakan oleh proses latar belakang, dan **proses itu adalah tugas Reconciler**. Tanpa Reconciler yang berjalan, tidak satu pun dari window ini pernah tertutup.

@@ -55,6 +55,10 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `ExportJobActiveCapExceededException` | Sebuah tenant sudah berada di batas ekspor aktifnya. Membawa `$tenantId`, `$activeCount`, `$cap`. |
 | `ExportFilterNotSupportedException` | `submitExport()` diberi `filter` yang tidak kosong; sebuah ekspor selalu mencakup seluruh model. Membawa `$tenantId`, `$modelId`, `$filterKeys`. |
 
+## Error database
+
+Koneksi harus memakai `ERRMODE_EXCEPTION`, jadi error dari database sampai ke kode Anda sebagai `PDOException`. Salah satunya menunjuk ke tata letak page. Error MySQL 1713, "Undo log record is too big", dari `updateEntry()` atau di log sebuah background job, berarti baris itu berada di page yang lebih lama dan memuat beberapa nilai panjang pada field teks yang filterable. [Field teks di page lama dan baru](/id/operations/deployment#field-teks-di-page-lama-dan-baru) menjelaskan batasnya dan apa yang bisa dilakukan.
+
 ## Menangani penolakan format wire
 
 `QueryFilterValidationException` sengaja bergaya diskriminator: satu `catch` menangani semua kegagalan format wire dan pre-flight, karena semuanya berbagi satu respons pemanggil — perbaiki JSON filter-nya dan coba lagi. Ia membawa cukup konteks untuk merender HTTP 4xx yang presisi tanpa handler per kode:
