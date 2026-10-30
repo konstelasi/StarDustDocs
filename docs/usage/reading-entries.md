@@ -63,6 +63,14 @@ A tree made only of ANDs runs as indexed joins. A tree containing OR or NOT swit
 
 **A filter on a field that is unknown, not filterable or not yet indexed is rejected before any SQL runs**, with a typed exception. See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
 
+### What a filter costs
+
+The page you get back is always at most `pageSize` entries, but how much work the database does to find it depends on the filter. An equality on an integer, numeric or datetime field finds its page by walking that field's index in entry order, so it examines about one page of rows however many entries match. An equality on a text field does the same on a page created since text fields began to be indexed through a computed key (see the <Term id="slot">slot</Term> entry), and on an older page it may have to examine every matching entry.
+
+Join an equality to other conditions with `and` and the work stays in proportion to what that one equality matches. The read starts from the first equality on an integer, numeric or datetime field, in the order you wrote the filter, and uses a text equality only when the filter has none of those. So write the most selective one first. In a test on 200 000 entries, an equality matching 50 008 of them written before one matching 10 made the read examine 150 025 rows, and with the two swapped it examined 31.
+
+A range such as `gt` or `between`, a text prefix, an `in` list, or anything containing `or` or `not` may have to examine every matching entry to produce one page, so its cost grows with the size of the match set. On a page with computed keys, a text prefix or range bound narrows the index for its first 16 Latin letters, or about 8 CJK characters. On a column where every value starts with the same longer text, such as the URLs of one site, a longer bound cannot narrow the index and the read may examine every entry of the tenant. Pages created earlier index the first 766 characters of each value instead, and are not altered.
+
 ## Cursor pagination
 
 Pages are walked with an opaque <Term id="cursor">cursor</Term>. Pass each page's `nextCursor` back in to get the next page, and stop when it is `null`:
@@ -152,3 +160,9 @@ What that means for you:
 - **Schema changes are picked up automatically.** When you or a daemon change the schema, the counter moves and the next read refreshes its cache. You never restart your application for it. A refresh is logged as a `cache_miss` event, which is expected after a schema change and no cause for alarm.
 - **The cache is per process.** Each PHP-FPM worker or CLI process holds its own and refreshes independently.
 - **A long-running process needs no special handling.** A daemon or a queue worker sees schema changes on its next read like any other process.
+
+## The first read in a process
+
+A `StarDust` object that has not read a model yet loads the model's schema first, and keeps it for as long as the object lives. In a long-running process that happens once. In a process that starts for every request, such as PHP-FPM building a `StarDust` object per request, each request pays for it on its first read of each model, because nothing in the engine keeps the schema between processes.
+
+On that first read, a point read sends two statements, the entry and one for the model's fields, slots and pages. A filtered read sends four, which are the schema version check, that same statement for the model, and the two queries that find and fetch the page. A filter with an equality on an integer, numeric or datetime field, or with any text condition, also reads the table definitions of the model's pages from `information_schema`, one query for their indexes and, for a text condition on a page indexed through a computed key, one for the key columns.

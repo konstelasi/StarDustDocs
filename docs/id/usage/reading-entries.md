@@ -63,6 +63,14 @@ Pohon yang hanya berisi AND dijalankan sebagai join terindeks. Pohon yang memuat
 
 **Filter pada field yang tidak dikenal, tidak filterable, atau belum indexed ditolak sebelum SQL apa pun dijalankan**, dengan exception bertipe. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
 
+### Biaya sebuah filter
+
+Halaman hasil yang Anda terima selalu berisi paling banyak `pageSize` entry, tetapi seberapa banyak kerja database untuk menemukannya bergantung pada filter. Filter `eq` pada field integer, numeric, atau datetime menemukan halamannya dengan menelusuri index field itu menurut urutan entry, sehingga database memeriksa kira-kira sebanyak isi satu halaman, berapa pun jumlah entry yang cocok. Untuk `eq` pada field teks, hal yang sama berlaku di page yang dibuat sejak field teks diindeks lewat key yang dihitung (lihat entri <Term id="slot">slot</Term>). Di page yang lebih lama, database mungkin harus memeriksa setiap entry yang cocok.
+
+Gabungkan sebuah `eq` dengan kondisi lain memakai `and`, dan kerjanya tetap sebanding dengan jumlah entry yang cocok dengan satu `eq` itu. Pembacaan dimulai dari `eq` pertama pada field integer, numeric, atau datetime menurut urutan Anda menulis filter, dan memakai `eq` pada teks hanya bila filter tidak punya satu pun yang lain. Karena itu, tulis yang paling selektif lebih dulu. Dalam uji pada 200 000 entry, sebuah `eq` yang cocok dengan 50 008 entry dan ditulis sebelum `eq` yang cocok dengan 10 entry membuat pembacaan memeriksa 150 025 baris. Setelah urutannya ditukar, pembacaan hanya memeriksa 31 baris.
+
+Rentang seperti `gt` atau `between`, prefix teks, daftar `in`, atau apa pun yang memuat `or` atau `not` mungkin harus memeriksa setiap entry yang cocok untuk menghasilkan satu halaman, sehingga biayanya tumbuh seiring ukuran himpunan yang cocok. Di page dengan key yang dihitung, batas prefix atau rentang teks hanya mempersempit index untuk 16 huruf Latin pertamanya, atau sekitar 8 karakter CJK. Pada kolom yang semua nilainya diawali teks panjang yang sama, misalnya URL satu situs, batas yang lebih panjang tidak bisa mempersempit index lagi, dan pembacaan mungkin memeriksa setiap entry milik tenant itu. Page yang dibuat lebih awal mengindeks 766 karakter pertama setiap nilai, dan tidak diubah.
+
 ## Paginasi cursor
 
 Halaman ditelusuri dengan <Term id="cursor">cursor</Term> yang opaque. Oper `nextCursor` setiap halaman kembali untuk mendapat halaman berikutnya, dan berhenti ketika nilainya `null`:
@@ -152,3 +160,9 @@ Artinya bagi Anda:
 - **Perubahan skema terbaca otomatis.** Saat Anda atau sebuah daemon mengubah skema, penghitungnya bergerak dan pembacaan berikutnya menyegarkan cache-nya. Anda tidak perlu me-restart aplikasi. Penyegaran dicatat sebagai event `cache_miss`, yang wajar terjadi setelah perubahan skema dan bukan alasan untuk khawatir.
 - **Cache-nya per proses.** Setiap worker PHP-FPM atau proses CLI memegang cache-nya sendiri dan menyegarkannya secara mandiri.
 - **Proses yang berjalan lama tidak butuh penanganan khusus.** Daemon atau queue worker melihat perubahan skema pada pembacaan berikutnya seperti proses lainnya.
+
+## Pembacaan pertama dalam sebuah proses
+
+Objek `StarDust` yang belum pernah membaca sebuah model akan memuat skema model itu lebih dulu, lalu menyimpannya selama objek tersebut hidup. Pada proses yang berjalan lama, itu hanya terjadi sekali. Pada proses yang dimulai untuk setiap request, misalnya PHP-FPM yang membangun objek `StarDust` per request, setiap request menanggungnya pada pembacaan pertama setiap model, karena engine tidak menyimpan skema di antara proses.
+
+Pada pembacaan pertama itu, pembacaan satu entry mengirim dua statement, yaitu entry-nya dan satu statement untuk field, slot, dan page milik model. Pembacaan dengan filter mengirim empat, yaitu pemeriksaan schema version, statement model yang sama tadi, dan dua query yang menemukan lalu mengambil halamannya. Filter dengan `eq` pada field integer, numeric, atau datetime, atau dengan kondisi teks apa pun, juga membaca definisi tabel dari page milik model itu lewat `information_schema`, satu query untuk index-nya dan, untuk kondisi teks di page yang mengindeks lewat key yang dihitung, satu lagi untuk kolom key-nya.
