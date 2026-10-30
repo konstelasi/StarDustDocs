@@ -6,7 +6,7 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 
 | Exception | Thrown when |
 | :-- | :-- |
-| `UnsupportedServerException` | The connected server is below the supported floor — MySQL/Percona older than 8.0.13, or MariaDB older than 10.11. Raised the first time the engine needs to know the dialect: `bootstrap()`, or any call to `serverEngine()`. See [Troubleshooting](/operations/troubleshooting#the-server-is-rejected-at-boot). |
+| `UnsupportedServerException` | The connected server is below the supported floor — MySQL/Percona older than 8.0.13, or MariaDB older than 10.11. Raised the first time the engine needs to know the dialect: `bootstrap()`, or any call to `serverEngine()`. It is also raised for InnoDB pages smaller than 8 KB. See [Troubleshooting](/operations/troubleshooting#the-server-is-rejected-at-boot). |
 | `InvalidTenantIdException` | `tenantId` is `<= 0`. Checked at every entry point before any SQL runs. |
 
 ## Writes

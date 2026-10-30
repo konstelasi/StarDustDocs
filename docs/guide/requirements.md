@@ -31,6 +31,10 @@ These are detected and refused, not merely untested:
 - **MySQL and Percona older than 8.0.13.**
 - **Anything that is not MySQL, Percona or MariaDB.** PostgreSQL, SQLite and SQL Server are not supported. StarDust's schema and SQL are written for MySQL-family databases, and there is no in-memory stand-in for tests. See the [FAQ](/guide/faq#can-i-use-postgresql-or-sqlite).
 
+## InnoDB page size
+
+StarDust needs InnoDB pages of 8 KB or larger. The default is 16 KB, so a normally installed server qualifies. A server fixes its InnoDB page size when its data directory is created, and the rows of an extension page with a full set of text slots do not fit a 4 KB page, so `bootstrap()` refuses such a server with `UnsupportedServerException`. To see the size your server uses, run `SELECT @@innodb_page_size;`.
+
 ## Engine detection at boot
 
 You never configure which engine you are on. StarDust reads the server's version from the live connection and picks the right variants of the few statements that differ. If the server is below either floor it raises `UnsupportedServerException` instead of continuing.

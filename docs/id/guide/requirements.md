@@ -31,6 +31,10 @@ Ini terdeteksi dan ditolak, bukan sekadar belum diuji:
 - **MySQL dan Percona di bawah 8.0.13.**
 - **Apa pun yang bukan MySQL, Percona, atau MariaDB.** PostgreSQL, SQLite, dan SQL Server tidak didukung. Skema dan SQL StarDust ditulis untuk database keluarga MySQL, dan tidak ada pengganti in-memory untuk test. Lihat [FAQ](/id/guide/faq#apakah-bisa-memakai-postgresql-atau-sqlite).
 
+## Ukuran page InnoDB
+
+StarDust membutuhkan page InnoDB berukuran 8 KB atau lebih. Defaultnya 16 KB, jadi server yang dipasang secara normal memenuhi syarat. Server menetapkan ukuran page InnoDB saat direktori datanya dibuat, dan baris dari sebuah extension page dengan seperangkat penuh slot teks tidak muat di page 4 KB, sehingga `bootstrap()` menolak server seperti itu dengan `UnsupportedServerException`. Untuk melihat ukuran yang dipakai server Anda, jalankan `SELECT @@innodb_page_size;`.
+
 ## Deteksi engine saat boot
 
 Anda tidak pernah mengonfigurasi engine apa yang dipakai. StarDust membaca versi server dari koneksi yang aktif dan memilih varian statement yang sesuai untuk beberapa statement yang berbeda. Jika server berada di bawah salah satu batas bawah, ia memunculkan `UnsupportedServerException` alih-alih melanjutkan.

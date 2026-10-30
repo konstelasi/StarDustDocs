@@ -60,4 +60,6 @@ A row whose underlying cause you haven't actually fixed yet will simply fail aga
 
 The engine raises `UnsupportedServerException` the first time it needs to know your database's dialect — during `bootstrap()`, or any call to `serverEngine()`. This means the connected server is below the supported floor: MySQL or Percona older than 8.0.13, or MariaDB older than 10.11. There's no configuration override for this floor — see [Requirements](/guide/requirements#supported-databases) for exactly which versions qualify, including why MariaDB specifically has a hard floor at 10.11 rather than an older version some MySQL-floor logic might suggest.
 
+The same exception is raised when the server's InnoDB pages are smaller than 8 KB, and its message names the size it found. A server fixes its page size when its data directory is created, so you cannot change it on that server. Run `SELECT @@innodb_page_size;` to check, and move to a server created with 8 KB or 16 KB pages (16 KB is the default).
+
 Check your actual server version and vendor (`SELECT VERSION();`) rather than assuming from your hosting plan's marketing name — "MySQL 8" hosting is sometimes actually MariaDB under the hood, and shared hosting in particular commonly defaults to an older MariaDB than 10.11.

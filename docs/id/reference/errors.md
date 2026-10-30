@@ -6,7 +6,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 
 | Exception | Muncul ketika |
 | :-- | :-- |
-| `UnsupportedServerException` | Server yang tersambung di bawah batas minimum yang didukung — MySQL/Percona lebih lama dari 8.0.13, atau MariaDB lebih lama dari 10.11. Dilempar pertama kali engine butuh tahu dialeknya: `bootstrap()`, atau pemanggilan `serverEngine()` mana pun. Lihat [Pemecahan masalah](/id/operations/troubleshooting#server-ditolak-saat-boot). |
+| `UnsupportedServerException` | Server yang tersambung di bawah batas minimum yang didukung — MySQL/Percona lebih lama dari 8.0.13, atau MariaDB lebih lama dari 10.11. Dilempar pertama kali engine butuh tahu dialeknya: `bootstrap()`, atau pemanggilan `serverEngine()` mana pun. Juga dilempar untuk page InnoDB yang lebih kecil dari 8 KB. Lihat [Pemecahan masalah](/id/operations/troubleshooting#server-ditolak-saat-boot). |
 | `InvalidTenantIdException` | `tenantId` bernilai `<= 0`. Diperiksa di setiap entry point sebelum SQL apa pun berjalan. |
 
 ## Penulisan
