@@ -35,6 +35,8 @@ interface EntrySearchInterface
 
 `supportsSortOn(int $fieldId)` is deliberately a separate question from `supportsFilterOn()`, even though the built-in driver answers both the same way. An external engine can easily index a field for matching without keeping it orderable — sorting usually costs more to maintain than matching does. A sort naming a field your driver reports as unsupported raises `FieldNotSortableException` before your driver ever runs. See [Sorting](/usage/reading-entries#sorting) for the `SortSpec` your `list()` implementation receives on `SearchRequest`, and note the same single-key-only rule applies regardless of which driver is serving the read.
 
+The `SortSpec` can also carry a `NullPlacement`, which says whether entries with no value for the sort field come first or last. Read it through `SortSpec::effectiveNulls()` and order to match. There is no capability method for it, so a driver that ignores it orders by its own default and raises no error.
+
 ## Registering your driver
 
 Inject an instance through `Config::$searchDriver`:

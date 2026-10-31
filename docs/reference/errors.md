@@ -28,7 +28,7 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | `FieldNotIndexedException` | Not thrown by the built-in engine. A filter on a field that is declared filterable but not indexed yet raises `FieldNotFilterableException` instead, so catch that one. See [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
 | `FieldNotSortableException` | A sort names a field that isn't currently indexed — the same requirement filtering has. `describeModel()`'s indexed-fields list reports which fields qualify right now. |
 | `PageSizeOutOfRangeException` | `pageSize` is outside `[1, 1000]`. |
-| `InvalidCursorException` | An opaque cursor fails its structural decode, or is reused after its sort key or direction changed. |
+| `InvalidCursorException` | An opaque cursor fails its structural decode, or is reused after its sort key, direction or null placement changed. |
 | `QueryFilterValidationException` | A JSON QueryFilter fails decode or pre-flight. See [Handling wire-format rejections](#handling-wire-format-rejections) below. |
 
 ## Schema changes

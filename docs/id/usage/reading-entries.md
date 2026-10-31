@@ -118,6 +118,7 @@ Pembacaan kembali dalam urutan penyisipan (id entry menaik) kecuali Anda menentu
 
 ```php
 use StarDust\Read\EntryQuery;
+use StarDust\Read\NullPlacement;
 use StarDust\Read\SortDirection;
 use StarDust\Read\SortSpec;
 
@@ -131,6 +132,10 @@ $page = $engine->read(new EntryQuery(
 SortSpec::byCreatedAt(SortDirection::Desc);
 SortSpec::byField('title');                        // menaik
 SortSpec::byField('price', SortDirection::Desc);
+
+// Entry tanpa nilai untuk field itu muncul paling awal pada urutan menaik
+// dan paling akhir pada urutan menurun. NullPlacement memindahkannya ke ujung lain.
+SortSpec::byField('price', SortDirection::Asc, NullPlacement::Last);
 ```
 
 Pengurutan bisa dipadukan dengan filter dan paginasi cursor. Teruslah mengoper `nextCursor` kembali, bersama filter dan sort yang sama. Anda hanya bisa mengurutkan berdasarkan **satu key**. Mengurutkan berdasarkan dua field sekaligus tidak didukung.
@@ -139,7 +144,7 @@ Pengurutan bisa dipadukan dengan filter dan paginasi cursor. Teruslah mengoper `
 
 Anda bisa mengurutkan berdasarkan id entry, waktu pembuatan, atau salah satu field Anda sendiri. Field harus filterable **dan** punya slot aktif, persyaratan yang sama seperti untuk memfilter. Mengurutkan berdasarkan hal lain memunculkan `FieldNotSortableException`, dan pada nama yang tidak terdaftar `UnknownFieldException`. `describeModel()` memberi tahu field mana yang memenuhi syarat saat ini lewat `ModelDescription::indexedFields()`.
 
-Entry yang tidak punya nilai untuk field pengurut muncul paling awal pada urutan menaik dan paling akhir pada urutan menurun. Mereka tidak dibuang dari halaman.
+Entry yang tidak punya nilai untuk field pengurut tidak pernah dibuang dari halaman. Mereka muncul paling awal pada urutan menaik dan paling akhir pada urutan menurun, kecuali Anda memberikan `NullPlacement` untuk menaruhnya di ujung lain. Di antara mereka sendiri, urutannya mengikuti id entry searah dengan pengurutan.
 
 ### Biaya pengurutan berdasarkan field
 
@@ -147,7 +152,7 @@ Mengurutkan berdasarkan id entry atau waktu pembuatan menyusuri index yang sudah
 
 ### Pengurutan dan cursor
 
-Cursor milik urutan yang menghasilkannya. Ubah key atau arah pengurutan dan cursor lama ditolak dengan `InvalidCursorException`, jadi mulai lagi dari halaman pertama. Itu pengaman, bukan keterbatasan yang perlu dicari jalan pintasnya: memakai ulang cursor akan diam-diam menelusuri urutan yang berbeda.
+Cursor milik urutan yang menghasilkannya. Ubah key, arah, atau null placement pengurutan dan cursor lama ditolak dengan `InvalidCursorException`, jadi mulai lagi dari halaman pertama. Itu pengaman, bukan keterbatasan yang perlu dicari jalan pintasnya: memakai ulang cursor akan diam-diam menelusuri urutan yang berbeda.
 
 Di MariaDB, pengurutan berdasarkan field menempatkan karakter supplementary-plane, kebanyakan emoji dan jauh di luar teks sehari-hari, di ujung yang berlawanan dari MySQL. Semua perbandingan lain, dan teks biasa dalam bahasa apa pun, terurut identik di kedua engine.
 

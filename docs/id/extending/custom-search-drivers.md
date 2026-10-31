@@ -35,6 +35,8 @@ interface EntrySearchInterface
 
 `supportsSortOn(int $fieldId)` sengaja menjadi pertanyaan terpisah dari `supportsFilterOn()`, meskipun driver bawaan menjawab keduanya dengan cara yang sama. Sebuah engine eksternal bisa dengan mudah mengindeks sebuah field untuk pencocokan tanpa membuatnya bisa diurutkan — pengurutan biasanya lebih mahal dipelihara daripada pencocokan. Sort yang menyebut field yang menurut driver Anda tidak didukung memunculkan `FieldNotSortableException` sebelum driver Anda sempat berjalan. Lihat [Pengurutan](/id/usage/reading-entries#pengurutan) untuk `SortSpec` yang diterima implementasi `list()` Anda lewat `SearchRequest`, dan perhatikan bahwa aturan satu-key-saja yang sama berlaku terlepas dari driver mana yang melayani pembacaan.
 
+`SortSpec` juga bisa membawa `NullPlacement`, yang menentukan apakah entry tanpa nilai untuk field pengurut muncul paling awal atau paling akhir. Bacalah lewat `SortSpec::effectiveNulls()` dan urutkan sesuai itu. Tidak ada metode kapabilitas untuknya, jadi driver yang mengabaikannya mengurutkan menurut default-nya sendiri tanpa memunculkan error.
+
 ## Mendaftarkan driver Anda
 
 Suntikkan sebuah instance lewat `Config::$searchDriver`:

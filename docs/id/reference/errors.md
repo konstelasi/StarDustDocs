@@ -28,7 +28,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `FieldNotIndexedException` | Tidak dimunculkan oleh engine bawaan. Filter pada field yang dideklarasikan filterable tetapi belum indexed memunculkan `FieldNotFilterableException`, jadi tangkap yang itu. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
 | `FieldNotSortableException` | Sort menyebut field yang saat ini tidak indexed — persyaratan yang sama seperti memfilter. Daftar field terindeks pada `describeModel()` melaporkan field mana yang memenuhi syarat sekarang. |
 | `PageSizeOutOfRangeException` | `pageSize` di luar rentang `[1, 1000]`. |
-| `InvalidCursorException` | Cursor opaque gagal di-decode secara struktural, atau dipakai ulang setelah sort key atau arahnya berubah. |
+| `InvalidCursorException` | Cursor opaque gagal di-decode secara struktural, atau dipakai ulang setelah sort key, arah, atau null placement-nya berubah. |
 | `QueryFilterValidationException` | QueryFilter JSON gagal decode atau pre-flight. Lihat [Menangani penolakan format wire](#menangani-penolakan-format-wire) di bawah. |
 
 ## Perubahan skema
