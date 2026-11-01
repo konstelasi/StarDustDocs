@@ -25,7 +25,7 @@ DTO, value object, dan enum yang membentuk permukaan publik, dikelompokkan menur
 
 ## Filter node
 
-`StarDust\Filter\Ast\FilterNode` adalah marker interface yang diimplementasikan setiap node. Lihat [Format wire QueryFilter](/id/usage/query-filter) untuk bentuk JSON yang dicerminkan tipe-tipe ini, dan [Menyusun filter tree di PHP](/id/usage/searching#menyusun-filter-tree-di-php) untuk membuatnya langsung.
+`StarDust\Filter\Ast\FilterNode` adalah marker interface yang diimplementasikan setiap node. Lihat [Wire format QueryFilter](/id/usage/query-filter) untuk bentuk JSON yang dicerminkan tipe-tipe ini, dan [Menyusun filter tree di PHP](/id/usage/searching#menyusun-filter-tree-di-php) untuk membuatnya langsung.
 
 | Tipe | Membawa | |
 | :-- | :-- | :-- |
@@ -36,7 +36,7 @@ DTO, value object, dan enum yang membentuk permukaan publik, dikelompokkan menur
 | `FieldRef` | `modelName`, `fieldName` | Referensi field. `FieldRef::local($fieldName)` menargetkan field pada model request itu sendiri. |
 | `TypedValue` | `value` (skalar atau `list<scalar>`) | Ruas kanan sebuah `LeafNode`. |
 
-`Operator` adalah kelas konstanta string (`EQ`, `NEQ`, `LT`, `LTE`, `GT`, `GTE`, `IN`, `NIN`, `PREFIX`, `BETWEEN`, `IS_NULL`, `IS_NOT_NULL`), bukan enum, agar [search driver](/id/extending/custom-search-drivers) kustom bisa mendeklarasikan operator tambahan saat runtime. `ValidationErrorCode` adalah himpunan tertutup dari tiga belas kode error format wire. Lihat [Kode error](/id/usage/query-filter#kode-error) untuk artinya masing-masing dan [Error](/id/reference/errors#menangani-penolakan-format-wire) untuk menanganinya. `FilterLimits` membawa enam batasan yang bisa disetel (`maxDepth`, `maxNodes`, `maxArgs`, `maxInElements`, `maxStringLength`, `maxPayloadBytes`). Lihat [Batasan](/id/usage/query-filter#batasan).
+`Operator` adalah kelas konstanta string (`EQ`, `NEQ`, `LT`, `LTE`, `GT`, `GTE`, `IN`, `NIN`, `PREFIX`, `BETWEEN`, `IS_NULL`, `IS_NOT_NULL`), bukan enum, agar [search driver](/id/extending/custom-search-drivers) kustom bisa mendeklarasikan operator tambahan saat runtime. `ValidationErrorCode` adalah himpunan tertutup dari tiga belas kode error wire format. Lihat [Kode error](/id/usage/query-filter#kode-error) untuk artinya masing-masing dan [Error](/id/reference/errors#menangani-penolakan-wire-format) untuk menanganinya. `FilterLimits` membawa enam batasan yang bisa disetel (`maxDepth`, `maxNodes`, `maxArgs`, `maxInElements`, `maxStringLength`, `maxPayloadBytes`). Lihat [Batasan](/id/usage/query-filter#batasan).
 
 ## Pengurutan
 

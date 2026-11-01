@@ -59,7 +59,7 @@ $filter = new AndNode([
 ]);
 ```
 
-Pohon yang hanya berisi AND dijalankan sebagai join terindeks. Pohon yang memuat OR atau NOT otomatis beralih ke bentuk eksekusi yang berbeda, tanpa perubahan apa pun di sisi Anda. Daftar operator ada di [Format wire QueryFilter](/id/usage/query-filter#operator), dan [Pencarian](/id/usage/searching) membahas cara menyusun filter dari JSON.
+Pohon yang hanya berisi AND dijalankan sebagai join terindeks. Pohon yang memuat OR atau NOT otomatis beralih ke bentuk eksekusi yang berbeda, tanpa perubahan apa pun di sisi Anda. Daftar operator ada di [Wire format QueryFilter](/id/usage/query-filter#operator), dan [Pencarian](/id/usage/searching) membahas cara menyusun filter dari JSON.
 
 **Filter pada field yang tidak dikenal, tidak filterable, atau belum indexed ditolak sebelum SQL apa pun dijalankan**, dengan exception bertipe. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
 

@@ -46,7 +46,7 @@ $filter = new AndNode([
 ]);
 ```
 
-`LeafNode::local($fieldName, $operator, $value)` membuat leaf untuk field milik model yang dituju request. Berikan `null` sebagai nilai untuk `is_null` dan `is_not_null`, sebuah list untuk `in`, `nin`, dan `between`, dan nilai skalar untuk yang lain. Operatornya sama dengan yang dipakai format JSON, tercantum di [Format wire QueryFilter](/id/usage/query-filter#operator).
+`LeafNode::local($fieldName, $operator, $value)` membuat leaf untuk field milik model yang dituju request. Berikan `null` sebagai nilai untuk `is_null` dan `is_not_null`, sebuah list untuk `in`, `nin`, dan `between`, dan nilai skalar untuk yang lain. Operatornya sama dengan yang dipakai format JSON, tercantum di [Wire format QueryFilter](/id/usage/query-filter#operator).
 
 Himpunan operator bawaannya sengaja kecil: kesamaan, perbandingan, rentang, keanggotaan himpunan, pengecekan null, dan pencocokan awalan (prefix). Tidak ada pencocokan substring atau akhiran, tidak ada pencocokan fuzzy, dan tidak ada pemeringkatan relevansi. [Search driver](/id/extending/custom-search-drivers) kustom bisa menyediakannya.
 
@@ -69,7 +69,7 @@ $result = $engine->search(new SearchRequest(
 ));
 ```
 
-`decode()` mengembalikan <Term id="filter-tree">filter tree</Term> yang sama dengan yang dihasilkan builder bertipe, atau `null` bila dokumen tidak punya key `filter`, yang oleh `search()` diperlakukan sebagai match-all. Decoder-nya ketat, bekerja tanpa koneksi database, dan tidak pernah melihat skema Anda. Apakah sebuah field ada atau bisa di-query diputuskan sesudahnya, oleh pemeriksaan pre-flight. Format dokumennya didefinisikan di [Format wire QueryFilter](/id/usage/query-filter).
+`decode()` mengembalikan <Term id="filter-tree">filter tree</Term> yang sama dengan yang dihasilkan builder bertipe, atau `null` bila dokumen tidak punya key `filter`, yang oleh `search()` diperlakukan sebagai match-all. Decoder-nya ketat, bekerja tanpa koneksi database, dan tidak pernah melihat skema Anda. Apakah sebuah field ada atau bisa di-query diputuskan sesudahnya, oleh pemeriksaan pre-flight. Format dokumennya didefinisikan di [Wire format QueryFilter](/id/usage/query-filter).
 
 ## Validasi pre-flight
 
@@ -88,7 +88,7 @@ Menolak sejak awal adalah pertukaran yang disengaja. Anda mendapat error yang je
 
 ## Meneruskan penolakan ke klien API Anda
 
-`QueryFilterValidationException` sengaja berbentuk diskriminator. Setiap kegagalan format wire dan pre-flight punya satu respons yang sama bagi pemanggil, "perbaiki filternya dan coba lagi", jadi satu `catch` menangani semuanya, dan ia membawa cukup informasi untuk menyusun HTTP 400 yang presisi:
+`QueryFilterValidationException` sengaja berbentuk diskriminator. Setiap kegagalan wire format dan pre-flight punya satu respons yang sama bagi pemanggil, "perbaiki filternya dan coba lagi", jadi satu `catch` menangani semuanya, dan ia membawa cukup informasi untuk menyusun HTTP 400 yang presisi:
 
 - `$errorCode`: salah satu kode error yang tertutup, seperti `value_type_mismatch`.
 - `$jsonPointer`: penunjuk RFC 6901 ke node yang bermasalah, seperti `/filter/args/1/value`.
@@ -116,12 +116,12 @@ try {
         'details' => $e->details,
     ]);
 } catch (UnknownFieldException | FieldNotFilterableException $e) {
-    // Masalah field memakai exception ini, bukan exception format wire.
+    // Masalah field memakai exception ini, bukan exception wire format.
     http_response_code(400);
     echo json_encode(['error' => $e::class, 'message' => $e->getMessage()]);
 }
 ```
 
-Dua kode format wire, `field_unknown` dan `field_not_filterable`, dilaporkan lewat `UnknownFieldException` dan `FieldNotFilterableException`, jadi tangkap keduanya juga. Field yang filterable tetapi belum indexed juga memunculkan `FieldNotFilterableException`, jadi 400 untuk kasus itu wajar terjadi selama backfill window. Lebih baik lagi, hindari dengan menawarkan filter hanya pada field yang `isIndexed`-nya true. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed#mengecek-apakah-field-bisa-di-query-sebelum-menawarkan-filter).
+Dua kode wire format, `field_unknown` dan `field_not_filterable`, dilaporkan lewat `UnknownFieldException` dan `FieldNotFilterableException`, jadi tangkap keduanya juga. Field yang filterable tetapi belum indexed juga memunculkan `FieldNotFilterableException`, jadi 400 untuk kasus itu wajar terjadi selama backfill window. Lebih baik lagi, hindari dengan menawarkan filter hanya pada field yang `isIndexed`-nya true. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed#mengecek-apakah-field-bisa-di-query-sebelum-menawarkan-filter).
 
 Jangan menampilkan `getMessage()` begitu saja bila API Anda publik dan Anda tidak ingin menggambarkan skema Anda kepada orang asing. Kode error dan pointer sudah cukup bagi klien untuk memperbaiki request-nya. Lihat [Keamanan](/id/operations/security#menerima-filter-dari-sumber-yang-tidak-tepercaya).

@@ -18,7 +18,7 @@ Dicakup oleh semantic versioning, begitu StarDust mencapai `1.0`:
 
 - Setiap method pada `StarDust` (lihat [API StarDust](/id/reference/api)).
 - DTO, value object, dan enum yang diterima dan dikembalikan method-method itu (lihat [Tipe data](/id/reference/types)).
-- Format wire QueryFilter JSON dan JSON Schema-nya (lihat [Format wire QueryFilter](/id/usage/query-filter)).
+- Wire format QueryFilter JSON dan JSON Schema-nya (lihat [Wire format QueryFilter](/id/usage/query-filter)).
 - Perintah CLI `bin/stardust` beserta flag-nya (lihat [Referensi CLI](/id/reference/cli)).
 
 Selain itu adalah detail implementasi, sekalipun sebagian terlihat dari luar engine. Termasuk tabel dan kolom persis yang dibuat StarDust di database Anda (lihat [Tabel di database Anda](/id/reference/database-tables)), kelas internal di balik factory mana pun di atas, dan struktur apa pun di dalam payload tersimpan di luar nilai field yang Anda masukkan sendiri. Semua ini bisa berubah antar rilis tanpa dianggap sebagai perubahan yang merusak API publik.

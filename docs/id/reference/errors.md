@@ -29,7 +29,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `FieldNotSortableException` | Sort menyebut field yang saat ini tidak indexed, yang merupakan persyaratan yang sama seperti memfilter. Daftar field terindeks pada `describeModel()` melaporkan field mana yang memenuhi syarat sekarang. |
 | `PageSizeOutOfRangeException` | `pageSize` di luar rentang `[1, 1000]`. |
 | `InvalidCursorException` | Cursor opaque gagal di-decode secara struktural, atau dipakai ulang setelah sort key, arah, atau null placement-nya berubah. |
-| `QueryFilterValidationException` | QueryFilter JSON gagal decode atau pre-flight. Lihat [Menangani penolakan format wire](#menangani-penolakan-format-wire) di bawah. |
+| `QueryFilterValidationException` | QueryFilter JSON gagal decode atau pre-flight. Lihat [Menangani penolakan wire format](#menangani-penolakan-wire-format) di bawah. |
 
 ## Perubahan skema
 
@@ -59,9 +59,9 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 
 Koneksi harus memakai `ERRMODE_EXCEPTION`, jadi error dari database sampai ke kode Anda sebagai `PDOException`. Salah satunya menunjuk ke tata letak page. Error MySQL 1713, "Undo log record is too big", dari `updateEntry()` atau di log sebuah background job, berarti baris itu berada di page yang lebih lama dan memuat beberapa nilai panjang pada field teks yang filterable. [Field teks di page lama dan baru](/id/operations/deployment#field-teks-di-page-lama-dan-baru) menjelaskan batasnya dan apa yang bisa dilakukan.
 
-## Menangani penolakan format wire
+## Menangani penolakan wire format
 
-`QueryFilterValidationException` sengaja bergaya diskriminator: satu `catch` menangani semua kegagalan format wire dan pre-flight, karena semuanya berbagi satu respons pemanggil, yaitu memperbaiki JSON filter-nya dan mencoba lagi. Ia membawa cukup konteks untuk merender HTTP 4xx yang presisi tanpa handler per kode:
+`QueryFilterValidationException` sengaja bergaya diskriminator: satu `catch` menangani semua kegagalan wire format dan pre-flight, karena semuanya berbagi satu respons pemanggil, yaitu memperbaiki JSON filter-nya dan mencoba lagi. Ia membawa cukup konteks untuk merender HTTP 4xx yang presisi tanpa handler per kode:
 
 - `$errorCode` adalah salah satu dari [tiga belas kode error tertutup](/id/usage/query-filter#kode-error).
 - `$jsonPointer` adalah JSON Pointer RFC 6901 ke node yang bermasalah (misalnya `/filter/args/1/value`).

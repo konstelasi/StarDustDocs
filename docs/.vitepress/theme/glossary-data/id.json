@@ -113,7 +113,7 @@
   },
   "queryfilter": {
     "term": "QueryFilter",
-    "short": "Format wire JSON untuk filter, supaya sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda."
+    "short": "Wire format JSON untuk filter, supaya sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda."
   },
   "reconciler": {
     "term": "Reconciler",
