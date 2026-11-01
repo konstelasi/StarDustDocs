@@ -24,4 +24,4 @@ The model's name is not available again until the purge finishes: `createModel()
 
 A model can't be deleted while any of its fields has a rename, a retype, or a field deletion running (`RenameInProgressException`, `RetypeInProgressException`, or `FieldDeletionInProgressException` respectively), and conversely, once a model deletion starts, none of those three can be started on any of its fields. See [Operations that block each other](/schema-changes/#operations-that-block-each-other).
 
-If you might want the data afterwards, [export it](/usage/exports) and wait for the job to finish first. This is the same irreversibility that [entry-level soft deletion](/concepts/entries-and-payloads#soft-deletion) deliberately avoids by never actually removing a row.
+If you might want the data afterwards, [export it](/usage/exports) and wait for the job to finish first. This is the same irreversibility that [entry-level soft deletion](/concepts/entries-and-payloads#soft-deletion) deliberately avoids by never removing a row.

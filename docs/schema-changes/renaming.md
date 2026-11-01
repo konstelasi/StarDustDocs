@@ -1,6 +1,6 @@
 # Renaming fields and models
 
-A model rename and a field rename look similar from the call signature, but they're nothing alike underneath: a model's name is a label nothing else keys on, while a field's name is the literal key each entry's JSON payload stores its value under. See [Names are labels, ids are identity](/concepts/tenants-models-fields#names-are-labels-ids-are-identity) for why that difference exists at all.
+A model rename and a field rename look similar from the call signature, but underneath they're nothing alike. A model's name is a label nothing else keys on, while a field's name is the literal key each entry's JSON payload stores its value under. See [Names are labels, ids are identity](/concepts/tenants-models-fields#names-are-labels-ids-are-identity) for why that difference exists at all.
 
 ## Renaming a model
 
@@ -30,8 +30,8 @@ Returns as soon as the registry is updated. The stored data catches up asynchron
 
 ### What is rejected
 
-- **Filters on the old name** are rejected outright with `UnknownFieldException`, rather than silently matching nothing. A filter needs a loud, catchable failure; a write does not, which is why the two surfaces diverge.
+- **Filters on the old name** are rejected outright with `UnknownFieldException`, rather than silently matching nothing. A filter needs a loud, catchable failure. A write does not, which is why the two surfaces diverge.
 - **The new name is unavailable elsewhere** until the rewrite finishes: registering a different field with that name raises `FieldNameConflictException`.
 - **The field itself is locked for the duration.** It cannot be retyped, promoted, demoted, deleted, or picked up by a [compaction](/operations/slot-maintenance) relocation until the rewrite completes. See [Operations that block each other](/schema-changes/#operations-that-block-each-other).
 
-One export format bridges the rename and one doesn't: a CSV export resolves its header when the job runs, so it always uses the current name, while a JSON export is the raw stored payload and can still show the old key for rows the rewrite hasn't reached yet. See [CSV and JSON formats](/usage/exports#csv-and-json-formats).
+One export format bridges the rename and one doesn't. A CSV export resolves its header when the job runs, so it always uses the current name, while a JSON export is the raw stored payload and can still show the old key for rows the rewrite hasn't reached yet. See [CSV and JSON formats](/usage/exports#csv-and-json-formats).

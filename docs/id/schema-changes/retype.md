@@ -21,7 +21,7 @@ Retype kedua yang dimulai pada field yang sudah punya retype berjalan akan memun
 
 ## Aturan koersi
 
-Mengonversi ke tipe yang sama hanya lewat begitu saja (nilai `datetime` sekadar dinormalisasi ke format tersimpan slotnya). Antar tipe yang berbeda, masing-masing dari delapan pasangan yang didukung punya aturan konversinya sendiri:
+Mengonversi ke tipe yang sama hanya lewat begitu saja (nilai `datetime` dinormalisasi ke format tersimpan slotnya). Antar tipe yang berbeda, masing-masing dari delapan pasangan yang didukung punya aturan konversinya sendiri:
 
 | Dari → ke | Aturan |
 | :-- | :-- |

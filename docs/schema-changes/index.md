@@ -39,10 +39,10 @@ Model deletion widens the same check to every field the model owns:
 | | a retype running | `RetypeInProgressException` |
 | | a deletion running | `FieldDeletionInProgressException` |
 
-Compaction is the one asymmetric case worth knowing: a field mid-deletion doesn't make compaction throw. It simply can never be *planned*, because a deleting field has already lost its slot and its filterable flag, so compaction just relocates whatever is left. See [When compaction declines to run](/operations/slot-maintenance#when-compaction-declines-to-run).
+Compaction is the one asymmetric case worth knowing: a field mid-deletion doesn't make compaction throw. It can never be *planned*, because a deleting field has already lost its slot and its filterable flag, so compaction relocates whatever is left. See [When compaction declines to run](/operations/slot-maintenance#when-compaction-declines-to-run).
 
 ## Export before you destroy
 
 Two of these operations remove data with no way back: deleting a field permanently discards its values once the purge finishes, and [deleting a model](/schema-changes/deleting-models) permanently discards its entries. It is **the only operation in the engine that physically deletes rows**. Neither has an undelete.
 
-If you might want the data again, [export it](/usage/exports) and wait for the job to complete before you delete. An export already claimed when a model deletion starts will simply produce an empty artifact rather than failing, so the order matters: submit and finish the export first.
+If you might want the data again, [export it](/usage/exports) and wait for the job to complete before you delete. An export already claimed when a model deletion starts will produce an empty artifact rather than failing, so the order matters: submit and finish the export first.

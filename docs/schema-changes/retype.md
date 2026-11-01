@@ -21,7 +21,7 @@ A second retype started on a field that already has one running throws `RetypeIn
 
 ## Coercion rules
 
-Converting to the same type is a pass-through (a `datetime` value is simply normalised to the slot's stored format). Between different types, each of the eight supported pairs has its own conversion rule:
+Converting to the same type is a pass-through (a `datetime` value is normalised to the slot's stored format). Between different types, each of the eight supported pairs has its own conversion rule:
 
 | From → to | Rule |
 | :-- | :-- |
@@ -42,7 +42,7 @@ Converting to the same type is a pass-through (a `datetime` value is simply norm
 
 A value that doesn't fit its rule converts to `null` **in the slot only**. The payload keeps the original value, so reads are unaffected. Only a filter or a sort on the field would ever see the gap, and it never raises an error. Each failure fires a `coercion_null` audit event carrying one of a closed set of reasons: `out_of_range`, `non_integer` (a non-integer `numeric` value going to `int`), `malformed_datetime`, `malformed_number`, or `unparseable`.
 
-A missing or JSON-`null` source value is not a coercion failure at all. It is left absent, with no event, and the new slot simply has nothing to hold there.
+A missing or JSON-`null` source value is not a coercion failure at all. It is left absent, with no event, and the new slot has nothing to hold there.
 
 ## During the backfill window
 

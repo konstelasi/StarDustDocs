@@ -39,7 +39,7 @@ Penghapusan model melebarkan pengecekan yang sama ke setiap field yang dimiliki 
 | | retype yang berjalan | `RetypeInProgressException` |
 | | penghapusan yang berjalan | `FieldDeletionInProgressException` |
 
-Compaction adalah satu-satunya kasus yang tidak simetris, dan ini layak diketahui: field yang sedang dihapus tidak membuat compaction melempar exception. Field itu hanya tidak akan pernah bisa *direncanakan*, karena field yang sedang dihapus sudah kehilangan slot dan flag filterable-nya lebih dulu, jadi compaction cuma memindahkan apa yang tersisa. Lihat [Saat compaction menolak berjalan](/id/operations/slot-maintenance#saat-compaction-menolak-berjalan).
+Compaction adalah satu-satunya kasus yang tidak simetris, dan ini layak diketahui: field yang sedang dihapus tidak membuat compaction melempar exception. Field itu tidak akan pernah bisa *direncanakan*, karena field yang sedang dihapus sudah kehilangan slot dan flag filterable-nya lebih dulu, jadi compaction memindahkan apa yang tersisa. Lihat [Saat compaction menolak berjalan](/id/operations/slot-maintenance#saat-compaction-menolak-berjalan).
 
 ## Ekspor dulu sebelum menghapus
 
