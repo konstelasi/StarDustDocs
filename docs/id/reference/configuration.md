@@ -1,12 +1,12 @@
 # Referensi konfigurasi
 
-Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [Konfigurasi](/id/usage/configuration) untuk objeknya sendiri, cara menyuntikkan logger, clock, atau search driver, dan lock namespace untuk shared hosting; lihat [Penyetelan](/id/operations/tuning) untuk panduan kapan sebaiknya mengubah nilai bawaan, bukan sekadar apa nilainya.
+Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [Konfigurasi](/id/usage/configuration) untuk objeknya sendiri, cara menyuntikkan logger, clock, atau search driver, dan lock namespace untuk shared hosting. Lihat [Penyetelan](/id/operations/tuning) untuk panduan kapan sebaiknya mengubah nilai bawaan, bukan sekadar apa nilainya.
 
 ## Koneksi dan logging
 
 | Field | Bawaan | Mengatur |
 | :-- | :-- | :-- |
-| `pdo` | — (wajib) | Koneksinya. Harus dibuat dengan `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) adalah bawaan yang diuji, dan emulasi juga bisa dipakai. Lihat [Menyiapkan koneksi PDO](/id/guide/installation#menyiapkan-koneksi-pdo). |
+| `pdo` | Tidak ada (wajib) | Koneksinya. Harus dibuat dengan `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) adalah bawaan yang diuji, dan emulasi juga bisa dipakai. Lihat [Menyiapkan koneksi PDO](/id/guide/installation#menyiapkan-koneksi-pdo). |
 | `logger` | `StdoutNdjsonLogger` | Logger PSR-3. Suntikkan milik Anda sendiri untuk mengarahkan event ke tempat lain selain stdout NDJSON. |
 | `clock` | `SystemClock` | Implementasi `psr/clock`. Suntikkan clock yang dibekukan dalam test. |
 
@@ -14,7 +14,7 @@ Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [K
 
 | Field | Bawaan | Mengatur |
 | :-- | :-- | :-- |
-| `artifactDir` | `sys_get_temp_dir() . '/stardust'` | Tempat payload bulk-ingest asinkron ditulis. Dipakai bersama artifact ekspor — lihat [Chronicler dan ekspor](#chronicler-dan-ekspor) di bawah. |
+| `artifactDir` | `sys_get_temp_dir() . '/stardust'` | Tempat payload bulk-ingest asinkron ditulis. Dipakai bersama artifact ekspor. Lihat [Chronicler dan ekspor](#chronicler-dan-ekspor) di bawah. |
 | `reconcilerImportLeaseTimeoutSeconds` | 30 | Detik sebelum heartbeat sebuah import job dianggap terhenti dan Reconciler lain mengklaim ulang. |
 
 ## Pembacaan dan pencarian
@@ -37,7 +37,7 @@ Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [K
 | `cardinalityRowFloor` | 10 000 | Jumlah baris minimum sebelum sebuah index bahkan dipertimbangkan untuk pemeriksaan kardinalitas. |
 | `cardinalityDistinctFloor` | 10 | Jumlah nilai distinct minimum sebelum pemeriksaan yang sama berlaku. |
 | `spreadExcessPageThreshold` | 2 | Berapa banyak page yang bisa dihindari sebelum advisory spread menandai sebuah model. |
-| `pageIndexHeadroom` | 4 | Kolom terindeks cadangan dari setiap keluarga yang dibawa page yang baru di-provisioning, melebihi permintaan saat ini. Tetap per page sejak dibuat — menaikkannya tidak pernah melebarkan page yang sudah ada. Lihat [Index headroom](/id/operations/tuning#index-headroom). |
+| `pageIndexHeadroom` | 4 | Kolom terindeks cadangan dari setiap keluarga yang dibawa page yang baru di-provisioning, melebihi permintaan saat ini. Tetap per page sejak dibuat, jadi menaikkannya tidak pernah melebarkan page yang sudah ada. Lihat [Index headroom](/id/operations/tuning#index-headroom). |
 
 ## Reconciler
 
@@ -48,7 +48,7 @@ Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [K
 | `reconcilerCapacityWaitMillis` | 5 000 | Jeda tidur setelah sebuah tick melaporkan sedang menunggu kapasitas dari Watcher, sebelum mencoba lagi. |
 | `reconcilerLockRetryBudget` | 3 | Percobaan ulang kegagalan lock berturut-turut pada lima dari enam work source Reconciler sebelum ditunda ke tick berikutnya. |
 | `reconcilerLockRetryDelayMicros` | 0 | Jeda antar percobaan ulang tersebut. |
-| `modelPurgeChunkSize` | 200 | Penghapusan `entry_data` per transaksi pembersihan penghapusan model. Sengaja lebih kecil dari `reconcilerChunkSize` — lihat [Ukuran chunk](/id/operations/tuning#ukuran-chunk). |
+| `modelPurgeChunkSize` | 200 | Penghapusan `entry_data` per transaksi pembersihan penghapusan model. Sengaja lebih kecil dari `reconcilerChunkSize`. Lihat [Ukuran chunk](/id/operations/tuning#ukuran-chunk). |
 | `modelPurgeLockRetryBudget` | 3 | Percobaan ulang kegagalan lock berturut-turut sebelum work source model-purge menyerah dan melempar ulang alih-alih menunda. |
 
 ## Liberator
@@ -80,7 +80,7 @@ Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [K
 | `chroniclerDbDisconnectBackoffSeconds` | `[1, 4, 16]` | Jadwal backoff reconnect tetap setelah koneksi terputus di tengah ekspor. |
 | `pdoConnector` | `null` | Factory reconnect yang dipakai Chronicler untuk membangun ulang koneksi yang terputus di tengah ekspor. `bin/stardust chronicler` menyambungkannya secara otomatis; `null` berarti koneksi yang terputus mengakhiri job sebagai `failed:query_failure`. |
 
-`artifactDir` (di atas, di bawah [Penulisan dan impor](#penulisan-dan-impor)) dipakai bersama antara impor asinkron dan ekspor — lihat [Penyimpanan artifact](/id/operations/deployment#penyimpanan-artifact).
+`artifactDir` (di atas, di bawah [Penulisan dan impor](#penulisan-dan-impor)) dipakai bersama antara impor asinkron dan ekspor. Lihat [Penyimpanan artifact](/id/operations/deployment#penyimpanan-artifact).
 
 ## Combined tick
 

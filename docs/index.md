@@ -19,7 +19,7 @@ landing:
       link: /guide/is-it-a-fit
       icon: help
     - text: GitHub
-      link: https://github.com/konstelasi/StarDust
+      link: https://github.com/damarbob/StarDust
       icon: github
 
 features:

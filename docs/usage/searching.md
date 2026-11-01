@@ -69,7 +69,7 @@ $result = $engine->search(new SearchRequest(
 ));
 ```
 
-`decode()` returns the same filter tree the typed builders produce, or `null` when the document has no `filter` key, which `search()` treats as match-all. The decoder is strict, works without a database connection, and never consults your schema. Whether a field exists or is queryable is decided afterwards, by the pre-flight checks. The document format is defined in [The QueryFilter wire format](/usage/query-filter).
+`decode()` returns the same <Term id="filter-tree">filter tree</Term> the typed builders produce, or `null` when the document has no `filter` key, which `search()` treats as match-all. The decoder is strict, works without a database connection, and never consults your schema. Whether a field exists or is queryable is decided afterwards, by the pre-flight checks. The document format is defined in [The QueryFilter wire format](/usage/query-filter).
 
 ## Pre-flight validation
 

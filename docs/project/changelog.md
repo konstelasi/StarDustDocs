@@ -1,10 +1,10 @@
 # Changelog
 
-All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) — see [Versioning and stability](/project/versioning) for what that means during the alpha series.
+All notable changes to this project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). See [Versioning and stability](/project/versioning) for what that means during the alpha series.
 
-## 0.3.0-alpha.2
+## [0.3.0-alpha.2] - 2026-10-31
 
-Released 2026-10-31. This release makes reads and bulk writes cheaper, indexes text fields through a key computed from the whole value, and lets a field sort choose where entries with no value go. It also fixes a case where a field being promoted could be filtered before its older entries were copied. It is still an alpha, so the public API may change before 0.3.0. Install it with `composer require damarbob/stardust:^0.3@alpha`.
+This release makes reads and bulk writes cheaper, indexes text fields through a key computed from the whole value, and lets a field sort choose where entries with no value go. It also fixes a case where a field being promoted could be filtered before its older entries were copied. It is still an alpha, so the public API may change before 0.3.0. Install it with `composer require damarbob/stardust:^0.3@alpha`.
 
 **Upgrading from 0.3.0-alpha.1.** Replace every process of the old release before the new release's Watcher builds its first page. That means the four daemons in the reference mode, or the scheduled `tick` in the cron mode. A process from alpha.1 cannot claim a text slot on a page built with a key, so its Watcher provisions another page on every poll until it is replaced. Pages that already exist are never altered, no existing table changes, and `bootstrap()` stays safe to re-run. The steps are under [Upgrading a running deployment](/operations/deployment#upgrading-a-running-deployment).
 
@@ -41,18 +41,18 @@ Released 2026-10-31. This release makes reads and bulk writes cheaper, indexes t
 - On an older page, a row that holds several long values in filterable text fields can be written but then not updated, and MySQL raises error 1713. Keep long free text in fields that are not filterable. [Text fields on older and newer pages](/operations/deployment#text-fields-on-older-and-newer-pages) describes the limit.
 - On a new page, a text prefix or range bound narrows the index for only its first 16 Latin letters, or about 8 CJK characters. On a column where every value starts with the same longer text, such as the URLs of one site, the read may examine every entry of the tenant.
 
-## 0.3.0-alpha.1
+## [0.3.0-alpha.1] - 2026-09-23
 
-Released 2026-09-23. The first release of the 0.3 line: a ground-up rewrite, not an upgrade of 0.2. There is no upgrade path from 0.2.x — see [The 0.2.x line](/project/legacy-0-2). This is an alpha: the public API may still change before 0.3.0. Install it with `composer require damarbob/stardust:^0.3@alpha`.
+The first release of the 0.3 line: a ground-up rewrite, not an upgrade of 0.2. There is no upgrade path from 0.2.x. See [The 0.2.x line](/project/legacy-0-2). This is an alpha: the public API may still change before 0.3.0. Install it with `composer require damarbob/stardust:^0.3@alpha`.
 
 ### Added
 
 - A framework-neutral Composer package with no runtime dependencies beyond `psr/log` and `psr/clock`. Requires PHP 8.1+ and MySQL 8.0.13+, Percona Server 8.0.13+, or MariaDB 10.11+, detected from the connection at boot.
 - The `StarDust` engine class, configured through a single `Config` object with one required field (`pdo`) and defaults for everything else. `bootstrap()` and `bin/stardust bootstrap` idempotently provision every table the engine needs.
 - `schemaBuilder()` to register models and fields without hand-written SQL, and `listModels()` / `describeModel()` to read a tenant's schema back, including whether each field is declared filterable and whether it's indexed right now.
-- `write()` for single entries, `bulkWrite()` for up to 1 000 entries per call, and `submitBulkWrite()` for larger batches processed in the background with an optional idempotency key. Writes stay available even when indexed capacity runs out — the value is always stored and copied into an index once one is free. `updateEntry()` replaces an entry's fields wholesale; `deleteEntry()` soft-deletes.
-- `read()` for cursor-paginated, bounded reads and `get()` for a point read. `search()` accepts filters as a JSON wire format — twelve operators, full AND/OR/NOT nesting, thirteen closed error codes, and a normative JSON Schema — or as typed PHP filter nodes. Sorting by entry id, creation time, or one indexed field. Custom search drivers can serve reads from another backend entirely.
-- Online schema changes: retyping a field, promoting or demoting its filterability, renaming a field or a model, and deleting a field or a model — all while the application keeps running, with the field or model served from the JSON payload until any background copy finishes.
+- `write()` for single entries, `bulkWrite()` for up to 1 000 entries per call, and `submitBulkWrite()` for larger batches processed in the background with an optional idempotency key. Writes stay available even when indexed capacity runs out, because the value is always stored and copied into an index once one is free. `updateEntry()` replaces an entry's fields wholesale, and `deleteEntry()` soft-deletes.
+- `read()` for cursor-paginated, bounded reads and `get()` for a point read. `search()` accepts filters as a JSON wire format (twelve operators, full AND/OR/NOT nesting, thirteen closed error codes, and a normative JSON Schema) or as typed PHP filter nodes. Sorting by entry id, creation time, or one indexed field. Custom search drivers can serve reads from another backend entirely.
+- Online schema changes: retyping a field, promoting or demoting its filterability, renaming a field or a model, and deleting a field or a model, all while the application keeps running, with the field or model served from the JSON payload until any background copy finishes.
 - Four background daemons, all started through `bin/stardust`: `watcher` provisions indexed capacity ahead of demand, `reconciler` drains every kind of deferred work (with a dead-letter queue and operator replay for rows that can't be reconciled), `liberator` reclaims freed indexed columns, and `chronicler` produces exports. `bin/stardust tick` runs the same maintenance as one bounded pass, for hosts that can run a cron job but not a persistent process.
 - `submitExport()` and `getExportJob()` for CSV or JSON exports of a model, with a per-tenant cap on concurrent jobs and automatic resume after a crash.
 - `spread:report` and `compact:model` for spotting and fixing a model whose fields are scattered across more storage pages than necessary; `cardinality:report` for flagging indexes whose values are too repetitive to be useful.
@@ -72,6 +72,9 @@ Released 2026-09-23. The first release of the 0.3 line: a ground-up rewrite, not
 - A newly filterable or retyped field can be filtered only once its background copy into an indexed column finishes.
 - Sorting accepts one key at a time.
 - Exports always cover every entry in the model; a request with a filter is rejected outright.
-- Pagination is cursor-only — no page numbers, offsets or total counts.
-- Search drivers are read-only, and there's no change feed yet for keeping an external index in sync — see [Keeping an external index in sync](/extending/custom-search-drivers#keeping-an-external-index-in-sync).
+- Pagination is cursor-only, with no page numbers, offsets or total counts.
+- Search drivers are read-only, and there's no change feed yet for keeping an external index in sync. See [Keeping an external index in sync](/extending/custom-search-drivers#keeping-an-external-index-in-sync).
 - On MariaDB, range filters and field sorts place supplementary-plane characters (mostly emoji) at the opposite end from MySQL.
+
+[0.3.0-alpha.2]: https://github.com/damarbob/StarDust/compare/v0.3.0-alpha.1...v0.3.0-alpha.2
+[0.3.0-alpha.1]: https://github.com/damarbob/StarDust/compare/v0.2.0-alpha.3...v0.3.0-alpha.1

@@ -25,7 +25,7 @@ const entry = computed<Entry>(() => {
 const moreLabel = computed(() => MORE_LABEL[lang.value === 'id' ? 'id' : 'en'])
 
 // Plain anchors bypass VitePress's link normalisation (same gotcha
-// HomeHero.vue's own resolve() works around) — withBase() adds the /docs/
+// HomeHero.vue's own resolve() works around). withBase() adds the /docs/
 // base, and .html must be appended by hand when cleanUrls is off.
 const glossaryHref = computed(() => {
   const path = lang.value === 'id' ? '/id/reference/glossary' : '/reference/glossary'
@@ -134,7 +134,7 @@ function reposition() {
 
 // flush: 'post' runs after Vue patches the DOM for this `open` change, so
 // trigger/popup already reflect the new hidden/visibility state before we
-// measure — the same pre-paint timing Term.tsx gets from useLayoutEffect.
+// measure, the same pre-paint timing Term.tsx gets from useLayoutEffect.
 watch(
   open,
   (isOpen, _prev, onCleanup) => {
@@ -314,7 +314,7 @@ const popupStyle = computed(() => {
   color: var(--vp-c-text-2);
   /* VitePress's own `.vp-doc p { line-height: 28px }` directly targets this
      <p>, and a direct rule on an element always beats an inherited value
-     (the `line-height: 1.5` on .popup) regardless of specificity — so it
+     (the `line-height: 1.5` on .popup) regardless of specificity, so it
      must be set here explicitly, not left to inherit. */
   line-height: 1.5;
 }

@@ -13,7 +13,7 @@ Setting the flag changes what the registry says. It does not, by itself, put a v
 
 ## Indexed is reality
 
-A field is <Term id="indexed">indexed</Term> when its slot is live *right now*, meaning a filter on it would actually work. This is the property your code should check before it offers a filter.
+A field is <Term id="indexed">indexed</Term> when its slot is live *right now*, meaning a filter on it would work. This is the property your code should check before it offers a filter.
 
 Every field described by `describeModel()` reports both:
 

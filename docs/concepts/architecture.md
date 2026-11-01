@@ -41,7 +41,7 @@ Any field you mark <Term id="filterable">filterable</Term> is also mirrored into
 
 Two consequences of this split are worth holding on to:
 
-- **Non-filterable fields are free.** They cost no slot and no index maintenance. Make a field filterable only when you actually need to filter or sort on it.
+- **Non-filterable fields are free.** They cost no slot and no index maintenance. Make a field filterable only when you need to filter or sort on it.
 - **A slot can be rebuilt at any time.** Because the payload is authoritative, the engine is free to null out, relocate or refill a slot without any risk to your data. A failed conversion or an empty slot changes what is *queryable*, never what is *stored*.
 
 A page is created with a fixed set of indexed columns and is never altered afterwards. See [Slots and pages](/concepts/slots-and-pages) for how capacity is managed.

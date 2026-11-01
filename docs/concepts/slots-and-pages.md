@@ -1,6 +1,6 @@
 # Slots and pages
 
-Slots are the engine's finite resource, and most capacity planning in StarDust is really slot planning. This page explains what they are, how they move through their lifecycle, and why a model's slots can end up scattered.
+Slots are the engine's finite resource, and most capacity planning in StarDust is slot planning. This page explains what they are, how they move through their lifecycle, and why a model's slots can end up scattered.
 
 ## Extension pages
 
@@ -36,7 +36,7 @@ Reservation is atomic, and each field holds at most one live slot at a time. The
 
 ### Tombstoned and reclaimed
 
-When a field is [demoted](/schema-changes/filterability), [deleted](/schema-changes/deleting-fields) or [retyped](/schema-changes/retype), its old slot is **tombstoned**. It is not handed straight to the next field, because handing over a column that still holds the previous occupant's values would let the new field's filters match data nobody ever wrote to it.
+When a field is [demoted](/schema-changes/filterability), [deleted](/schema-changes/deleting-fields) or [retyped](/schema-changes/retype), its old slot is **<Term id="tombstoned-slot">tombstoned</Term>**. It is not handed straight to the next field, because handing over a column that still holds the previous occupant's values would let the new field's filters match data nobody ever wrote to it.
 
 The [Liberator](/operations/liberator) clears the column in bounded chunks and only then marks the slot free again. A slot marked `free` is therefore always verified empty.
 
@@ -51,12 +51,12 @@ A page carries exactly the columns it indexes, and its capacity is whatever it w
 
 If capacity runs out before the Watcher catches up, writes still succeed. See [Writes never fail for lack of a slot](/concepts/filterable-vs-indexed#writes-never-fail-for-lack-of-a-slot). To tune headroom, see [Tuning](/operations/tuning#index-headroom).
 
-## Spread: why fewer pages means fewer joins
+## Spread and why fewer pages means fewer joins
 
 <Term id="spread">Spread</Term> is how many extension pages a single model's filterable slots are scattered across. It matters because every extra page a filtered query touches costs another join.
 
 Spread is not a bug. It is the natural consequence of pages being immutable and slots being handed out from whichever page has room, and a model that grew field by field over a year can easily end up spread across several pages.
 
-The engine measures it as **excess pages**: the pages a model actually occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run <Term id="compaction">compaction</Term>, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
+The engine measures it as **excess pages**: the pages a model occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run <Term id="compaction">compaction</Term>, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
 
 The reports and the compaction command are covered in [Slot maintenance](/operations/slot-maintenance).

@@ -38,6 +38,6 @@ Deleting an entry with `deleteEntry()` sets a timestamp. The row is not removed,
 
 ## Reading from the payload when no slot exists
 
-When you read an entry, each field is served from its indexed slot if it has a live one, and from the JSON payload otherwise. That preserves availability on the read side: a field that lacks a slot still comes back, just without the ability to filter or sort on it.
+When you read an entry, each field is served from its indexed slot if it has a live one, and from the JSON payload otherwise. That preserves availability on the read side: a field that lacks a slot still comes back, but you cannot filter or sort on it.
 
 This is what keeps reads working through every [backfill window](/concepts/background-work#backfill-windows). Between the moment you promote a field and the moment its slot is filled, a read still returns the value, straight from the payload. What you cannot do in that interval is *filter* on the field. See [Filterable vs. indexed](/concepts/filterable-vs-indexed).

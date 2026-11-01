@@ -40,7 +40,7 @@ $pdo = new PDO($_ENV['TEST_DSN'], $_ENV['TEST_USER'], $_ENV['TEST_PASS'], [
 
 Setiap test perlu dimulai dari keadaan yang diketahui. Trik yang biasa tidak semuanya berfungsi dengan StarDust, jadi pilih dengan sengaja.
 
-**Membungkus setiap test dalam transaksi lalu me-rollback-nya tidak berfungsi** untuk test yang memanggil mutasi StarDust. StarDust membuka transaksinya sendiri, dan PDO tidak mendukung transaksi bersarang, sehingga pemanggilan gagal pada koneksi yang sudah punya transaksi terbuka. Lihat [Integrasi dengan aplikasi Anda](/id/usage/integrating#transaksi-milik-anda-dan-milik-stardust).
+**Membungkus setiap test dalam transaksi lalu me-rollback-nya tidak berfungsi** untuk test yang memanggil mutasi StarDust. StarDust membuka transaksinya sendiri, dan PDO tidak mendukung transaksi bersarang, sehingga pemanggilan gagal pada koneksi yang sudah punya transaksi terbuka. Lihat [Integrasi dengan aplikasi Anda](/id/usage/integrating#transaksi-anda-dan-transaksi-stardust).
 
 **Menghapus dan membuat ulang tabel itu benar tetapi lambat.** Test suite StarDust sendiri mengukurnya sekitar 1,5 detik per test di MySQL 8.0.13, karena setiap drop dan create adalah perubahan skema yang di-commit oleh server. Lakukan itu paling banyak sekali per kelas test, atau sekali per run.
 
@@ -131,7 +131,7 @@ $page = $this->engine->read(new EntryQuery(
 | `SHUTDOWN` | Shutdown diminta. |
 | `LOCK_CONTENDED` | Proses lain memegang pid file Watcher, sehingga **tidak ada pekerjaan yang berjalan**. |
 
-Selalu periksa bahwa hasilnya `IDLE`, agar test tidak pernah lolos hanya karena tidak ada yang benar-benar dikuras.
+Selalu periksa bahwa hasilnya `IDLE`, agar test tidak pernah lolos hanya karena tidak ada yang dikuras.
 
 **Beri setiap proses test `pidFileDir`-nya sendiri.** `tick()` mengambil pid-file lock milik Watcher, dan secara bawaan lock itu berada di direktori yang dipakai bersama oleh semua proses di mesin tersebut. Dua proses test yang berjalan bersamaan akan bertabrakan, dan yang kalah diam-diam tidak mengerjakan apa pun. Buat direktori privat per proses:
 

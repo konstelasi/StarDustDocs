@@ -1,4 +1,4 @@
-# Ships alongside the build — VitePress copies docs/public/ verbatim to the
+# Ships alongside the build. VitePress copies docs/public/ verbatim to the
 # output root. StarDustWebsite's root .htaccess (its own public/.htaccess)
 # already covers HTTPS/www redirects, caching and compression for every path
 # under the domain, /docs/ included, since Apache merges .htaccess files

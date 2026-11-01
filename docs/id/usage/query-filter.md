@@ -1,6 +1,6 @@
 # Format wire QueryFilter
 
-QueryFilter adalah format JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Halaman ini adalah referensi untuk struktur dokumen, operator, tipe nilai, batasan, dan kode error. Untuk memakainya di kode, lihat [Pencarian](/id/usage/searching#menerima-filter-dalam-bentuk-json).
+<Term id="queryfilter">QueryFilter</Term> adalah format JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Halaman ini adalah referensi untuk struktur dokumen, operator, tipe nilai, batasan, dan kode error. Untuk memakainya di kode, lihat [Pencarian](/id/usage/searching#menerima-filter-dalam-bentuk-json).
 
 ## Struktur dokumen
 
@@ -25,7 +25,7 @@ Dokumen adalah objek JSON dengan `version` opsional dan `filter` opsional:
 - **Referensi field** berbentuk `{ "model": ..., "name": ... }`. Kedua key wajib berupa string tidak kosong. Pencarian berjalan terhadap model yang ada di request, dan field dicari di model itu.
 - JSON Schema menolak key yang tidak dikenal pada sebuah node. Decoder mengabaikannya, dan itu adalah salah satu dari dua perbedaan antara keduanya. Lihat [JSON Schema](#json-schema).
 
-## Node logika: and, or, not
+## Node logika (and, or, not)
 
 | Node | Bentuk | Artinya |
 | :-- | :-- | :-- |
@@ -139,4 +139,4 @@ Setiap penolakan membawa JSON Pointer RFC 6901 ke node yang bermasalah. Dua kode
 
 Format ini juga tersedia sebagai JSON Schema normatif (draft 2020-12), untuk memvalidasi filter di sisi klien atau dalam bahasa apa pun. Ia disertakan dalam package di `schemas/queryfilter.schema.json`.
 
-Schema hanya memeriksa struktur. Apakah sebuah field ada atau nilai sesuai tipenya bergantung pada registry Anda, sehingga diputuskan saat runtime. Schema dan decoder sepakat tentang dokumen mana yang valid dan tidak, kecuali dua asimetri yang terdokumentasi: schema menolak key tak dikenal pada sebuah node sementara decoder mengabaikannya, dan deduplikasi array serta batas kedalaman, jumlah node, dan ukuran dokumen pada decoder tidak punya padanan di schema.
+Schema hanya memeriksa struktur. Apakah sebuah field ada atau nilai sesuai tipenya bergantung pada registry Anda, sehingga diputuskan saat runtime. Schema dan decoder sepakat tentang dokumen mana yang valid dan tidak, kecuali dua asimetri yang terdokumentasi. Schema menolak key tak dikenal pada sebuah node sementara decoder mengabaikannya, dan deduplikasi array serta batas kedalaman, jumlah node, dan ukuran dokumen pada decoder tidak punya padanan di schema.

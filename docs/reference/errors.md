@@ -6,7 +6,7 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 
 | Exception | Thrown when |
 | :-- | :-- |
-| `UnsupportedServerException` | The connected server is below the supported floor — MySQL/Percona older than 8.0.13, or MariaDB older than 10.11. Raised the first time the engine needs to know the dialect: `bootstrap()`, or any call to `serverEngine()`. It is also raised for InnoDB pages smaller than 8 KB. See [Troubleshooting](/operations/troubleshooting#the-server-is-rejected-at-boot). |
+| `UnsupportedServerException` | The connected server is below the supported floor, which means MySQL/Percona older than 8.0.13 or MariaDB older than 10.11. Raised the first time the engine needs to know the dialect: `bootstrap()`, or any call to `serverEngine()`. It is also raised for InnoDB pages smaller than 8 KB. See [Troubleshooting](/operations/troubleshooting#the-server-is-rejected-at-boot). |
 | `InvalidTenantIdException` | `tenantId` is `<= 0`. Checked at every entry point before any SQL runs. |
 
 ## Writes
@@ -17,7 +17,7 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | `UncoercibleSlotValueException` | A value in a first-write payload can't be coerced to its slot's declared type. |
 | `MalformedEntryPayloadException` | An array or JSON envelope passed to `EntryPayload::fromArray()` / `fromJson()` / `listFrom*()` is structurally invalid. Carries the offending key. |
 | `EntryNotFoundException` | `updateEntry()` targets an entry that doesn't exist, belongs to another tenant, or is already deleted. |
-| `NonFilterableFieldSlotException` | A slot reservation is attempted for a non-filterable field. A caller-side bug rather than a capacity problem — see [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
+| `NonFilterableFieldSlotException` | A slot reservation is attempted for a non-filterable field. A caller-side bug rather than a capacity problem. See [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
 
 ## Reads, filters and sorts
 
@@ -26,7 +26,7 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | `UnknownFieldException` | A filter or sort references a field not registered on the model. |
 | `FieldNotFilterableException` | A filter targets a field the active driver cannot filter on. For the default MySQL driver that is a field that is not filterable, and also a field declared filterable that has no usable index yet (no slot reserved, or the slot is backfilling or tombstoned). The message says which. |
 | `FieldNotIndexedException` | Not thrown by the built-in engine. A filter on a field that is declared filterable but not indexed yet raises `FieldNotFilterableException` instead, so catch that one. See [Filterable vs. indexed](/concepts/filterable-vs-indexed). |
-| `FieldNotSortableException` | A sort names a field that isn't currently indexed — the same requirement filtering has. `describeModel()`'s indexed-fields list reports which fields qualify right now. |
+| `FieldNotSortableException` | A sort names a field that isn't currently indexed, which is the same requirement filtering has. `describeModel()`'s indexed-fields list reports which fields qualify right now. |
 | `PageSizeOutOfRangeException` | `pageSize` is outside `[1, 1000]`. |
 | `InvalidCursorException` | An opaque cursor fails its structural decode, or is reused after its sort key, direction or null placement changed. |
 | `QueryFilterValidationException` | A JSON QueryFilter fails decode or pre-flight. See [Handling wire-format rejections](#handling-wire-format-rejections) below. |
@@ -38,15 +38,15 @@ Every typed error extends `RuntimeException`. They live under `StarDust\Exceptio
 | `IncompatibleRetypeException` | A retype crosses a categorically rejected pair (`int` ↔ `datetime`, `numeric` ↔ `datetime`). |
 | `RetypeInProgressException` | A retype is initiated for a field that already has one running, or a model is compacted while any of its fields is mid-retype, mid-promotion, mid-demotion or mid-relocation. |
 | `FieldNotFoundException` | `retypeField()`, `promoteFieldToFilterable()`, `demoteFieldFromFilterable()` or `renameField()` names a field id that doesn't exist for the tenant. `deleteField()` returns `false` instead of throwing. |
-| `RenameInProgressException` | Something targets a field whose rename has started but not finished — a retype, a deletion, or (for the model it belongs to) a model deletion. |
+| `RenameInProgressException` | Something targets a field whose rename has started but not finished (a retype, a deletion, or a model deletion for the model it belongs to). |
 | `FieldNameConflictException` | `renameField()` would collide with another field's name on the same model. |
 | `CompactionCapacityException` | `compactModel()` can't find enough free capacity on the target page set to complete a relocation. |
 | `ModelNotFoundException` | A model-level call names a `modelId` that doesn't exist for the caller's tenant. |
 | `ModelNameConflictException` | `renameModel()` would collide with another model's name in the same tenant. |
-| `ModelDeletionInProgressException` | Something targets a model whose deletion has started but not finished — a write, an update, a bulk submission, a compaction or an export submission against it. |
-| `FieldDeletionInProgressException` | Something targets a field whose deletion has started but not finished — a rename, retype, promotion, demotion or compaction of it. |
+| `ModelDeletionInProgressException` | Something targets a model whose deletion has started but not finished (a write, an update, a bulk submission, a compaction or an export submission against it). |
+| `FieldDeletionInProgressException` | Something targets a field whose deletion has started but not finished (a rename, retype, promotion, demotion or compaction of it). |
 
-`deleteField()` and `deleteModel()` return `false`, rather than throwing, when there's nothing to do — the field or model doesn't exist, belongs to another tenant, or is already being deleted.
+`deleteField()` and `deleteModel()` return `false`, rather than throwing, when there's nothing to do (the field or model doesn't exist, belongs to another tenant, or is already being deleted).
 
 ## Exports
 
@@ -61,11 +61,11 @@ The connection must use `ERRMODE_EXCEPTION`, so an error from the database reach
 
 ## Handling wire-format rejections
 
-`QueryFilterValidationException` is deliberately discriminator-style: one `catch` handles every wire-format and pre-flight failure, because all of them share one caller response — fix the filter JSON and retry. It carries enough to render a precise HTTP 4xx without a per-code handler:
+`QueryFilterValidationException` is deliberately discriminator-style: one `catch` handles every wire-format and pre-flight failure, because all of them share one caller response, which is to fix the filter JSON and retry. It carries enough to render a precise HTTP 4xx without a per-code handler:
 
-- `$errorCode` — one of the [thirteen closed error codes](/usage/query-filter#error-codes).
-- `$jsonPointer` — an RFC 6901 pointer to the offending node (e.g. `/filter/args/1/value`).
-- `$details` — discriminator-specific context (e.g. `['expected' => 'int', 'received' => 'string']`).
+- `$errorCode` is one of the [thirteen closed error codes](/usage/query-filter#error-codes).
+- `$jsonPointer` is an RFC 6901 pointer to the offending node (e.g. `/filter/args/1/value`).
+- `$details` is discriminator-specific context (e.g. `['expected' => 'int', 'received' => 'string']`).
 
 ```php
 use StarDust\Filter\Json\JsonFilterDecoder;

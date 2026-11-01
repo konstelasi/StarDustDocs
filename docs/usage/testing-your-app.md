@@ -40,7 +40,7 @@ $pdo = new PDO($_ENV['TEST_DSN'], $_ENV['TEST_USER'], $_ENV['TEST_PASS'], [
 
 You need each test to start from a known state. The usual tricks do not all work with StarDust, so pick deliberately.
 
-**Wrapping each test in a transaction and rolling it back does not work** for tests that call a StarDust mutation. StarDust opens its own transactions, and PDO does not nest them, so the call fails on a connection that already has one open. See [Integrating with your application](/usage/integrating#transactions-yours-and-stardusts).
+**Wrapping each test in a transaction and rolling it back does not work** for tests that call a StarDust mutation. StarDust opens its own transactions, and PDO does not nest them, so the call fails on a connection that already has one open. See [Integrating with your application](/usage/integrating#your-transactions-and-stardusts).
 
 **Dropping and recreating the tables is correct but slow.** StarDust's own suite measured it at roughly 1.5 seconds per test on MySQL 8.0.13, because every drop and create is a schema change the server commits. Do that once per test class at most, or once per run.
 
@@ -131,7 +131,7 @@ $page = $this->engine->read(new EntryQuery(
 | `SHUTDOWN` | A shutdown was requested. |
 | `LOCK_CONTENDED` | Another process holds the Watcher's pid file, so **no work ran**. |
 
-Always assert `IDLE`, so a test can never pass because nothing was actually drained.
+Always assert `IDLE`, so a test can never pass because nothing was drained.
 
 **Give each test process its own `pidFileDir`.** `tick()` takes the Watcher's pid-file lock, and by default that lives in a directory shared by every process on the machine. Two test processes running together would collide, and the loser would silently do nothing. Create a private directory per process:
 

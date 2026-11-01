@@ -1,6 +1,6 @@
 # CLI reference
 
-`bin/stardust` is the framework-neutral CLI entry point. Every command reads connection settings from the environment; nothing else in `Config` is reachable from the CLI — see [Settings and the bundled daemons](/usage/configuration#settings-and-the-bundled-daemons) if your deployment needs `artifactDir`, `pidFileDir` or daemon tuning set to anything other than their defaults.
+`bin/stardust` is the framework-neutral CLI entry point. Every command reads connection settings from the environment. Nothing else in `Config` is reachable from the CLI. See [Settings and the bundled daemons](/usage/configuration#settings-and-the-bundled-daemons) if your deployment needs `artifactDir`, `pidFileDir` or daemon tuning set to anything other than their defaults.
 
 ```bash
 bin/stardust --version
@@ -39,9 +39,9 @@ Runs the page-provisioning daemon. Strict singleton: holds a lock file under `pi
 bin/stardust reconciler
 ```
 
-Runs the reconciliation daemon. No singleton lock — run as many processes as your backlog needs. See [Reconciler](/operations/reconciler).
+Runs the reconciliation daemon. There is no singleton lock, so run as many processes as your backlog needs. See [Reconciler](/operations/reconciler).
 
-## reconciler:dlq:replay
+## `reconciler:dlq:replay`
 
 ```bash
 bin/stardust reconciler:dlq:replay --id=42
@@ -56,7 +56,7 @@ Re-enqueues one dead-lettered row by id, or every row that failed for the same r
 bin/stardust liberator
 ```
 
-Runs the slot-reclamation daemon. No singleton lock — exclusion is per extension page, so run as many processes as you want. See [Liberator](/operations/liberator).
+Runs the slot-reclamation daemon. There is no singleton lock. Exclusion is per extension page, so run as many processes as you want. See [Liberator](/operations/liberator).
 
 ## chronicler
 
@@ -64,7 +64,7 @@ Runs the slot-reclamation daemon. No singleton lock — exclusion is per extensi
 bin/stardust chronicler
 ```
 
-Runs the async export daemon. No singleton lock — run as many processes as your export backlog needs. See [Chronicler](/operations/chronicler).
+Runs the async export daemon. There is no singleton lock, so run as many processes as your export backlog needs. See [Chronicler](/operations/chronicler).
 
 ## tick
 
@@ -82,38 +82,38 @@ One bounded pass of the Watcher, Liberator and Reconciler over a single connecti
 | `--advisories` | Forces the cardinality and spread advisories to sample immediately, regardless of their (fleet-wide, database-persisted) schedule. |
 | `--exports` | Composes the Chronicler into the run, last in each round. Off by default. |
 
-Never run `tick` alongside a persistent `watcher` process — an overlapping run just reports a skip with exit code `0`. `liberator` and `chronicler` are the exception: both are multi-worker, so a `tick` run can coexist with either. See [The tick command](/operations/deployment#the-tick-command).
+Never run `tick` alongside a persistent `watcher` process. An overlapping run just reports a skip with exit code `0`. `liberator` and `chronicler` are the exception: both are multi-worker, so a `tick` run can coexist with either. See [The tick command](/operations/deployment#the-tick-command).
 
-## spread:report
+## `spread:report`
 
 ```bash
 bin/stardust spread:report
 bin/stardust spread:report --tenant=1 --model=7
 ```
 
-Reports how many extension pages each model's filterable fields are scattered across, versus the fewest they could occupy. Registry-only and read-only — safe against production at any time. See [The spread report](/operations/slot-maintenance#the-spread-report).
+Reports how many extension pages each model's filterable fields are scattered across, versus the fewest they could occupy. Registry-only and read-only, so it is safe against production at any time. See [The spread report](/operations/slot-maintenance#the-spread-report).
 
-## cardinality:report
+## `cardinality:report`
 
 ```bash
 bin/stardust cardinality:report
 bin/stardust cardinality:report --tenant=1 --model=7
 ```
 
-Reports row count, distinct values and selectivity for each live filterable slot. Read-only, but unlike `spread:report` it scans every matching extension page rather than only the registry — prefer off-peak on a large dataset. `--model` narrows which slots are examined; each one's counts still cover the whole page. See [The cardinality report](/operations/slot-maintenance#the-cardinality-report).
+Reports row count, distinct values and selectivity for each live filterable slot. Read-only, but unlike `spread:report` it scans every matching extension page rather than only the registry, so prefer off-peak on a large dataset. `--model` narrows which slots are examined. Each one's counts still cover the whole page. See [The cardinality report](/operations/slot-maintenance#the-cardinality-report).
 
-## compact:model
+## `compact:model`
 
 ```bash
 bin/stardust compact:model --tenant=1 --model=7 --dry-run
 bin/stardust compact:model --tenant=1 --model=7
 ```
 
-Relocates a model's filterable fields onto the fewest pages that can hold them. Long-running and operator-initiated — needs a running Reconciler to make progress, moves one field at a time, and refuses (even with `--dry-run`) while one of the model's fields is mid-retype, mid-promotion, mid-demotion or mid-relocation already. Safe to re-run: fields already in place are skipped. See [Compacting a model](/operations/slot-maintenance#compacting-a-model).
+Relocates a model's filterable fields onto the fewest pages that can hold them. Long-running and operator-initiated. It needs a running Reconciler to make progress, moves one field at a time, and refuses (even with `--dry-run`) while one of the model's fields is mid-retype, mid-promotion, mid-demotion or mid-relocation already. Safe to re-run: fields already in place are skipped. See [Compacting a model](/operations/slot-maintenance#compacting-a-model).
 
 ## Exit codes and signals
 
-Daemons honour both `SIGTERM`/`SIGINT` (when `ext-pcntl` is loaded) and `touch <pidFileDir>/<daemon-name>.shutdown` as a graceful-shutdown signal, for hosts without `pcntl`. A `SIGTERM` to `chronicler` mid-export yields at the next chunk boundary rather than blocking until the job finishes — see [Async exports](/usage/exports).
+Daemons honour both `SIGTERM`/`SIGINT` (when `ext-pcntl` is loaded) and `touch <pidFileDir>/<daemon-name>.shutdown` as a graceful-shutdown signal, for hosts without `pcntl`. A `SIGTERM` to `chronicler` mid-export yields at the next chunk boundary rather than blocking until the job finishes. See [Async exports](/usage/exports).
 
 | Code | Meaning |
 | :-- | :-- |

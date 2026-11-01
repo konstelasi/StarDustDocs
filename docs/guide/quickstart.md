@@ -32,7 +32,7 @@ The `init` service ran [`docker/seed.php`](https://github.com/damarbob/StarDust/
 
 1. It connected with a PDO set to raise exceptions and bootstrapped the schema.
 2. It registered a `company` model with four filterable fields: `name`, `industry`, `employees` and `founded`.
-3. It provisioned an indexed page and reserved a slot for each field, so the very first query already uses indexes. In a real deployment the Watcher does this for you automatically.
+3. It provisioned an indexed page and reserved a slot for each field, so the first query already uses indexes. In a real deployment the Watcher does this for you automatically.
 4. It wrote five companies from a raw JSON array, the way a CMS or HTTP layer would hand entries over.
 5. It decoded a filter from a JSON wire payload and ran it.
 

@@ -41,7 +41,7 @@ $jobId = $engine->submitBulkWrite(
 
 Dua catatan praktis:
 
-- **Seluruh batch ditampung di memori saat pengiriman.** Batch ditulis sebagai satu dokumen JSON, jadi batch yang sangat besar membutuhkan memori PHP yang sepadan. Pecah impor yang raksasa menjadi beberapa pengiriman.
+- **Seluruh batch ditampung di memori saat pengiriman.** Batch ditulis sebagai satu dokumen JSON, jadi batch yang besar membutuhkan memori PHP yang sepadan. Pecah impor yang sangat besar menjadi beberapa pengiriman.
 - **`artifactDir` harus bisa ditulis, persisten, dan tidak bisa diakses lewat web, serta Reconciler harus membaca direktori yang sama.** Proses yang mengirim menulis batch di sana dan Reconciler membacanya kembali, jadi bila keduanya menunjuk direktori yang berbeda, job gagal. `bin/stardust` selalu memakai direktori bawaan. Lihat [Integrasi dengan aplikasi Anda](/id/usage/integrating#menjalankan-daemon-berdampingan-dengan-aplikasi).
 
 ## Idempotency key

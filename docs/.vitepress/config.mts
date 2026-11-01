@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 
-// Served at stardust.konstelasi.co.id/docs — every root-relative `head`
+// Served at stardust.konstelasi.co.id/docs, so every root-relative `head`
 // href below must be prefixed by hand, since `head` is injected as raw
 // <head> tags and is not passed through VitePress's `base` resolution
 // the way `themeConfig.logo` and sidebar/nav links are.
@@ -27,7 +27,7 @@ export default defineConfig({
   themeConfig: {
     logo: { src: '/logo.svg', alt: 'StarDust' },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/konstelasi/StarDust' },
+      { icon: 'github', link: 'https://github.com/damarbob/StarDust' },
     ],
     footer: {
       message: 'Released under the MIT License.',
@@ -189,10 +189,29 @@ export default defineConfig({
       label: 'Bahasa Indonesia',
       lang: 'id',
       link: '/id/',
+      description: 'Dokumentasi StarDust, engine vertical schema partitioning.',
       themeConfig: {
         footer: {
           message: 'Dirilis di bawah Lisensi MIT.',
           copyright: `Copyright © ${new Date().getFullYear()} Konstelasi Teknologi Internasional`,
+        },
+        // VitePress ships English labels for its own controls, so each one
+        // is set here. Without these, /id/ pages show "On this page", "Menu"
+        // and the like.
+        outline: { label: 'Di halaman ini' },
+        docFooter: { prev: 'Halaman sebelumnya', next: 'Halaman berikutnya' },
+        returnToTopLabel: 'Kembali ke atas',
+        sidebarMenuLabel: 'Menu',
+        darkModeSwitchLabel: 'Tampilan',
+        lightModeSwitchTitle: 'Beralih ke tema terang',
+        darkModeSwitchTitle: 'Beralih ke tema gelap',
+        langMenuLabel: 'Ganti bahasa',
+        skipToContentLabel: 'Langsung ke konten',
+        notFound: {
+          title: 'HALAMAN TIDAK DITEMUKAN',
+          quote: 'Halaman yang Anda cari tidak ada atau sudah dipindahkan.',
+          linkLabel: 'kembali ke beranda',
+          linkText: 'Kembali ke beranda',
         },
         nav: [
           { text: 'Memulai', link: '/id/guide/what-is-stardust' },

@@ -1,8 +1,8 @@
 # API StarDust
 
-Setiap method publik pada `StarDust`, dikelompokkan menurut fungsinya. Hanya signature — setiap baris menaut ke halaman yang membahas perilakunya lebih mendalam. `StarDust::VERSION` menyimpan versi package sebagai string.
+Setiap method publik pada `StarDust`, dikelompokkan menurut fungsinya. Hanya signature. Setiap baris menaut ke halaman yang membahas perilakunya lebih mendalam. `StarDust::VERSION` menyimpan versi package sebagai string.
 
-Setiap method yang menerima `tenantId` memvalidasinya sebelum menyentuh database — nilai di luar jangkauan langsung melempar `InvalidTenantIdException`, dan method yang mengembalikan `?T` atau `bool` melaporkan baris milik tenant lain persis seperti melaporkan baris yang tidak ada. Lihat [Error](/id/reference/errors) dan [Keamanan](/id/operations/security#jaminan-isolasi-tenant).
+Setiap method yang menerima `tenantId` memvalidasinya sebelum menyentuh database. Nilai di luar jangkauan langsung melempar `InvalidTenantIdException`, dan method yang mengembalikan `?T` atau `bool` melaporkan baris milik tenant lain persis seperti melaporkan baris yang tidak ada. Lihat [Error](/id/reference/errors) dan [Keamanan](/id/operations/security#jaminan-isolasi-tenant).
 
 ## Persiapan
 
@@ -54,11 +54,11 @@ Setiap method yang menerima `tenantId` memvalidasinya sebelum menyentuh database
 | `promoteFieldToFilterable(int $tenantId, int $fieldId): void` | Lihat [Promosi field](/id/schema-changes/filterability#promosi-field). |
 | `demoteFieldFromFilterable(int $tenantId, int $fieldId): void` | Lihat [Demosi field](/id/schema-changes/filterability#demosi-field). |
 | `renameField(int $tenantId, int $fieldId, string $newName): void` | Lihat [Mengganti nama field](/id/schema-changes/renaming#mengganti-nama-field). |
-| `renameModel(int $tenantId, int $modelId, string $newName): void` | Sinkron — satu-satunya perubahan skema yang tidak butuh Reconciler. Lihat [Mengganti nama model](/id/schema-changes/renaming#mengganti-nama-model). |
+| `renameModel(int $tenantId, int $modelId, string $newName): void` | Sinkron, dan satu-satunya perubahan skema yang tidak butuh Reconciler. Lihat [Mengganti nama model](/id/schema-changes/renaming#mengganti-nama-model). |
 | `deleteField(int $tenantId, int $fieldId): bool` | Lihat [Menghapus field](/id/schema-changes/deleting-fields). |
 | `deleteModel(int $tenantId, int $modelId): bool` | Lihat [Menghapus model](/id/schema-changes/deleting-models). |
 
-Ketujuhnya kembali begitu registry diperbarui. Semuanya kecuali `renameModel()` lalu selesai di latar belakang dan butuh Reconciler yang berjalan agar konvergen — lihat [Pekerjaan latar belakang dan konsistensi eventual](/id/concepts/background-work). `deleteField()` dan `deleteModel()` mengembalikan `false`, bukan melempar, bila tidak ada yang perlu dilakukan.
+Ketujuhnya kembali begitu registry diperbarui. Semuanya kecuali `renameModel()` lalu selesai di latar belakang dan butuh Reconciler yang berjalan agar konvergen. Lihat [Pekerjaan latar belakang dan konsistensi eventual](/id/concepts/background-work). `deleteField()` dan `deleteModel()` mengembalikan `false`, bukan melempar, bila tidak ada yang perlu dilakukan.
 
 ## Ekspor
 
@@ -85,11 +85,11 @@ Kebanyakan deployment memanggil keduanya lewat CLI, bukan langsung dari kode.
 | `reconciler(): Reconciler` | Lihat [Reconciler](/id/operations/reconciler). |
 | `liberator(): Liberator` | Lihat [Liberator](/id/operations/liberator). |
 | `chronicler(?ShutdownSignal $shutdown = null): Chronicler` | Lihat [Chronicler](/id/operations/chronicler). |
-| `tick(?int $budgetSeconds = null, bool $advisories = false, bool $exports = false): TickReport` | Satu lintasan terbatas Watcher, Liberator, dan Reconciler — dan, dengan `$exports`, Chronicler. Lihat [Perintah tick](/id/operations/deployment#perintah-tick). |
+| `tick(?int $budgetSeconds = null, bool $advisories = false, bool $exports = false): TickReport` | Satu lintasan terbatas Watcher, Liberator, dan Reconciler, ditambah Chronicler bila `$exports` diaktifkan. Lihat [Perintah tick](/id/operations/deployment#perintah-tick). |
 | `combinedTick(): CombinedTick` | Factory di balik `tick()`, untuk pemanggil yang ingin menjalankan sendiri loop-nya, misalnya driver pasca-respons `fastcgi_finish_request()`. |
 | `dlqReplayer(): DlqReplayer` | Kolaborator di balik `reconciler:dlq:replay`. Lihat [Dead-letter queue](/id/operations/reconciler#dead-letter-queue). |
 | `pollLoop(): PollLoop` | Scaffolding yang dipakai bersama oleh poll loop setiap daemon persisten. |
 | `shutdownSignal(string $daemonName): ShutdownSignal` | Sinyal gabungan SIGTERM/SIGINT + flag-file shutdown untuk satu daemon. |
 | `lockNamespace(): LockNamespace` | Pengkualifikasi per instalasi pada dua advisory lock database milik engine. Lihat [Shared hosting dan lock namespace](/id/usage/configuration#shared-hosting-dan-lock-namespace). |
 
-Kebanyakan deployment menjalankan daemon lewat `bin/stardust`, bukan memanggil factory ini secara langsung — lihat [Deployment](/id/operations/deployment). Method-method ini ada untuk menanamkan sebuah daemon ke dalam process supervisor Anda sendiri.
+Kebanyakan deployment menjalankan daemon lewat `bin/stardust`, bukan memanggil factory ini secara langsung (lihat [Deployment](/id/operations/deployment)). Method-method ini ada untuk menanamkan sebuah daemon ke dalam process supervisor Anda sendiri.

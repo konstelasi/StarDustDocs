@@ -1,6 +1,6 @@
 # Memperbarui dan menghapus entry
 
-Dua pemanggilan mengubah entry yang sudah ada: `updateEntry()` mengganti field-nya dan `deleteEntry()` melakukan soft delete. Keduanya tampak berpasangan tetapi sengaja berbeda dalam cara melaporkan "tidak ada yang perlu dikerjakan".
+Dua pemanggilan mengubah entry yang sudah ada: `updateEntry()` mengganti field-nya dan `deleteEntry()` melakukan <Term id="soft-deletion">soft delete</Term>. Keduanya tampak berpasangan tetapi sengaja berbeda dalam cara melaporkan "tidak ada yang perlu dikerjakan".
 
 ## Penggantian penuh dengan updateEntry()
 

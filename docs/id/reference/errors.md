@@ -6,7 +6,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 
 | Exception | Muncul ketika |
 | :-- | :-- |
-| `UnsupportedServerException` | Server yang tersambung di bawah batas minimum yang didukung — MySQL/Percona lebih lama dari 8.0.13, atau MariaDB lebih lama dari 10.11. Dilempar pertama kali engine butuh tahu dialeknya: `bootstrap()`, atau pemanggilan `serverEngine()` mana pun. Juga dilempar untuk page InnoDB yang lebih kecil dari 8 KB. Lihat [Pemecahan masalah](/id/operations/troubleshooting#server-ditolak-saat-boot). |
+| `UnsupportedServerException` | Server yang tersambung di bawah batas minimum yang didukung, yaitu MySQL/Percona lebih lama dari 8.0.13 atau MariaDB lebih lama dari 10.11. Dilempar pertama kali engine butuh tahu dialeknya: `bootstrap()`, atau pemanggilan `serverEngine()` mana pun. Juga dilempar untuk page InnoDB yang lebih kecil dari 8 KB. Lihat [Pemecahan masalah](/id/operations/troubleshooting#server-ditolak-saat-boot). |
 | `InvalidTenantIdException` | `tenantId` bernilai `<= 0`. Diperiksa di setiap entry point sebelum SQL apa pun berjalan. |
 
 ## Penulisan
@@ -17,7 +17,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `UncoercibleSlotValueException` | Sebuah nilai pada payload tulis pertama tidak bisa dikoersi ke declared type slot-nya. |
 | `MalformedEntryPayloadException` | Envelope array atau JSON yang dioper ke `EntryPayload::fromArray()` / `fromJson()` / `listFrom*()` cacat secara struktural. Membawa key yang bermasalah. |
 | `EntryNotFoundException` | `updateEntry()` menargetkan entry yang tidak ada, milik tenant lain, atau sudah dihapus. |
-| `NonFilterableFieldSlotException` | Reservasi slot dicoba untuk field yang non-filterable. Ini bug di sisi pemanggil, bukan masalah kapasitas — lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
+| `NonFilterableFieldSlotException` | Reservasi slot dicoba untuk field yang non-filterable. Ini bug di sisi pemanggil, bukan masalah kapasitas. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
 
 ## Pembacaan, filter, dan pengurutan
 
@@ -26,7 +26,7 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `UnknownFieldException` | Filter atau sort merujuk field yang tidak terdaftar di model. |
 | `FieldNotFilterableException` | Filter menargetkan field yang tidak bisa difilter oleh driver aktif. Pada driver MySQL bawaan, itu berarti field yang tidak filterable, dan juga field yang dideklarasikan filterable tetapi belum punya index yang bisa dipakai (belum ada slot, atau slotnya backfilling atau tombstoned). Pesannya menyebutkan yang mana. |
 | `FieldNotIndexedException` | Tidak dimunculkan oleh engine bawaan. Filter pada field yang dideklarasikan filterable tetapi belum indexed memunculkan `FieldNotFilterableException`, jadi tangkap yang itu. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed). |
-| `FieldNotSortableException` | Sort menyebut field yang saat ini tidak indexed — persyaratan yang sama seperti memfilter. Daftar field terindeks pada `describeModel()` melaporkan field mana yang memenuhi syarat sekarang. |
+| `FieldNotSortableException` | Sort menyebut field yang saat ini tidak indexed, yang merupakan persyaratan yang sama seperti memfilter. Daftar field terindeks pada `describeModel()` melaporkan field mana yang memenuhi syarat sekarang. |
 | `PageSizeOutOfRangeException` | `pageSize` di luar rentang `[1, 1000]`. |
 | `InvalidCursorException` | Cursor opaque gagal di-decode secara struktural, atau dipakai ulang setelah sort key, arah, atau null placement-nya berubah. |
 | `QueryFilterValidationException` | QueryFilter JSON gagal decode atau pre-flight. Lihat [Menangani penolakan format wire](#menangani-penolakan-format-wire) di bawah. |
@@ -38,15 +38,15 @@ Setiap error bertipe adalah turunan `RuntimeException`. Semuanya berada di `Star
 | `IncompatibleRetypeException` | Sebuah retype melintasi pasangan yang ditolak secara kategoris (`int` ↔ `datetime`, `numeric` ↔ `datetime`). |
 | `RetypeInProgressException` | Retype diinisiasi untuk field yang sudah punya satu yang berjalan, atau sebuah model di-compact selagi salah satu field-nya sedang retype, promosi, demosi, atau relokasi. |
 | `FieldNotFoundException` | `retypeField()`, `promoteFieldToFilterable()`, `demoteFieldFromFilterable()`, atau `renameField()` menyebut id field yang tidak ada untuk tenant tersebut. `deleteField()` mengembalikan `false`, bukan melempar. |
-| `RenameInProgressException` | Sesuatu menargetkan field yang rename-nya sudah dimulai tetapi belum selesai — sebuah retype, penghapusan, atau (untuk model yang memilikinya) penghapusan model. |
+| `RenameInProgressException` | Sesuatu menargetkan field yang rename-nya sudah dimulai tetapi belum selesai (sebuah retype, penghapusan, atau penghapusan model untuk model yang memilikinya). |
 | `FieldNameConflictException` | `renameField()` akan bertabrakan dengan nama field lain di model yang sama. |
 | `CompactionCapacityException` | `compactModel()` tidak bisa menemukan cukup kapasitas bebas di kumpulan page target untuk menyelesaikan sebuah relokasi. |
 | `ModelNotFoundException` | Pemanggilan level model menyebut `modelId` yang tidak ada untuk tenant si pemanggil. |
 | `ModelNameConflictException` | `renameModel()` akan bertabrakan dengan nama model lain di tenant yang sama. |
-| `ModelDeletionInProgressException` | Sesuatu menargetkan model yang penghapusannya sudah dimulai tetapi belum selesai — sebuah penulisan, update, pengiriman bulk, compaction, atau pengiriman ekspor terhadapnya. |
-| `FieldDeletionInProgressException` | Sesuatu menargetkan field yang penghapusannya sudah dimulai tetapi belum selesai — sebuah rename, retype, promosi, demosi, atau compaction terhadapnya. |
+| `ModelDeletionInProgressException` | Sesuatu menargetkan model yang penghapusannya sudah dimulai tetapi belum selesai (sebuah penulisan, update, pengiriman bulk, compaction, atau pengiriman ekspor terhadapnya). |
+| `FieldDeletionInProgressException` | Sesuatu menargetkan field yang penghapusannya sudah dimulai tetapi belum selesai (sebuah rename, retype, promosi, demosi, atau compaction terhadapnya). |
 
-`deleteField()` dan `deleteModel()` mengembalikan `false`, bukan melempar, bila tidak ada yang perlu dilakukan — field atau model itu tidak ada, milik tenant lain, atau sedang dihapus.
+`deleteField()` dan `deleteModel()` mengembalikan `false`, bukan melempar, bila tidak ada yang perlu dilakukan (field atau model itu tidak ada, milik tenant lain, atau sedang dihapus).
 
 ## Ekspor
 
@@ -61,11 +61,11 @@ Koneksi harus memakai `ERRMODE_EXCEPTION`, jadi error dari database sampai ke ko
 
 ## Menangani penolakan format wire
 
-`QueryFilterValidationException` sengaja bergaya diskriminator: satu `catch` menangani semua kegagalan format wire dan pre-flight, karena semuanya berbagi satu respons pemanggil — perbaiki JSON filter-nya dan coba lagi. Ia membawa cukup konteks untuk merender HTTP 4xx yang presisi tanpa handler per kode:
+`QueryFilterValidationException` sengaja bergaya diskriminator: satu `catch` menangani semua kegagalan format wire dan pre-flight, karena semuanya berbagi satu respons pemanggil, yaitu memperbaiki JSON filter-nya dan mencoba lagi. Ia membawa cukup konteks untuk merender HTTP 4xx yang presisi tanpa handler per kode:
 
-- `$errorCode` — salah satu dari [tiga belas kode error tertutup](/id/usage/query-filter#kode-error).
-- `$jsonPointer` — JSON Pointer RFC 6901 ke node yang bermasalah (misalnya `/filter/args/1/value`).
-- `$details` — konteks khusus diskriminator (misalnya `['expected' => 'int', 'received' => 'string']`).
+- `$errorCode` adalah salah satu dari [tiga belas kode error tertutup](/id/usage/query-filter#kode-error).
+- `$jsonPointer` adalah JSON Pointer RFC 6901 ke node yang bermasalah (misalnya `/filter/args/1/value`).
+- `$details` adalah konteks khusus diskriminator (misalnya `['expected' => 'int', 'received' => 'string']`).
 
 ```php
 use StarDust\Filter\Json\JsonFilterDecoder;

@@ -69,7 +69,7 @@ $result = $engine->search(new SearchRequest(
 ));
 ```
 
-`decode()` mengembalikan filter tree yang sama dengan yang dihasilkan builder bertipe, atau `null` bila dokumen tidak punya key `filter`, yang oleh `search()` diperlakukan sebagai match-all. Decoder-nya ketat, bekerja tanpa koneksi database, dan tidak pernah melihat skema Anda. Apakah sebuah field ada atau bisa di-query diputuskan sesudahnya, oleh pemeriksaan pre-flight. Format dokumennya didefinisikan di [Format wire QueryFilter](/id/usage/query-filter).
+`decode()` mengembalikan <Term id="filter-tree">filter tree</Term> yang sama dengan yang dihasilkan builder bertipe, atau `null` bila dokumen tidak punya key `filter`, yang oleh `search()` diperlakukan sebagai match-all. Decoder-nya ketat, bekerja tanpa koneksi database, dan tidak pernah melihat skema Anda. Apakah sebuah field ada atau bisa di-query diputuskan sesudahnya, oleh pemeriksaan pre-flight. Format dokumennya didefinisikan di [Format wire QueryFilter](/id/usage/query-filter).
 
 ## Validasi pre-flight
 

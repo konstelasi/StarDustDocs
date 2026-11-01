@@ -1,6 +1,6 @@
 # Slot dan page
 
-Slot adalah sumber daya terbatas milik engine, dan sebagian besar perencanaan kapasitas di StarDust sebenarnya adalah perencanaan slot. Halaman ini menjelaskan apa itu slot, bagaimana ia bergerak melewati siklus hidupnya, dan mengapa slot milik satu model bisa tersebar.
+Slot adalah sumber daya terbatas milik engine, dan sebagian besar perencanaan kapasitas di StarDust adalah perencanaan slot. Halaman ini menjelaskan apa itu slot, bagaimana ia bergerak melewati siklus hidupnya, dan mengapa slot milik satu model bisa tersebar.
 
 ## Extension page
 
@@ -36,7 +36,7 @@ Reservasi bersifat atomik, dan setiap field paling banyak memegang satu slot akt
 
 ### Tombstoned lalu direklamasi
 
-Ketika sebuah field [didemosikan](/id/schema-changes/filterability), [dihapus](/id/schema-changes/deleting-fields), atau [di-retype](/id/schema-changes/retype), slot lamanya di-**tombstone**. Slot itu tidak langsung diberikan ke field berikutnya, karena menyerahkan kolom yang masih berisi nilai penghuni sebelumnya akan membuat filter field baru cocok dengan data yang tidak pernah ditulis untuknya.
+Ketika sebuah field [didemosikan](/id/schema-changes/filterability), [dihapus](/id/schema-changes/deleting-fields), atau [di-retype](/id/schema-changes/retype), slot lamanya di-**<Term id="tombstoned-slot">tombstone</Term>**. Slot itu tidak langsung diberikan ke field berikutnya, karena menyerahkan kolom yang masih berisi nilai penghuni sebelumnya akan membuat filter field baru cocok dengan data yang tidak pernah ditulis untuknya.
 
 [Liberator](/id/operations/liberator) mengosongkan kolom itu per chunk yang terbatas dan baru setelahnya menandai slot sebagai free. Slot berstatus `free` dengan demikian selalu terverifikasi kosong.
 
@@ -51,12 +51,12 @@ Sebuah page hanya memuat kolom yang memang diindeksnya, dan kapasitasnya adalah 
 
 Kalau kapasitas habis sebelum Watcher sempat menyusul, penulisan tetap berhasil. Lihat [Penulisan tidak pernah gagal karena kehabisan slot](/id/concepts/filterable-vs-indexed#penulisan-tidak-pernah-gagal-karena-kehabisan-slot). Untuk menyetel headroom, lihat [Penyetelan](/id/operations/tuning#index-headroom).
 
-## Spread: lebih sedikit page, lebih sedikit join
+## Spread dan mengapa lebih sedikit page berarti lebih sedikit join
 
 <Term id="spread">Spread</Term> adalah jumlah extension page tempat slot filterable milik satu model tersebar. Ini penting karena setiap page tambahan yang disentuh sebuah query terfilter menambah satu join.
 
 Spread bukan bug. Ia konsekuensi wajar dari page yang tidak bisa diubah dan slot yang dibagikan dari page mana pun yang masih punya ruang, dan model yang tumbuh field demi field selama setahun sangat mungkin akhirnya tersebar di beberapa page.
 
-Engine mengukurnya sebagai **excess pages**: jumlah page yang benar-benar ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan <Term id="compaction">compaction</Term>, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
+Engine mengukurnya sebagai **excess pages**: jumlah page yang ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan <Term id="compaction">compaction</Term>, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
 
 Laporan dan perintah compaction dibahas di [Perawatan slot](/id/operations/slot-maintenance).

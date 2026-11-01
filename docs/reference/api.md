@@ -1,8 +1,8 @@
 # StarDust API
 
-Every public method on `StarDust`, grouped by what it does. Signatures only — each row links to the page that covers the behaviour in depth. `StarDust::VERSION` holds the package version as a string.
+Every public method on `StarDust`, grouped by what it does. Signatures only. Each row links to the page that covers the behaviour in depth. `StarDust::VERSION` holds the package version as a string.
 
-Every method that takes a `tenantId` validates it before touching the database — an out-of-range value throws `InvalidTenantIdException` immediately, and a method returning `?T` or `bool` reports another tenant's row exactly the way it reports a missing one. See [Errors](/reference/errors) and [Security](/operations/security#tenant-isolation-guarantees).
+Every method that takes a `tenantId` validates it before touching the database. An out-of-range value throws `InvalidTenantIdException` immediately, and a method returning `?T` or `bool` reports another tenant's row exactly the way it reports a missing one. See [Errors](/reference/errors) and [Security](/operations/security#tenant-isolation-guarantees).
 
 ## Setup
 
@@ -54,11 +54,11 @@ Every method that takes a `tenantId` validates it before touching the database �
 | `promoteFieldToFilterable(int $tenantId, int $fieldId): void` | See [Promoting a field](/schema-changes/filterability#promoting-a-field). |
 | `demoteFieldFromFilterable(int $tenantId, int $fieldId): void` | See [Demoting a field](/schema-changes/filterability#demoting-a-field). |
 | `renameField(int $tenantId, int $fieldId, string $newName): void` | See [Renaming a field](/schema-changes/renaming#renaming-a-field). |
-| `renameModel(int $tenantId, int $modelId, string $newName): void` | Synchronous — the one schema change that needs no Reconciler. See [Renaming a model](/schema-changes/renaming#renaming-a-model). |
+| `renameModel(int $tenantId, int $modelId, string $newName): void` | Synchronous, and the one schema change that needs no Reconciler. See [Renaming a model](/schema-changes/renaming#renaming-a-model). |
 | `deleteField(int $tenantId, int $fieldId): bool` | See [Deleting a field](/schema-changes/deleting-fields). |
 | `deleteModel(int $tenantId, int $modelId): bool` | See [Deleting a model](/schema-changes/deleting-models). |
 
-All seven return as soon as the registry is updated. Every one except `renameModel()` then finishes in the background and needs a running Reconciler to converge — see [Background work and eventual consistency](/concepts/background-work). `deleteField()` and `deleteModel()` return `false`, rather than throwing, when there's nothing to do.
+All seven return as soon as the registry is updated. Every one except `renameModel()` then finishes in the background and needs a running Reconciler to converge. See [Background work and eventual consistency](/concepts/background-work). `deleteField()` and `deleteModel()` return `false`, rather than throwing, when there's nothing to do.
 
 ## Exports
 
@@ -85,11 +85,11 @@ Most deployments reach these two through the CLI rather than calling them direct
 | `reconciler(): Reconciler` | See [Reconciler](/operations/reconciler). |
 | `liberator(): Liberator` | See [Liberator](/operations/liberator). |
 | `chronicler(?ShutdownSignal $shutdown = null): Chronicler` | See [Chronicler](/operations/chronicler). |
-| `tick(?int $budgetSeconds = null, bool $advisories = false, bool $exports = false): TickReport` | One bounded pass of the Watcher, Liberator and Reconciler — and, with `$exports`, the Chronicler. See [The tick command](/operations/deployment#the-tick-command). |
+| `tick(?int $budgetSeconds = null, bool $advisories = false, bool $exports = false): TickReport` | One bounded pass of the Watcher, Liberator and Reconciler, plus the Chronicler with `$exports`. See [The tick command](/operations/deployment#the-tick-command). |
 | `combinedTick(): CombinedTick` | The factory behind `tick()`, for a caller that wants to drive the run loop itself, such as a `fastcgi_finish_request()` post-response driver. |
 | `dlqReplayer(): DlqReplayer` | The collaborator behind `reconciler:dlq:replay`. See [The dead-letter queue](/operations/reconciler#the-dead-letter-queue). |
 | `pollLoop(): PollLoop` | Scaffolding shared by every persistent daemon's poll loop. |
 | `shutdownSignal(string $daemonName): ShutdownSignal` | Composite SIGTERM/SIGINT + shutdown-flag-file signal for one daemon. |
 | `lockNamespace(): LockNamespace` | The per-installation qualifier on the engine's two database advisory locks. See [Shared hosting and the lock namespace](/usage/configuration#shared-hosting-and-the-lock-namespace). |
 
-Most deployments run daemons through `bin/stardust` rather than calling these factories directly — see [Deployment](/operations/deployment). They exist for embedding a daemon in your own process supervisor.
+Most deployments run daemons through `bin/stardust` rather than calling these factories directly (see [Deployment](/operations/deployment)). They exist for embedding a daemon in your own process supervisor.

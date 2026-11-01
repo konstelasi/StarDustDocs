@@ -1,6 +1,6 @@
 # The QueryFilter wire format
 
-QueryFilter is the JSON format for filters, so a filter can travel from a browser or an API client and be validated before it reaches your database. This page is the reference for the document shape, the operators, value types, limits and error codes. To use it in code, see [Searching](/usage/searching#accepting-filters-as-json).
+<Term id="queryfilter">QueryFilter</Term> is the JSON format for filters, so a filter can travel from a browser or an API client and be validated before it reaches your database. This page is the reference for the document shape, the operators, value types, limits and error codes. To use it in code, see [Searching](/usage/searching#accepting-filters-as-json).
 
 ## Document shape
 
@@ -25,7 +25,7 @@ A document is a JSON object with an optional `version` and an optional `filter`:
 - A **field reference** is `{ "model": ..., "name": ... }`. Both keys are required non-empty strings. The search runs against the model in the request, and the field is looked up on it.
 - The JSON Schema rejects unknown keys on a node. The decoder ignores them, which is one of the two places the two differ. See [JSON Schema](#json-schema).
 
-## Logical nodes: and, or, not
+## Logical nodes (and, or, not)
 
 | Node | Shape | Meaning |
 | :-- | :-- | :-- |
@@ -139,4 +139,4 @@ Every rejection carries an RFC 6901 JSON Pointer to the offending node. Two of t
 
 The format also ships as a normative JSON Schema (draft 2020-12), for validating filters on the client or in any language. It is included in the package at `schemas/queryfilter.schema.json`.
 
-The schema checks structure only. Whether a field exists or a value fits its type depends on your registry, so that is decided at run time. The schema and the decoder agree on what is and is not a valid document, apart from two documented asymmetries: the schema rejects unknown keys on a node where the decoder ignores them, and the decoder's array de-duplication and its depth, node-count and document-size limits have no schema equivalent.
+The schema checks structure only. Whether a field exists or a value fits its type depends on your registry, so that is decided at run time. The schema and the decoder agree on what is and is not a valid document, apart from two documented asymmetries. The schema rejects unknown keys on a node where the decoder ignores them, and the decoder's array de-duplication and its depth, node-count and document-size limits have no schema equivalent.

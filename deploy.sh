@@ -13,7 +13,7 @@
 set -euo pipefail
 
 REMOTE_HOST="stardustwebsite"
-# Relative to the remote $HOME (an SSH command session's default cwd) — never
+# Relative to the remote $HOME (an SSH command session's default cwd), never
 # an absolute /home/<user>/... path, so the account username stays out of
 # this public repo entirely. "stardust" is StarDustWebsite's own docroot;
 # "docs" is the subdirectory this site owns inside it, matching the
@@ -45,9 +45,9 @@ scp "$ARCHIVE_NAME" "${REMOTE_HOST}:${ARCHIVE_NAME}"
 
 echo "==> Extracting on server ..."
 # The whole directory is wiped first, unlike StarDustWebsite's deploy.sh
-# (which wipes only _next/): nothing account-level (cgi-bin, .well-known,
-# .user.ini, php.ini) lives inside stardust/docs/ — those sit one level up,
-# in stardust/ itself — and VitePress emits plain, uncontent-hashed HTML
+# (which wipes only _next/). Nothing account-level (cgi-bin, .well-known,
+# .user.ini, php.ini) lives inside stardust/docs/, because those sit one level
+# up, in stardust/ itself. VitePress also emits plain, uncontent-hashed HTML
 # per page (only assets/ is hashed), so a renamed or removed page would
 # otherwise leave a stale file behind forever.
 ssh "$REMOTE_HOST" bash -s <<EOF
