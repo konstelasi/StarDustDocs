@@ -27,7 +27,7 @@ export default defineConfig({
   themeConfig: {
     logo: { src: '/logo.svg', alt: 'StarDust' },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/konstelasi/StarDust' },
+      { icon: 'github', link: 'https://github.com/damarbob/StarDust' },
     ],
     footer: {
       message: 'Released under the MIT License.',

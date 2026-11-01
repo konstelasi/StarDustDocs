@@ -1,6 +1,6 @@
 # StarDustDocs
 
-The documentation site for [StarDust](https://github.com/konstelasi/StarDust), built with [VitePress](https://vitepress.dev), covering guides, concepts and reference material in English and Indonesian. Deployed at `stardust.konstelasi.co.id/docs`.
+The documentation site for [StarDust](https://github.com/damarbob/StarDust), built with [VitePress](https://vitepress.dev), covering guides, concepts and reference material in English and Indonesian. Deployed at `stardust.konstelasi.co.id/docs`.
 
 ## Develop
 
