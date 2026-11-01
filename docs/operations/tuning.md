@@ -48,7 +48,7 @@ Every daemon retries a bounded number of times when InnoDB refuses a chunk over 
 | `liberatorDeadlockRetryBudget` | 3 | Consecutive deadlock retries on one chunk before the Liberator takes a sweep gap. See [Liberator](/operations/liberator#sweep-gaps). |
 | `chroniclerDeadlockRetryBudget` | 3 | Consecutive deadlock retries on one export chunk before it's skipped. |
 | `watcherProvisionLockTimeoutSeconds` | 10 | How long the Watcher waits for its database-level advisory lock around provisioning. |
-| `reconcilerCapacityWaitMillis` | 5,000 | Sleep after a tick reports it's waiting on capacity from the Watcher, before retrying. |
+| `reconcilerCapacityWaitMillis` | 5 000 | Sleep after a tick reports it's waiting on capacity from the Watcher, before retrying. |
 
 Raising a retry budget makes a daemon more patient under contention at the cost of holding a chunk's work in limbo longer before falling back (a sweep gap, a skipped export chunk, or a re-raised exception, depending on the source). The defaults hold up well under normal load. Consider raising one only if you're seeing gaps or skips caused by contention you expect to be transient (a burst of other writes to the same pages, say) rather than a persistent bottleneck no retry budget will fix.
 

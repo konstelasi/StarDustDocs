@@ -15,8 +15,8 @@ Jika aplikasi Anda menerima JSON QueryFilter dari browser atau klien API ekstern
 | Kedalaman nesting | 8 |
 | Total node dalam tree | 256 |
 | Argumen per node logika (`and` / `or`) | 64 |
-| Elemen dalam himpunan `in` / `not_in` | 1.024 |
-| Panjang nilai string | 4.096 karakter |
+| Elemen dalam himpunan `in` / `not_in` | 1 024 |
+| Panjang nilai string | 4 096 karakter |
 | Ukuran total payload | 64 KiB |
 
 Filter yang melampaui salah satu batasan ini ditolak sebelum mencapai database, dengan kode error yang bisa dibaca mesin dan pointer ke bagian request yang bermasalah, dan tidak dijalankan sebagai query yang terdegradasi atau sebagian. Inilah yang membuat aman menyerahkan filter langsung dari body request HTTP ke `search()`: klien tidak bisa menyusun payload yang memaksa query yang secara patologis terlalu dalam atau terlalu lebar, dan klien tidak bisa merujuk field yang tidak diizinkan untuk difilter, karena field yang tidak dikenal atau non-filterable ditolak pada langkah pre-flight yang sama. Lihat [Format wire QueryFilter](/id/usage/query-filter#batasan) untuk daftar lengkap batasannya dan cara menyetelnya, dan [Error](/id/reference/errors#menangani-penolakan-format-wire) untuk menangani penolakannya.

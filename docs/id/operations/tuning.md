@@ -48,7 +48,7 @@ Setiap daemon mencoba ulang sejumlah kali yang terbatas saat InnoDB menolak sebu
 | `liberatorDeadlockRetryBudget` | 3 | Percobaan ulang deadlock berturut-turut pada satu chunk sebelum Liberator mengambil sweep gap. Lihat [Liberator](/id/operations/liberator#sweep-gap). |
 | `chroniclerDeadlockRetryBudget` | 3 | Percobaan ulang deadlock berturut-turut pada satu chunk ekspor sebelum dilewati. |
 | `watcherProvisionLockTimeoutSeconds` | 10 | Berapa lama Watcher menunggu advisory lock level-database-nya di sekitar provisioning. |
-| `reconcilerCapacityWaitMillis` | 5.000 | Jeda setelah sebuah tick melaporkan sedang menunggu kapasitas dari Watcher, sebelum mencoba lagi. |
+| `reconcilerCapacityWaitMillis` | 5 000 | Jeda setelah sebuah tick melaporkan sedang menunggu kapasitas dari Watcher, sebelum mencoba lagi. |
 
 Menaikkan budget percobaan ulang membuat sebuah daemon lebih sabar menghadapi kontensi dengan biaya membiarkan pekerjaan sebuah chunk menggantung lebih lama sebelum jatuh ke fallback-nya (sweep gap, chunk ekspor yang dilewati, atau exception yang dilempar ulang, tergantung sumbernya). Nilai default sudah cukup baik di beban normal. Pertimbangkan menaikkannya hanya jika Anda melihat gap atau skip yang disebabkan kontensi yang Anda perkirakan sifatnya sementara (lonjakan penulisan lain ke page yang sama, misalnya), bukan bottleneck persisten yang tidak akan diselesaikan budget percobaan ulang berapa pun besarnya.
 

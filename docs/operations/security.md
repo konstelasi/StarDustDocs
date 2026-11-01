@@ -15,8 +15,8 @@ If your application accepts QueryFilter JSON from a browser or an external API c
 | Nesting depth | 8 |
 | Total nodes in the tree | 256 |
 | Arguments per logical node (`and` / `or`) | 64 |
-| Elements in an `in` / `not_in` set | 1,024 |
-| String value length | 4,096 characters |
+| Elements in an `in` / `not_in` set | 1 024 |
+| String value length | 4 096 characters |
 | Total payload size | 64 KiB |
 
 A filter exceeding any of these is rejected before it reaches the database, with a machine-readable error code and a pointer to the offending part of the request, and not run as a degraded or partial query. This is what makes it safe to hand a filter straight from an HTTP request body to `search()`: a client can't construct a payload that forces a pathologically deep or wide query, and a client can't reference a field it isn't allowed to filter on, since an unknown or non-filterable field is rejected at the same pre-flight step. See [The QueryFilter wire format](/usage/query-filter#limits) for the full limit set and how to tune it, and [Errors](/reference/errors#handling-wire-format-rejections) for handling the rejection.
