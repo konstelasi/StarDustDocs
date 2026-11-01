@@ -25,7 +25,7 @@ Dokumen adalah objek JSON dengan `version` opsional dan `filter` opsional:
 - **Referensi field** berbentuk `{ "model": ..., "name": ... }`. Kedua key wajib berupa string tidak kosong. Pencarian berjalan terhadap model yang ada di request, dan field dicari di model itu.
 - JSON Schema menolak key yang tidak dikenal pada sebuah node. Decoder mengabaikannya, dan itu adalah salah satu dari dua perbedaan antara keduanya. Lihat [JSON Schema](#json-schema).
 
-## Node logika: and, or, not
+## Node logika (and, or, not)
 
 | Node | Bentuk | Artinya |
 | :-- | :-- | :-- |

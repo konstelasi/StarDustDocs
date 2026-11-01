@@ -41,7 +41,7 @@ bin/stardust reconciler
 
 Menjalankan daemon reconciliation. Tanpa lock singleton — jalankan sebanyak apa pun proses yang dibutuhkan backlog Anda. Lihat [Reconciler](/id/operations/reconciler).
 
-## reconciler:dlq:replay
+## `reconciler:dlq:replay`
 
 ```bash
 bin/stardust reconciler:dlq:replay --id=42
@@ -84,7 +84,7 @@ Satu lintasan terbatas Watcher, Liberator, dan Reconciler lewat satu koneksi, un
 
 Jangan pernah menjalankan `tick` bersamaan dengan proses `watcher` yang persisten — run yang tumpang tindih hanya melaporkan skip dengan kode keluar `0`. `liberator` dan `chronicler` adalah pengecualian: keduanya multi-worker, sehingga run `tick` bisa hidup berdampingan dengan salah satunya. Lihat [Perintah tick](/id/operations/deployment#perintah-tick).
 
-## spread:report
+## `spread:report`
 
 ```bash
 bin/stardust spread:report
@@ -93,7 +93,7 @@ bin/stardust spread:report --tenant=1 --model=7
 
 Melaporkan berapa banyak extension page tempat field filterable setiap model tersebar, dibandingkan dengan yang paling sedikit yang bisa mereka tempati. Registry-only dan read-only — aman dijalankan terhadap produksi kapan saja. Lihat [Laporan spread](/id/operations/slot-maintenance#laporan-spread).
 
-## cardinality:report
+## `cardinality:report`
 
 ```bash
 bin/stardust cardinality:report
@@ -102,7 +102,7 @@ bin/stardust cardinality:report --tenant=1 --model=7
 
 Melaporkan jumlah baris, nilai distinct, dan selektivitas untuk setiap slot filterable yang aktif. Read-only, tetapi berbeda dari `spread:report`, ia memindai setiap extension page yang cocok, bukan hanya registry — sebaiknya jalankan di luar jam sibuk pada dataset besar. `--model` mempersempit slot mana yang diperiksa; jumlah setiap slot tetap mencakup seluruh page. Lihat [Laporan kardinalitas](/id/operations/slot-maintenance#laporan-kardinalitas).
 
-## compact:model
+## `compact:model`
 
 ```bash
 bin/stardust compact:model --tenant=1 --model=7 --dry-run

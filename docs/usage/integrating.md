@@ -23,7 +23,7 @@ A dedicated connection avoids that entirely:
 - StarDust's transactions never interleave with yours (see the next section);
 - it costs one extra database connection per process that uses StarDust. Create it lazily, so a request that never touches StarDust never opens it. The container recipes below do exactly that.
 
-## Transactions: yours and StarDust's
+## Your transactions and StarDust's
 
 **StarDust manages its own transactions.** Every call that changes data (`write()`, `updateEntry()`, `deleteEntry()`, each chunk of `bulkWrite()`, and the schema changes) opens a transaction on its connection, commits it, and rolls it back on failure. That has two consequences.
 

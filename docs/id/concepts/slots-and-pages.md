@@ -51,7 +51,7 @@ Sebuah page hanya memuat kolom yang memang diindeksnya, dan kapasitasnya adalah 
 
 Kalau kapasitas habis sebelum Watcher sempat menyusul, penulisan tetap berhasil. Lihat [Penulisan tidak pernah gagal karena kehabisan slot](/id/concepts/filterable-vs-indexed#penulisan-tidak-pernah-gagal-karena-kehabisan-slot). Untuk menyetel headroom, lihat [Penyetelan](/id/operations/tuning#index-headroom).
 
-## Spread: lebih sedikit page, lebih sedikit join
+## Spread dan mengapa lebih sedikit page berarti lebih sedikit join
 
 <Term id="spread">Spread</Term> adalah jumlah extension page tempat slot filterable milik satu model tersebar. Ini penting karena setiap page tambahan yang disentuh sebuah query terfilter menambah satu join.
 

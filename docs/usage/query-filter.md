@@ -25,7 +25,7 @@ A document is a JSON object with an optional `version` and an optional `filter`:
 - A **field reference** is `{ "model": ..., "name": ... }`. Both keys are required non-empty strings. The search runs against the model in the request, and the field is looked up on it.
 - The JSON Schema rejects unknown keys on a node. The decoder ignores them, which is one of the two places the two differ. See [JSON Schema](#json-schema).
 
-## Logical nodes: and, or, not
+## Logical nodes (and, or, not)
 
 | Node | Shape | Meaning |
 | :-- | :-- | :-- |

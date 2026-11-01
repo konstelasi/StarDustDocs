@@ -51,7 +51,7 @@ A page carries exactly the columns it indexes, and its capacity is whatever it w
 
 If capacity runs out before the Watcher catches up, writes still succeed. See [Writes never fail for lack of a slot](/concepts/filterable-vs-indexed#writes-never-fail-for-lack-of-a-slot). To tune headroom, see [Tuning](/operations/tuning#index-headroom).
 
-## Spread: why fewer pages means fewer joins
+## Spread and why fewer pages means fewer joins
 
 <Term id="spread">Spread</Term> is how many extension pages a single model's filterable slots are scattered across. It matters because every extra page a filtered query touches costs another join.
 

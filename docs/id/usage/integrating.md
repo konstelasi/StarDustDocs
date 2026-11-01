@@ -23,7 +23,7 @@ Koneksi khusus menghindari semua itu:
 - transaksi StarDust tidak pernah bercampur dengan milik Anda (lihat bagian berikutnya);
 - harganya satu koneksi database tambahan per proses yang memakai StarDust. Buat secara lazy, agar request yang tidak menyentuh StarDust tidak pernah membukanya. Resep container di bawah melakukan persis itu.
 
-## Transaksi: milik Anda dan milik StarDust
+## Transaksi Anda dan transaksi StarDust
 
 **StarDust mengelola transaksinya sendiri.** Setiap pemanggilan yang mengubah data (`write()`, `updateEntry()`, `deleteEntry()`, setiap chunk `bulkWrite()`, dan perubahan skema) membuka transaksi di koneksinya, meng-commit-nya, dan me-rollback-nya bila gagal. Ada dua konsekuensi.
 

@@ -18,7 +18,7 @@ $page = $engine->read(new EntryQuery(
 
 It is a framework-neutral Composer package. Its only runtime dependencies are the `psr/log` and `psr/clock` interfaces: no framework, ORM or query builder.
 
-## The problem: dynamic fields that stay filterable
+## The problem of dynamic fields that stay filterable
 
 Many applications let each customer define their own data: custom fields on a contact, a form builder, per-workspace record types. Storing that data is easy. Querying it is where the usual designs fall over:
 

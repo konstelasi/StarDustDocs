@@ -40,7 +40,7 @@ $pdo = new PDO($_ENV['TEST_DSN'], $_ENV['TEST_USER'], $_ENV['TEST_PASS'], [
 
 You need each test to start from a known state. The usual tricks do not all work with StarDust, so pick deliberately.
 
-**Wrapping each test in a transaction and rolling it back does not work** for tests that call a StarDust mutation. StarDust opens its own transactions, and PDO does not nest them, so the call fails on a connection that already has one open. See [Integrating with your application](/usage/integrating#transactions-yours-and-stardusts).
+**Wrapping each test in a transaction and rolling it back does not work** for tests that call a StarDust mutation. StarDust opens its own transactions, and PDO does not nest them, so the call fails on a connection that already has one open. See [Integrating with your application](/usage/integrating#your-transactions-and-stardusts).
 
 **Dropping and recreating the tables is correct but slow.** StarDust's own suite measured it at roughly 1.5 seconds per test on MySQL 8.0.13, because every drop and create is a schema change the server commits. Do that once per test class at most, or once per run.
 

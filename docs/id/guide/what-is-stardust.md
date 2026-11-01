@@ -18,7 +18,7 @@ $page = $engine->read(new EntryQuery(
 
 Ia adalah package Composer yang tidak terikat framework. Dependensi runtime-nya hanya interface `psr/log` dan `psr/clock`: tanpa framework, ORM, atau query builder.
 
-## Masalahnya: field dinamis yang tetap bisa difilter
+## Masalah field dinamis yang tetap bisa difilter
 
 Banyak aplikasi membiarkan setiap pelanggan mendefinisikan datanya sendiri: custom field pada kontak, form builder, tipe record per workspace. Menyimpan data itu mudah. Meng-query-nya adalah bagian yang membuat desain yang lazim kewalahan:
 

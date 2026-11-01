@@ -41,7 +41,7 @@ bin/stardust reconciler
 
 Runs the reconciliation daemon. No singleton lock — run as many processes as your backlog needs. See [Reconciler](/operations/reconciler).
 
-## reconciler:dlq:replay
+## `reconciler:dlq:replay`
 
 ```bash
 bin/stardust reconciler:dlq:replay --id=42
@@ -84,7 +84,7 @@ One bounded pass of the Watcher, Liberator and Reconciler over a single connecti
 
 Never run `tick` alongside a persistent `watcher` process — an overlapping run just reports a skip with exit code `0`. `liberator` and `chronicler` are the exception: both are multi-worker, so a `tick` run can coexist with either. See [The tick command](/operations/deployment#the-tick-command).
 
-## spread:report
+## `spread:report`
 
 ```bash
 bin/stardust spread:report
@@ -93,7 +93,7 @@ bin/stardust spread:report --tenant=1 --model=7
 
 Reports how many extension pages each model's filterable fields are scattered across, versus the fewest they could occupy. Registry-only and read-only — safe against production at any time. See [The spread report](/operations/slot-maintenance#the-spread-report).
 
-## cardinality:report
+## `cardinality:report`
 
 ```bash
 bin/stardust cardinality:report
@@ -102,7 +102,7 @@ bin/stardust cardinality:report --tenant=1 --model=7
 
 Reports row count, distinct values and selectivity for each live filterable slot. Read-only, but unlike `spread:report` it scans every matching extension page rather than only the registry — prefer off-peak on a large dataset. `--model` narrows which slots are examined; each one's counts still cover the whole page. See [The cardinality report](/operations/slot-maintenance#the-cardinality-report).
 
-## compact:model
+## `compact:model`
 
 ```bash
 bin/stardust compact:model --tenant=1 --model=7 --dry-run
