@@ -1,6 +1,6 @@
 # Referensi CLI
 
-`bin/stardust` adalah entry point CLI yang tidak terikat framework. Setiap perintah membaca pengaturan koneksi dari environment; tidak ada bagian lain dari `Config` yang bisa dijangkau dari CLI — lihat [Pengaturan dan daemon bawaan](/id/usage/configuration#pengaturan-dan-daemon-bawaan) bila deployment Anda butuh `artifactDir`, `pidFileDir`, atau penyetelan daemon selain nilai bawaannya.
+`bin/stardust` adalah entry point CLI yang tidak terikat framework. Setiap perintah membaca pengaturan koneksi dari environment. Tidak ada bagian lain dari `Config` yang bisa dijangkau dari CLI. Lihat [Pengaturan dan daemon bawaan](/id/usage/configuration#pengaturan-dan-daemon-bawaan) bila deployment Anda butuh `artifactDir`, `pidFileDir`, atau penyetelan daemon selain nilai bawaannya.
 
 ```bash
 bin/stardust --version
@@ -39,7 +39,7 @@ Menjalankan daemon page-provisioning. Singleton ketat: memegang file lock di baw
 bin/stardust reconciler
 ```
 
-Menjalankan daemon reconciliation. Tanpa lock singleton — jalankan sebanyak apa pun proses yang dibutuhkan backlog Anda. Lihat [Reconciler](/id/operations/reconciler).
+Menjalankan daemon reconciliation. Tidak ada lock singleton, jadi jalankan sebanyak apa pun proses yang dibutuhkan backlog Anda. Lihat [Reconciler](/id/operations/reconciler).
 
 ## `reconciler:dlq:replay`
 
@@ -56,7 +56,7 @@ Mengembalikan ke antrean satu baris dead-letter berdasarkan id, atau semua baris
 bin/stardust liberator
 ```
 
-Menjalankan daemon reklamasi slot. Tanpa lock singleton — eksklusi per extension page, jadi jalankan sebanyak apa pun proses yang Anda mau. Lihat [Liberator](/id/operations/liberator).
+Menjalankan daemon reklamasi slot. Tidak ada lock singleton. Eksklusi berlaku per extension page, jadi jalankan sebanyak apa pun proses yang Anda mau. Lihat [Liberator](/id/operations/liberator).
 
 ## chronicler
 
@@ -64,7 +64,7 @@ Menjalankan daemon reklamasi slot. Tanpa lock singleton — eksklusi per extensi
 bin/stardust chronicler
 ```
 
-Menjalankan daemon ekspor asinkron. Tanpa lock singleton — jalankan sebanyak apa pun proses yang dibutuhkan backlog ekspor Anda. Lihat [Chronicler](/id/operations/chronicler).
+Menjalankan daemon ekspor asinkron. Tidak ada lock singleton, jadi jalankan sebanyak apa pun proses yang dibutuhkan backlog ekspor Anda. Lihat [Chronicler](/id/operations/chronicler).
 
 ## tick
 
@@ -82,7 +82,7 @@ Satu lintasan terbatas Watcher, Liberator, dan Reconciler lewat satu koneksi, un
 | `--advisories` | Memaksa advisory kardinalitas dan spread untuk sampling segera, terlepas dari jadwalnya (fleet-wide, tersimpan di database). |
 | `--exports` | Menyertakan Chronicler ke dalam run-nya, terakhir di setiap putaran. Nonaktif secara bawaan. |
 
-Jangan pernah menjalankan `tick` bersamaan dengan proses `watcher` yang persisten — run yang tumpang tindih hanya melaporkan skip dengan kode keluar `0`. `liberator` dan `chronicler` adalah pengecualian: keduanya multi-worker, sehingga run `tick` bisa hidup berdampingan dengan salah satunya. Lihat [Perintah tick](/id/operations/deployment#perintah-tick).
+Jangan pernah menjalankan `tick` bersamaan dengan proses `watcher` yang persisten. Run yang tumpang tindih hanya melaporkan skip dengan kode keluar `0`. `liberator` dan `chronicler` adalah pengecualian: keduanya multi-worker, sehingga run `tick` bisa hidup berdampingan dengan salah satunya. Lihat [Perintah tick](/id/operations/deployment#perintah-tick).
 
 ## `spread:report`
 
@@ -91,7 +91,7 @@ bin/stardust spread:report
 bin/stardust spread:report --tenant=1 --model=7
 ```
 
-Melaporkan berapa banyak extension page tempat field filterable setiap model tersebar, dibandingkan dengan yang paling sedikit yang bisa mereka tempati. Registry-only dan read-only — aman dijalankan terhadap produksi kapan saja. Lihat [Laporan spread](/id/operations/slot-maintenance#laporan-spread).
+Melaporkan berapa banyak extension page tempat field filterable setiap model tersebar, dibandingkan dengan yang paling sedikit yang bisa mereka tempati. Registry-only dan read-only, jadi aman dijalankan terhadap produksi kapan saja. Lihat [Laporan spread](/id/operations/slot-maintenance#laporan-spread).
 
 ## `cardinality:report`
 
@@ -100,7 +100,7 @@ bin/stardust cardinality:report
 bin/stardust cardinality:report --tenant=1 --model=7
 ```
 
-Melaporkan jumlah baris, nilai distinct, dan selektivitas untuk setiap slot filterable yang aktif. Read-only, tetapi berbeda dari `spread:report`, ia memindai setiap extension page yang cocok, bukan hanya registry — sebaiknya jalankan di luar jam sibuk pada dataset besar. `--model` mempersempit slot mana yang diperiksa; jumlah setiap slot tetap mencakup seluruh page. Lihat [Laporan kardinalitas](/id/operations/slot-maintenance#laporan-kardinalitas).
+Melaporkan jumlah baris, nilai distinct, dan selektivitas untuk setiap slot filterable yang aktif. Read-only, tetapi berbeda dari `spread:report`, ia memindai setiap extension page yang cocok, bukan hanya registry, jadi sebaiknya jalankan di luar jam sibuk pada dataset besar. `--model` mempersempit slot mana yang diperiksa. Jumlah setiap slot tetap mencakup seluruh page. Lihat [Laporan kardinalitas](/id/operations/slot-maintenance#laporan-kardinalitas).
 
 ## `compact:model`
 
@@ -109,11 +109,11 @@ bin/stardust compact:model --tenant=1 --model=7 --dry-run
 bin/stardust compact:model --tenant=1 --model=7
 ```
 
-Memindahkan field filterable sebuah model ke page paling sedikit yang bisa menampungnya. Berjalan lama dan diinisiasi operator — butuh Reconciler yang berjalan agar bisa maju, memindahkan satu field pada satu waktu, dan menolak (bahkan dengan `--dry-run`) selagi salah satu field model masih dalam proses retype, promosi, demosi, atau relokasi. Aman dijalankan ulang: field yang sudah di tempatnya dilewati. Lihat [Memadatkan model (compaction)](/id/operations/slot-maintenance#memadatkan-model-compaction).
+Memindahkan field filterable sebuah model ke page paling sedikit yang bisa menampungnya. Berjalan lama dan diinisiasi operator. Ia butuh Reconciler yang berjalan agar bisa maju, memindahkan satu field pada satu waktu, dan menolak (bahkan dengan `--dry-run`) selagi salah satu field model masih dalam proses retype, promosi, demosi, atau relokasi. Aman dijalankan ulang: field yang sudah di tempatnya dilewati. Lihat [Memadatkan model (compaction)](/id/operations/slot-maintenance#memadatkan-model-compaction).
 
 ## Kode keluar dan sinyal
 
-Daemon menghormati `SIGTERM`/`SIGINT` (bila `ext-pcntl` dimuat) maupun `touch <pidFileDir>/<daemon-name>.shutdown` sebagai sinyal graceful-shutdown, untuk host tanpa `pcntl`. `SIGTERM` ke `chronicler` di tengah ekspor mengalah di batas chunk berikutnya alih-alih memblokir sampai job selesai — lihat [Ekspor](/id/usage/exports).
+Daemon menghormati `SIGTERM`/`SIGINT` (bila `ext-pcntl` dimuat) maupun `touch <pidFileDir>/<daemon-name>.shutdown` sebagai sinyal graceful-shutdown, untuk host tanpa `pcntl`. `SIGTERM` ke `chronicler` di tengah ekspor mengalah di batas chunk berikutnya alih-alih memblokir sampai job selesai. Lihat [Ekspor](/id/usage/exports).
 
 | Kode | Artinya |
 | :-- | :-- |

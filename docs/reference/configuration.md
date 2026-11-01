@@ -6,7 +6,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 
 | Field | Default | Governs |
 | :-- | :-- | :-- |
-| `pdo` | — (required) | The connection. Must be constructed with `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) are the tested default, and emulation works too. See [Prepare the PDO connection](/guide/installation#prepare-the-pdo-connection). |
+| `pdo` | None (required) | The connection. Must be constructed with `ATTR_ERRMODE => ERRMODE_EXCEPTION`. Native prepares (`ATTR_EMULATE_PREPARES => false`) are the tested default, and emulation works too. See [Prepare the PDO connection](/guide/installation#prepare-the-pdo-connection). |
 | `logger` | `StdoutNdjsonLogger` | A PSR-3 logger. Inject your own to route events somewhere other than stdout NDJSON. |
 | `clock` | `SystemClock` | A `psr/clock` implementation. Inject a frozen clock in tests. |
 
@@ -14,7 +14,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 
 | Field | Default | Governs |
 | :-- | :-- | :-- |
-| `artifactDir` | `sys_get_temp_dir() . '/stardust'` | Where async bulk-ingest payloads are written. Shared with export artifacts — see [Chronicler and exports](#chronicler-and-exports) below. |
+| `artifactDir` | `sys_get_temp_dir() . '/stardust'` | Where async bulk-ingest payloads are written. Shared with export artifacts. See [Chronicler and exports](#chronicler-and-exports) below. |
 | `reconcilerImportLeaseTimeoutSeconds` | 30 | Seconds before an import job's heartbeat is considered lapsed and another Reconciler re-claims it. |
 
 ## Reads and search
@@ -37,7 +37,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 | `cardinalityRowFloor` | 10 000 | Minimum row count before an index is even considered for the cardinality check. |
 | `cardinalityDistinctFloor` | 10 | Minimum distinct-value count before the same check applies. |
 | `spreadExcessPageThreshold` | 2 | How many avoidable pages a model must occupy before the spread advisory flags it. |
-| `pageIndexHeadroom` | 4 | Spare indexed columns of each family a newly provisioned page carries beyond current demand. Fixed per page at creation — raising it never widens an existing page. See [Index headroom](/operations/tuning#index-headroom). |
+| `pageIndexHeadroom` | 4 | Spare indexed columns of each family a newly provisioned page carries beyond current demand. Fixed per page at creation, so raising it never widens an existing page. See [Index headroom](/operations/tuning#index-headroom). |
 
 ## Reconciler
 
@@ -48,7 +48,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 | `reconcilerCapacityWaitMillis` | 5 000 | Sleep after a tick reports it's waiting on Watcher-provisioned capacity, before retrying. |
 | `reconcilerLockRetryBudget` | 3 | Consecutive lock-failure retries on five of the Reconciler's six work sources before it defers to the next tick. |
 | `reconcilerLockRetryDelayMicros` | 0 | Pause between those retries. |
-| `modelPurgeChunkSize` | 200 | `entry_data` deletes per model-deletion purge transaction. Smaller than `reconcilerChunkSize` on purpose — see [Chunk sizes](/operations/tuning#chunk-sizes). |
+| `modelPurgeChunkSize` | 200 | `entry_data` deletes per model-deletion purge transaction. Smaller than `reconcilerChunkSize` on purpose. See [Chunk sizes](/operations/tuning#chunk-sizes). |
 | `modelPurgeLockRetryBudget` | 3 | Consecutive lock-failure retries before the model-purge source gives up and re-raises rather than deferring. |
 
 ## Liberator
@@ -80,7 +80,7 @@ Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/us
 | `chroniclerDbDisconnectBackoffSeconds` | `[1, 4, 16]` | Fixed reconnect backoff schedule after a dropped connection mid-export. |
 | `pdoConnector` | `null` | Reconnect factory the Chronicler uses to rebuild a dropped connection mid-export. `bin/stardust chronicler` wires one automatically; `null` means a dropped connection ends the job as `failed:query_failure`. |
 
-`artifactDir` (above, under [Writes and imports](#writes-and-imports)) is shared between async imports and exports — see [Artifact storage](/operations/deployment#artifact-storage).
+`artifactDir` (above, under [Writes and imports](#writes-and-imports)) is shared between async imports and exports. See [Artifact storage](/operations/deployment#artifact-storage).
 
 ## Combined tick
 
