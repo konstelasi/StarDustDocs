@@ -131,7 +131,7 @@ $page = $this->engine->read(new EntryQuery(
 | `SHUTDOWN` | A shutdown was requested. |
 | `LOCK_CONTENDED` | Another process holds the Watcher's pid file, so **no work ran**. |
 
-Always assert `IDLE`, so a test can never pass because nothing was actually drained.
+Always assert `IDLE`, so a test can never pass because nothing was drained.
 
 **Give each test process its own `pidFileDir`.** `tick()` takes the Watcher's pid-file lock, and by default that lives in a directory shared by every process on the machine. Two test processes running together would collide, and the loser would silently do nothing. Create a private directory per process:
 

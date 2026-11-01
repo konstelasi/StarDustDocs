@@ -93,7 +93,7 @@ Tuning the daemons (chunk sizes, worker pacing, lock retries) is covered in [Tun
 
 A `Config` only affects the process that builds it. **`bin/stardust` builds its own `Config` from `STARDUST_DSN`, `STARDUST_USER` and `STARDUST_PASS` alone, and leaves every other setting at its default.** So a value you set in your application, such as `artifactDir`, `pidFileDir`, `pageIndexHeadroom` or a chunk size, does not reach the daemons started with `bin/stardust`.
 
-For most settings that just means the defaults apply to the daemons. For `artifactDir` it matters more, because your application and the daemons have to use the same directory. [Integrating with your application](/usage/integrating#running-the-daemons-next-to-your-app) explains how to keep them in agreement, and how to run a daemon from your own script when you need custom settings.
+For most settings that means the defaults apply to the daemons. For `artifactDir` it matters more, because your application and the daemons have to use the same directory. [Integrating with your application](/usage/integrating#running-the-daemons-next-to-your-app) explains how to keep them in agreement, and how to run a daemon from your own script when you need custom settings.
 
 ## Shared hosting and the lock namespace
 

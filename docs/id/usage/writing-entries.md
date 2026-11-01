@@ -71,7 +71,7 @@ Dua hal lagi berlaku untuk setiap penulisan. Tenant id harus 1 atau lebih, dan d
 Setiap nilai dikonversi ke declared type field-nya sebelum disimpan di slot. Nilai yang tidak bisa dikonversi memunculkan `UncoercibleSlotValueException`, dan tidak ada yang ditulis.
 
 - **String.** String yang ditujukan ke slot maksimal 4 096 karakter. Nilai yang lebih panjang ditolak sebelum SQL apa pun dijalankan.
-- **Datetime.** Nilai `datetime` harus berupa `DateTimeInterface`, string `Y-m-d H:i:s` tanpa zona (dianggap UTC), atau string RFC 3339 dengan offset UTC eksplisit (`Z` atau `±HH:MM`) yang dikonversi ke UTC saat ditulis. Bentuk string lain ditolak, bukan ditebak. Termasuk tanggal berformat lokal seperti `05/01/2026`: tanggal dengan garis miring dibaca bulan-dulu apa pun maksud Anda, sehingga nilai hari-dulu hanya *tampak* berhasil padahal mendarat di tanggal yang salah, diam-diam, untuk setiap tanggal hingga hari ke-12.
+- **Datetime.** Nilai `datetime` harus berupa `DateTimeInterface`, string `Y-m-d H:i:s` tanpa zona (dianggap UTC), atau string RFC 3339 dengan offset UTC eksplisit (`Z` atau `±HH:MM`) yang dikonversi ke UTC saat ditulis. Bentuk string lain ditolak, bukan ditebak. Termasuk tanggal berformat lokal seperti `05/01/2026`. Tanggal dengan garis miring dibaca bulan-dulu apa pun maksud Anda, sehingga nilai hari-dulu hanya *tampak* berhasil, padahal untuk setiap tanggal hingga hari ke-12 nilai itu mendarat di tanggal yang salah, diam-diam.
 
 Aturan offset yang sama berlaku untuk batas filter. Lihat [Format wire QueryFilter](/id/usage/query-filter#datetime-wajib-menyertakan-offset).
 

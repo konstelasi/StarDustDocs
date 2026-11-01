@@ -73,7 +73,7 @@ $reserver->reserve($company->fieldId('name'));
 $reserver->reserve($company->fieldId('employees'));
 ```
 
-Sebelum sebuah field punya slot, ia tetap tersimpan dan bisa dibaca dari payload JSON, hanya tidak berada di jalur filter terindeks. Lihat [Slot dan page](/id/concepts/slots-and-pages).
+Sebelum sebuah field punya slot, ia tetap tersimpan dan bisa dibaca dari payload JSON, tetapi tidak berada di jalur filter terindeks. Lihat [Slot dan page](/id/concepts/slots-and-pages).
 
 ## Menampilkan daftar model milik tenant
 

@@ -41,7 +41,7 @@ $jobId = $engine->submitBulkWrite(
 
 Two practical notes:
 
-- **The whole batch is held in memory while it is submitted.** It is written out as a single JSON document, so a very large batch needs the PHP memory to match. Split an enormous import into several submissions.
+- **The whole batch is held in memory while it is submitted.** It is written out as a single JSON document, so a large batch needs the PHP memory to match. Split an enormous import into several submissions.
 - **`artifactDir` must be writable, persistent and not web-servable, and the Reconciler must read the same directory.** The submitting process writes the batch there and the Reconciler reads it back, so if the two resolve to different directories the job fails. `bin/stardust` always uses the default directory. See [Integrating with your application](/usage/integrating#running-the-daemons-next-to-your-app).
 
 ## Idempotency keys

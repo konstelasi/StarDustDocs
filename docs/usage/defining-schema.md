@@ -73,7 +73,7 @@ $reserver->reserve($company->fieldId('name'));
 $reserver->reserve($company->fieldId('employees'));
 ```
 
-Until a field has a slot it is still stored and readable from the JSON payload, just not on the indexed filter path. See [Slots and pages](/concepts/slots-and-pages).
+Until a field has a slot it is still stored and readable from the JSON payload, but not on the indexed filter path. See [Slots and pages](/concepts/slots-and-pages).
 
 ## Listing a tenant's models
 

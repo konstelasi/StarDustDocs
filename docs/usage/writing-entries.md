@@ -71,7 +71,7 @@ Two more things are true of every write. The tenant id must be 1 or higher, and 
 Each value is coerced to its field's declared type before it is stored in a slot. A value that cannot be coerced raises `UncoercibleSlotValueException`, and nothing is written.
 
 - **Strings.** A string bound for a slot may be at most 4 096 characters. A longer value is rejected before any SQL runs.
-- **Datetimes.** A `datetime` value must be a `DateTimeInterface`, a naive `Y-m-d H:i:s` string (assumed to be UTC), or an RFC 3339 string with an explicit UTC offset (`Z` or `±HH:MM`), which is converted to UTC on write. Any other string shape is rejected rather than guessed at. That includes a locale-formatted date such as `05/01/2026`: a slash-separated date is read month-first regardless of what you meant, so a day-first value would only *look* like it worked and would land on the wrong date, silently, for any day up to the 12th.
+- **Datetimes.** A `datetime` value must be a `DateTimeInterface`, a naive `Y-m-d H:i:s` string (assumed to be UTC), or an RFC 3339 string with an explicit UTC offset (`Z` or `±HH:MM`), which is converted to UTC on write. Any other string shape is rejected rather than guessed at. That includes a locale-formatted date such as `05/01/2026`. A slash-separated date is read month-first regardless of what you meant, so a day-first value would only *look* like it worked, and for any day up to the 12th it would land on the wrong date, silently.
 
 The same offset rule applies to filter bounds. See [The QueryFilter wire format](/usage/query-filter#datetimes-need-an-explicit-offset).
 

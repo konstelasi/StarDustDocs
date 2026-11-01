@@ -131,7 +131,7 @@ $page = $this->engine->read(new EntryQuery(
 | `SHUTDOWN` | Shutdown diminta. |
 | `LOCK_CONTENDED` | Proses lain memegang pid file Watcher, sehingga **tidak ada pekerjaan yang berjalan**. |
 
-Selalu periksa bahwa hasilnya `IDLE`, agar test tidak pernah lolos hanya karena tidak ada yang benar-benar dikuras.
+Selalu periksa bahwa hasilnya `IDLE`, agar test tidak pernah lolos hanya karena tidak ada yang dikuras.
 
 **Beri setiap proses test `pidFileDir`-nya sendiri.** `tick()` mengambil pid-file lock milik Watcher, dan secara bawaan lock itu berada di direktori yang dipakai bersama oleh semua proses di mesin tersebut. Dua proses test yang berjalan bersamaan akan bertabrakan, dan yang kalah diam-diam tidak mengerjakan apa pun. Buat direktori privat per proses:
 

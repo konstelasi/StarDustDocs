@@ -139,4 +139,4 @@ Every rejection carries an RFC 6901 JSON Pointer to the offending node. Two of t
 
 The format also ships as a normative JSON Schema (draft 2020-12), for validating filters on the client or in any language. It is included in the package at `schemas/queryfilter.schema.json`.
 
-The schema checks structure only. Whether a field exists or a value fits its type depends on your registry, so that is decided at run time. The schema and the decoder agree on what is and is not a valid document, apart from two documented asymmetries: the schema rejects unknown keys on a node where the decoder ignores them, and the decoder's array de-duplication and its depth, node-count and document-size limits have no schema equivalent.
+The schema checks structure only. Whether a field exists or a value fits its type depends on your registry, so that is decided at run time. The schema and the decoder agree on what is and is not a valid document, apart from two documented asymmetries. The schema rejects unknown keys on a node where the decoder ignores them, and the decoder's array de-duplication and its depth, node-count and document-size limits have no schema equivalent.
