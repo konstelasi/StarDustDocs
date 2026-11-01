@@ -4,7 +4,7 @@
 
 The Liberator reclaims slots after a field is demoted or deleted. A slot that's lost its field isn't handed straight to the next field waiting for one. Its old values are still physically sitting in the column, and handing it over as-is would let the new field's filters match data nobody ever wrote to it. The Liberator clears those values out in bounded chunks and only then returns the slot to the free pool.
 
-Between "the field is gone" and "the slot is reusable" the slot sits **tombstoned**. Reads, writes and filters already behave as if the field never existed the moment it's demoted or deleted; the Liberator's job is purely storage hygiene that happens after the fact.
+Between "the field is gone" and "the slot is reusable" the slot sits **tombstoned**. Reads, writes and filters already behave as if the field never existed the moment it's demoted or deleted. The Liberator's job is purely storage hygiene that happens after the fact.
 
 ## How a slot is reclaimed
 

@@ -32,7 +32,7 @@ A smaller chunk size means shorter individual locks and more total round-trips. 
 
 ## Index headroom
 
-`pageIndexHeadroom` (default **4**) controls how many spare indexed columns of each type a newly provisioned page carries beyond what current demand justifies. Because a page's set of indexed columns is fixed forever once created, headroom is what stops a sequence of promotions from each triggering their own page: with headroom, several fields promoted one after another land together on the page that already has room, instead of scattering across as many pages as there were promotions.
+`pageIndexHeadroom` (default **4**) controls how many spare indexed columns of each type a newly provisioned page carries beyond what current demand justifies. Because a page's set of indexed columns is fixed forever once created, headroom is what stops a sequence of promotions from each triggering their own page. With headroom, several fields promoted one after another land together on the page that already has room, instead of scattering across as many pages as there were promotions.
 
 Raising this only affects pages created from that point forward. It never widens an existing page. If you're seeing [high spread](/operations/slot-maintenance#the-spread-report) on models that grow fields incrementally, raising `pageIndexHeadroom` before the growth happens is cheaper than compacting after the fact.
 
@@ -56,4 +56,4 @@ Raising a retry budget makes a daemon more patient under contention at the cost 
 
 These only matter if you're running `bin/stardust tick` rather than persistent daemons. See [Deployment](/operations/deployment#time-budgets).
 
-`tickBudgetSeconds` (default 50) is how long one `tick` invocation runs before stopping, passed as `--budget` or left at its `Config` default. `tickBudgetMarginSeconds` (default 5) is subtracted from PHP's own `max_execution_time` when the SAPI reports a nonzero ceiling, so the effective budget never exceeds what the host would kill the process for anyway, so you don't need to coordinate the two by hand. Just make sure `tickBudgetSeconds` comfortably fits inside your cron interval.
+`tickBudgetSeconds` (default 50) is how long one `tick` invocation runs before stopping, passed as `--budget` or left at its `Config` default. `tickBudgetMarginSeconds` (default 5) is subtracted from PHP's own `max_execution_time` when the SAPI reports a nonzero ceiling, so the effective budget never exceeds what the host would kill the process for anyway. You don't need to coordinate the two by hand. Just make sure `tickBudgetSeconds` comfortably fits inside your cron interval.

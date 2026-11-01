@@ -4,7 +4,7 @@
 
 Liberator mereklamasi slot setelah sebuah field didemosi atau dihapus. Slot yang kehilangan field-nya tidak langsung diserahkan ke field berikutnya yang menunggu slot. Nilai lamanya masih secara fisik ada di kolom tersebut, dan menyerahkannya begitu saja akan membuat filter pada field baru itu cocok dengan data yang tidak pernah ditulis siapa pun ke sana. Liberator membersihkan nilai-nilai itu dalam chunk yang terbatas dan baru setelah itu mengembalikan slot ke pool bebas.
 
-Di antara "field-nya sudah lenyap" dan "slot-nya bisa dipakai lagi", slot itu berstatus **tombstoned**. Pembacaan, penulisan, dan filter sudah berperilaku seolah field itu tidak pernah ada begitu ia didemosi atau dihapus; tugas Liberator murni kebersihan penyimpanan yang terjadi setelahnya.
+Di antara "field-nya sudah lenyap" dan "slot-nya bisa dipakai lagi", slot itu berstatus **tombstoned**. Pembacaan, penulisan, dan filter sudah berperilaku seolah field itu tidak pernah ada begitu ia didemosi atau dihapus. Tugas Liberator murni kebersihan penyimpanan yang terjadi setelahnya.
 
 ## Cara sebuah slot direklamasi
 

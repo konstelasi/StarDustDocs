@@ -1,6 +1,6 @@
 # Event log
 
-StarDust mencatat satu record NDJSON per event ke stdout secara bawaan (`StdoutNdjsonLogger`), atau ke mana pun logger PSR-3 milik Anda sendiri mengirimkannya. Lihat [Observabilitas](/id/operations/observability) untuk correlation id dan menelusuri pekerjaan asinkron lintas proses; halaman ini adalah tabel referensi nama event.
+StarDust mencatat satu record NDJSON per event ke stdout secara bawaan (`StdoutNdjsonLogger`), atau ke mana pun logger PSR-3 milik Anda sendiri mengirimkannya. Lihat [Observabilitas](/id/operations/observability) untuk correlation id dan menelusuri pekerjaan asinkron lintas proses. Halaman ini adalah tabel referensi nama event.
 
 ## Struktur record
 

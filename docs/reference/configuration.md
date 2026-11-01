@@ -1,6 +1,6 @@
 # Configuration reference
 
-Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/usage/configuration) for the object itself, how to inject a logger, a clock or a search driver, and the shared-hosting lock namespace; see [Tuning](/operations/tuning) for guidance on when to change a default rather than just what it is.
+Every `Config` field, grouped by the subsystem it tunes. See [Configuration](/usage/configuration) for the object itself, how to inject a logger, a clock or a search driver, and the shared-hosting lock namespace. See [Tuning](/operations/tuning) for guidance on when to change a default rather than just what it is.
 
 ## Connection and logging
 

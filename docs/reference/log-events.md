@@ -1,6 +1,6 @@
 # Log events
 
-StarDust logs one NDJSON record per event to stdout by default (`StdoutNdjsonLogger`), or wherever your own injected PSR-3 logger sends it. See [Observability](/operations/observability) for correlation ids and tracing asynchronous work across processes; this page is the lookup table of event names.
+StarDust logs one NDJSON record per event to stdout by default (`StdoutNdjsonLogger`), or wherever your own injected PSR-3 logger sends it. See [Observability](/operations/observability) for correlation ids and tracing asynchronous work across processes. This page is the lookup table of event names.
 
 ## Record shape
 

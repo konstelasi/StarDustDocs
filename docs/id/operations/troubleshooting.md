@@ -42,7 +42,7 @@ Jika memang tidak ada apa pun yang sedang berjalan, penyebab umum lainnya adalah
 
 `bin/stardust tick` melaporkan dirinya di-skip, atau alasan berhentinya menyebut lock contention, alih-alih benar-benar bekerja. Ini berarti proses lain sudah memegang file lock Watcher saat pemanggilan `tick` ini dimulai. Paling sering karena pemanggilan cron yang tumpang tindih di mana run sebelumnya belum selesai, atau proses `bin/stardust watcher` persisten yang berjalan terhadap `pidFileDir` yang sama (yang, sesuai catatan di atas, memang seharusnya tidak Anda jalankan berdampingan dengan `tick` sama sekali). Skip seperti ini sama sekali tidak menyentuh database, sehingga sifatnya rutin, bukan kegagalan. Satu run yang terlewat pada jadwal cron per menit adalah pembulatan angka, bukan insiden.
 
-Jika Anda melihat ini di hampir setiap pemanggilan alih-alih sesekali, periksa apakah penjaga tumpang tindih crontab Anda sendiri (`flock -n` pada contoh di [halaman deployment](/id/operations/deployment#perintah-tick)) benar-benar berfungsi, dan apakah `--budget` Anda nyaman muat di dalam interval cron Anda, karena run yang secara rutin memakan waktu lebih lama daripada interval antar-pemanggilan akan berbenturan dengan dirinya sendiri.
+Jika Anda melihat ini di hampir setiap pemanggilan alih-alih sesekali, periksa dua hal. Pertama, apakah penjaga tumpang tindih crontab Anda sendiri (`flock -n` pada contoh di [halaman deployment](/id/operations/deployment#perintah-tick)) berfungsi. Kedua, apakah `--budget` Anda nyaman muat di dalam interval cron Anda, karena run yang secara rutin memakan waktu lebih lama daripada interval antar-pemanggilan akan berbenturan dengan dirinya sendiri.
 
 ## Baris menumpuk di dead-letter queue
 

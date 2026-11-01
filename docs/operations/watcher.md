@@ -25,7 +25,7 @@ When a page is provisioned, it's sized with headroom rather than exactly what's 
 
 Alongside capacity, the Watcher owns the schedule for two read-only advisories: the spread report (how many pages a model's slots are scattered across) and the cardinality report (whether a live index's values are too repetitive to help the query planner). Both run on a shared, roughly-daily cadence with randomized jitter, and the schedule itself lives in the database rather than in any one process's memory, so it survives daemon restarts and fires exactly once per interval across your whole deployment, not once per host.
 
-You don't need to schedule these separately. Any running Watcher, or any `bin/stardust tick` invocation, checks whether the schedule is due and samples if so; `tick --advisories` forces an immediate sample regardless of the schedule. See [Slot maintenance](/operations/slot-maintenance) for what each report tells you.
+You don't need to schedule these separately. Any running Watcher, or any `bin/stardust tick` invocation, checks whether the schedule is due and samples if so. `tick --advisories` forces an immediate sample regardless of the schedule. See [Slot maintenance](/operations/slot-maintenance) for what each report tells you.
 
 ## Running it
 

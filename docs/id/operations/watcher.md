@@ -25,7 +25,7 @@ Saat sebuah page disediakan, ukurannya dilebihkan dari kebutuhan sesaat itu, yai
 
 Selain kapasitas, Watcher juga memegang jadwal untuk dua advisory read-only: laporan spread (berapa banyak page tempat slot sebuah model tersebar) dan laporan kardinalitas (apakah nilai sebuah indeks yang hidup terlalu repetitif untuk membantu query planner). Keduanya berjalan pada kadensi bersama yang kira-kira harian dengan jitter acak, dan jadwalnya sendiri tersimpan di database alih-alih di memori satu proses tertentu, sehingga bertahan melewati restart daemon dan terpicu tepat satu kali per interval di seluruh deployment Anda, bukan satu kali per host.
 
-Anda tidak perlu menjadwalkan keduanya secara terpisah. Watcher mana pun yang sedang berjalan, atau pemanggilan `bin/stardust tick` mana pun, memeriksa apakah jadwal sudah jatuh tempo lalu mengambil sampel jika ya; `tick --advisories` memaksa sampel diambil segera terlepas dari jadwalnya. Lihat [Perawatan slot](/id/operations/slot-maintenance) untuk penjelasan masing-masing laporan.
+Anda tidak perlu menjadwalkan keduanya secara terpisah. Watcher mana pun yang sedang berjalan, atau pemanggilan `bin/stardust tick` mana pun, memeriksa apakah jadwal sudah jatuh tempo lalu mengambil sampel jika ya. `tick --advisories` memaksa sampel diambil segera terlepas dari jadwalnya. Lihat [Perawatan slot](/id/operations/slot-maintenance) untuk penjelasan masing-masing laporan.
 
 ## Cara menjalankannya
 

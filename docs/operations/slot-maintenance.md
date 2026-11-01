@@ -49,7 +49,7 @@ bin/stardust compact:model --tenant=1 --model=7 --dry-run
 bin/stardust compact:model --tenant=1 --model=7
 ```
 
-Compaction is what acts on a spread report: it relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time, removing the avoidable joins the report showed. It's deliberately slow and operator-initiated. It moves one field, waits for a running Reconciler to drain that relocation, then moves the next, and it blocks until each move lands. Never call `compactModel()` from a request path; run it as a one-off maintenance task with a Reconciler already running.
+Compaction is what acts on a spread report: it relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time, removing the avoidable joins the report showed. It's deliberately slow and operator-initiated. It moves one field, waits for a running Reconciler to drain that relocation, then moves the next, and it blocks until each move lands. Never call `compactModel()` from a request path. Run it as a one-off maintenance task with a Reconciler already running.
 
 It's safe to re-run: a field already in its target position is skipped, so a compaction interrupted partway through simply picks up the remaining relocations on the next run.
 

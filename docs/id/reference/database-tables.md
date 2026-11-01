@@ -2,7 +2,7 @@
 
 `bootstrap()` membuat setiap tabel yang dipakai StarDust dalam satu lintasan idempoten. Anda tidak pernah menulis DDL sendiri, dan method publik engine adalah cara resmi untuk membaca dan menulis data ini. Halaman ini ada karena seorang database administrator akan tetap melihat tabel-tabel ini di dump skema, dan karena mengetahui fungsi masing-masing membuat keluaran `SHOW TABLES` yang asing menjadi mudah dipahami, bukan mengkhawatirkan.
 
-Tidak ada yang di sini termasuk API publik yang diversikan. Bentuk kolom bisa berubah antar rilis; method pada `StarDust`-lah yang dicakup oleh [Versi dan stabilitas](/id/project/versioning).
+Tidak ada yang di sini termasuk API publik yang diversikan. Bentuk kolom bisa berubah antar rilis. Method pada `StarDust`-lah yang dicakup oleh [Versi dan stabilitas](/id/project/versioning).
 
 ## Data entry
 

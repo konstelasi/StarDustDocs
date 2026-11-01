@@ -4,7 +4,7 @@ StarDust keeps its slot capacity ahead of demand and catches up on deferred work
 
 ## Choosing a deployment mode
 
-Pick **one** mode per installation and don't mix them: run the four persistent daemons, or run `tick` on a schedule, never both against the same database at once. `tick` takes the Watcher's own singleton lock, so a persistent `watcher` already running makes every `tick` invocation report a harmless no-op skip rather than doing its job. The two modes substitute for each other, and they don't complement each other. (The Liberator and Chronicler are the exception: both are multi-worker with no singleton lock, so a `tick --exports` run and a standalone `liberator` or `chronicler` process can coexist safely, just redundantly.)
+Pick **one** mode per installation and don't mix them. Run the four persistent daemons, or run `tick` on a schedule, but never both against the same database at once. `tick` takes the Watcher's own singleton lock, so a persistent `watcher` already running makes every `tick` invocation report a harmless no-op skip rather than doing its job. The two modes substitute for each other, and they don't complement each other. (The Liberator and Chronicler are the exception: both are multi-worker with no singleton lock, so a `tick --exports` run and a standalone `liberator` or `chronicler` process can coexist safely, only redundantly.)
 
 The choice usually comes down to whether your hosting gives you persistent processes at all:
 
@@ -63,7 +63,7 @@ A minimal crontab entry:
 
 - `flock -n` stops an overlapping firing from starting a second run while the previous one is still finishing, alongside `tick`'s own lock check, which only guards the Watcher, not the whole run. This example's lock file sits under the account home directory, which is unreliable for `flock` on some hosts mounted over NFS. Check with your host, or route the lock file to local storage if one is available.
 - Redirect output somewhere the account can actually write. Cron's default is to email every line to the account owner, which floods an inbox fast on a per-minute schedule.
-- **The cardinality and spread advisories need no crontab line of their own.** Their schedule lives in the database rather than in any one process's memory, so it survives a process that exits after every run, and the roughly-daily sample fires from whichever `tick` invocation first finds it due, giving one sample per interval across the whole deployment, not one per host. `--advisories` forces a sample immediately regardless of the schedule:
+- **The cardinality and spread advisories need no crontab line of their own.** Their schedule lives in the database rather than in any one process's memory, so it survives a process that exits after every run. The roughly-daily sample fires from whichever `tick` invocation first finds it due, which gives one sample per interval across the whole deployment, not one per host. `--advisories` forces a sample immediately regardless of the schedule:
 
 ```cron
 0 3 * * * flock -n /home/youraccount/stardust.lock /usr/bin/php /home/youraccount/bin/stardust tick --budget=50 --advisories >> /home/youraccount/logs/stardust-tick.log 2>&1
@@ -73,7 +73,7 @@ A minimal crontab entry:
 
 ### Time budgets
 
-`--budget=50` keeps the run comfortably inside a one-minute cron period. StarDust also clamps this against PHP's own `max_execution_time` when the SAPI reports a nonzero ceiling, so a smaller host-imposed limit is respected automatically, so you don't have to coordinate the two by hand.
+`--budget=50` keeps the run comfortably inside a one-minute cron period. StarDust also clamps this against PHP's own `max_execution_time` when the SAPI reports a nonzero ceiling, so a smaller host-imposed limit is respected automatically. You don't have to coordinate the two by hand.
 
 `tick` checks the budget between rounds of work, never in the middle of one, so a budget at or under zero still completes one round rather than erroring. It stops on whichever comes first: the budget is spent, a round finds nothing left to do, or it's asked to shut down. A round that swept no tombstoned slots, found the Reconciler fully idle, and found the Chronicler idle (or wasn't running it) is what "nothing left to do" means. Without that exit, a quiet minute would otherwise mean roughly fifty seconds of continuous idle polling, which is exactly the cost this mode exists to avoid on a shared host.
 

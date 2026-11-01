@@ -20,7 +20,7 @@ When a changelog entry calls this out, stop your persistent daemons (or pause yo
 
 An extension page keeps the shape it was created with for as long as it exists. Its set of indexed columns, its collation and everything else about its DDL are fixed at creation and never touched again, by any later version. This is what makes provisioning safe to run against a live database in the first place: a newer version of StarDust may provision pages differently going forward, but it never reaches back and rewrites yesterday's.
 
-The practical consequence is that a long-lived database can genuinely hold pages of more than one shape at once, created under different versions, and that's expected, not a sign anything went wrong. Nothing about reading, writing, or filtering cares which shape a given page has; the engine reads what a page actually offers rather than assuming a fixed layout.
+The practical consequence is that a long-lived database can hold pages of more than one shape at once, created under different versions, and that's expected, not a sign anything went wrong. Nothing about reading, writing, or filtering cares which shape a given page has. The engine reads what a page offers rather than assuming a fixed layout.
 
 ## Version-specific notes
 

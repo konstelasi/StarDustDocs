@@ -12,7 +12,14 @@ Verifikasi itulah yang membuat proses melanjutkan menjadi aman, bukan sekadar un
 
 `SIGTERM` ke proses Chronicler yang sedang berjalan tidak menunggu job saat ini selesai: worker berhenti tepat di batas chunk berikutnya, job kembali ke `pending` dengan titik lanjutannya tetap utuh, dan worker mana pun yang mengambilnya berikutnya (proses ini sendiri yang restart, atau proses lain yang sudah berjalan) melanjutkan dari offset byte persis itu.
 
-Kegagalan dibatasi, tidak dibiarkan dicoba ulang selamanya: chunk yang terus mengalami deadlock menyerah setelah budget percobaan ulang yang kecil dan dilewati (job-nya tetap berlanjut, dengan skip-nya dihitung); job yang mengumpulkan terlalu banyak skip langsung gagal; koneksi database yang terputus dicoba ulang dengan backoff tetap yang singkat sebelum job dinyatakan gagal; kehabisan ruang disk di tengah penulisan, atau artifact yang akan melampaui batas ukurannya, masing-masing membuat job gagal dengan alasan spesifik yang bisa Anda baca kembali dari statusnya. Job yang langsung gagal artifact parsialnya segera dihapus, tidak menunggu pembersihan berikutnya.
+Kegagalan dibatasi, tidak dibiarkan dicoba ulang selamanya.
+
+- Chunk yang terus mengalami deadlock menyerah setelah budget percobaan ulang yang kecil dan dilewati. Job-nya tetap berlanjut, dengan skip-nya dihitung.
+- Job yang mengumpulkan terlalu banyak skip langsung gagal.
+- Koneksi database yang terputus dicoba ulang dengan backoff tetap yang singkat sebelum job dinyatakan gagal.
+- Kehabisan ruang disk di tengah penulisan, atau artifact yang akan melampaui batas ukurannya, membuat job gagal dengan alasan spesifik yang bisa Anda baca kembali dari statusnya.
+
+Job yang langsung gagal artifact parsialnya segera dihapus, tidak menunggu pembersihan berikutnya.
 
 ## Pengaman ruang disk
 

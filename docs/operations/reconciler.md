@@ -17,7 +17,7 @@ In the order each tick visits them:
 5. **Field deletion purges** erase a deleted field's values from stored payloads.
 6. **Model deletion purges** erase every entry belonging to a deleted model.
 
-The order is fixed and observable in the event stream: a tick always visits these six in the same sequence, and each visits at most one bounded chunk before moving to the next. A work source with nothing to do is skipped in a fraction of a millisecond; one with a full queue gets its turn again on the very next tick.
+The order is fixed and observable in the event stream: a tick always visits these six in the same sequence, and each visits at most one bounded chunk before moving to the next. A work source with nothing to do is skipped in a fraction of a millisecond. One with a full queue gets its turn again on the next tick.
 
 ## Running multiple workers
 

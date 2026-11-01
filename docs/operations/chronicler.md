@@ -12,7 +12,14 @@ That verification is what makes resumption safe rather than a gamble. If the fil
 
 A `SIGTERM` to a running Chronicler process doesn't wait for the current job to finish: the worker yields at the next chunk boundary, the job returns to `pending` with its resume point intact, and whichever worker claims it next (this process restarting, or another already running) picks up from that exact byte offset.
 
-Failures are bounded rather than left to retry forever: a chunk that keeps deadlocking gives up after a small retry budget and is skipped (the job keeps going, with the skip counted); a job that accumulates too many skips fails outright; a database connection that drops is retried on a short fixed backoff before the job fails; running out of disk mid-write, or an artifact that would exceed the size cap, each fail the job with a specific reason you can read back from its status. A job that fails outright has its partial artifact deleted immediately rather than waiting for cleanup.
+Failures are bounded rather than left to retry forever.
+
+- A chunk that keeps deadlocking gives up after a small retry budget and is skipped. The job keeps going, with the skip counted.
+- A job that accumulates too many skips fails outright.
+- A database connection that drops is retried on a short fixed backoff before the job fails.
+- Running out of disk mid-write, or an artifact that would exceed the size cap, fails the job with a specific reason you can read back from its status.
+
+A job that fails outright has its partial artifact deleted immediately rather than waiting for cleanup.
 
 ## The disk-space gate
 

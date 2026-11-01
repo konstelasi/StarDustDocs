@@ -2,7 +2,7 @@
 
 `bootstrap()` creates every table StarDust uses in one idempotent pass. You never write DDL yourself, and the engine's public methods are the supported way to read and write this data. This page exists because a database administrator will see these tables in a schema dump regardless, and because knowing what each one is for makes an unfamiliar `SHOW TABLES` output legible rather than alarming.
 
-Nothing here is part of the versioned public API. Column shapes can change between releases; the methods on `StarDust` are what's covered by [Versioning and stability](/project/versioning).
+Nothing here is part of the versioned public API. Column shapes can change between releases. The methods on `StarDust` are what's covered by [Versioning and stability](/project/versioning).
 
 ## Entry data
 

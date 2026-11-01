@@ -22,12 +22,12 @@ Setiap entry point yang menerimanya membuatnya opsional dan ditambahkan di akhir
 
 ## Menelusuri pekerjaan asinkron
 
-Di sinilah correlation id benar-benar berguna. Penulisan yang melampaui kapasitas indeks yang tersedia mencatat exhaustion fallback-nya di bawah id Anda, dan jika backfill di latar belakang nantinya tidak bisa menuntaskan entry itu, baris dead-letter mencatat id Anda beserta id siklus worker yang menggagalkannya, sehingga tiket dukungan yang mengutip satu id request bisa dijawab dari ujung ke ujung. Begitu pula, ekspor yang Anda ajukan dan `job_complete` yang dipancarkan proses Chronicler terpisah beberapa menit kemudian berbagi id yang Anda kirimkan.
+Di sinilah correlation id benar-benar berguna. Penulisan yang melampaui kapasitas indeks yang tersedia mencatat exhaustion fallback-nya di bawah id Anda. Jika backfill di latar belakang nantinya tidak bisa menuntaskan entry itu, baris dead-letter mencatat id Anda beserta id siklus worker yang menggagalkannya, sehingga tiket dukungan yang mengutip satu id request bisa dijawab dari ujung ke ujung. Begitu pula, ekspor yang Anda ajukan dan `job_complete` yang dipancarkan proses Chronicler terpisah beberapa menit kemudian berbagi id yang Anda kirimkan.
 
 Dua hal yang perlu Anda ketahui saat membaca outputnya:
 
 - **Worker latar belakang memproses banyak request dalam satu batch.** Di sana, correlation id milik batch itu sendiri menggambarkan batch-nya, dan id Anda muncul di bawah kunci kedua sebagai gantinya. Kunci itu adalah `job_correlation_id` untuk impor massal dan `origin_correlation_id` pada baris dead-letter.
-- **Backfill latar belakang yang berhasil tidak dicatat per entry**, hanya per batch. Tidak adanya record per-entry itu wajar; amati kedalaman antrean sebagai sinyalnya.
+- **Backfill latar belakang yang berhasil tidak dicatat per entry**, hanya per batch. Tidak adanya record per-entry itu wajar. Amati kedalaman antrean sebagai sinyalnya.
 
 ## Satu tick adalah satu trace tersendiri
 

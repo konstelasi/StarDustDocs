@@ -1,6 +1,6 @@
 # Referensi konfigurasi
 
-Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [Konfigurasi](/id/usage/configuration) untuk objeknya sendiri, cara menyuntikkan logger, clock, atau search driver, dan lock namespace untuk shared hosting; lihat [Penyetelan](/id/operations/tuning) untuk panduan kapan sebaiknya mengubah nilai bawaan, bukan sekadar apa nilainya.
+Setiap field `Config`, dikelompokkan menurut subsistem yang disetelnya. Lihat [Konfigurasi](/id/usage/configuration) untuk objeknya sendiri, cara menyuntikkan logger, clock, atau search driver, dan lock namespace untuk shared hosting. Lihat [Penyetelan](/id/operations/tuning) untuk panduan kapan sebaiknya mengubah nilai bawaan, bukan sekadar apa nilainya.
 
 ## Koneksi dan logging
 

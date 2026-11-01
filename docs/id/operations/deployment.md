@@ -4,7 +4,7 @@ StarDust menjaga kapasitas slot tetap unggul dari permintaan dan menuntaskan pek
 
 ## Memilih mode deployment
 
-Pilih **satu** mode per instalasi dan jangan mencampurnya: jalankan empat daemon persisten, atau jalankan `tick` terjadwal, jangan keduanya sekaligus terhadap database yang sama. `tick` mengambil lock singleton milik Watcher sendiri, sehingga proses `watcher` persisten yang sudah berjalan membuat setiap pemanggilan `tick` hanya melaporkan skip tanpa efek, bukan benar-benar bekerja. Kedua mode ini saling menggantikan, bukan saling melengkapi. (Liberator dan Chronicler adalah pengecualian: keduanya multi-worker tanpa lock singleton, sehingga proses `tick --exports` dan proses `liberator` atau `chronicler` mandiri bisa berjalan bersamaan dengan aman, hanya saja redundan.)
+Pilih **satu** mode per instalasi dan jangan mencampurnya. Jalankan empat daemon persisten, atau jalankan `tick` terjadwal, tetapi jangan keduanya sekaligus terhadap database yang sama. `tick` mengambil lock singleton milik Watcher sendiri, sehingga proses `watcher` persisten yang sudah berjalan membuat setiap pemanggilan `tick` hanya melaporkan skip tanpa efek, bukan benar-benar bekerja. Kedua mode ini saling menggantikan, bukan saling melengkapi. (Liberator dan Chronicler adalah pengecualian: keduanya multi-worker tanpa lock singleton, sehingga proses `tick --exports` dan proses `liberator` atau `chronicler` mandiri bisa berjalan bersamaan dengan aman, hanya saja redundan.)
 
 Pilihannya biasanya bergantung pada apakah hosting Anda menyediakan proses persisten sama sekali:
 
@@ -63,7 +63,7 @@ Contoh entri crontab minimal:
 
 - `flock -n` mencegah pemanggilan yang tumpang tindih memulai run kedua saat run sebelumnya masih berjalan, selain pengecekan lock milik `tick` sendiri, yang hanya menjaga Watcher, bukan seluruh run. Contoh ini menaruh file lock di bawah direktori home akun, yang tidak bisa diandalkan untuk `flock` di sebagian hosting yang di-mount lewat NFS. Periksa ke penyedia hosting Anda, atau arahkan file lock ke penyimpanan lokal jika tersedia.
 - Arahkan output ke tempat yang benar-benar bisa ditulis akun Anda. Default cron adalah mengirim setiap baris lewat email ke pemilik akun, yang cepat membanjiri inbox pada jadwal per menit.
-- **Advisory kardinalitas dan spread tidak butuh baris crontab sendiri.** Jadwalnya tersimpan di database, bukan di memori satu proses tertentu, sehingga tetap bertahan meski prosesnya keluar setiap kali selesai run, dan sampel yang kira-kira harian itu dipicu oleh pemanggilan `tick` mana pun yang pertama kali mendapatinya jatuh tempo, sehingga hanya ada satu sampel per interval di seluruh deployment, bukan satu per host. `--advisories` memaksa sampel diambil segera terlepas dari jadwalnya:
+- **Advisory kardinalitas dan spread tidak butuh baris crontab sendiri.** Jadwalnya tersimpan di database, bukan di memori satu proses tertentu, sehingga tetap bertahan meski prosesnya keluar setiap kali selesai run. Sampel yang kira-kira harian itu dipicu oleh pemanggilan `tick` mana pun yang pertama kali mendapatinya jatuh tempo, jadi hanya ada satu sampel per interval di seluruh deployment, bukan satu per host. `--advisories` memaksa sampel diambil segera terlepas dari jadwalnya:
 
 ```cron
 0 3 * * * flock -n /home/akunanda/stardust.lock /usr/bin/php /home/akunanda/bin/stardust tick --budget=50 --advisories >> /home/akunanda/logs/stardust-tick.log 2>&1
@@ -73,7 +73,7 @@ Contoh entri crontab minimal:
 
 ### Batas waktu (budget)
 
-`--budget=50` menjaga run tetap nyaman di dalam periode cron semenit. StarDust juga meng-clamp angka ini terhadap `max_execution_time` milik PHP sendiri saat SAPI melaporkan batas yang bukan nol, sehingga batas yang lebih kecil dari hosting dihormati secara otomatis, jadi Anda tidak perlu menyelaraskan keduanya secara manual.
+`--budget=50` menjaga run tetap nyaman di dalam periode cron semenit. StarDust juga meng-clamp angka ini terhadap `max_execution_time` milik PHP sendiri saat SAPI melaporkan batas yang bukan nol, sehingga batas yang lebih kecil dari hosting dihormati secara otomatis. Anda tidak perlu menyelaraskan keduanya secara manual.
 
 `tick` memeriksa budget di antara ronde pekerjaan, tidak pernah di tengah satu ronde, sehingga budget yang sudah habis atau minus tetap menyelesaikan satu ronde alih-alih error. Ia berhenti pada mana pun yang lebih dulu terjadi: budget habis, satu ronde tidak menemukan pekerjaan tersisa, atau diminta shutdown. Yang dimaksud "tidak ada pekerjaan tersisa" adalah ronde yang tidak menyapu slot tombstoned mana pun, mendapati Reconciler sepenuhnya idle, dan mendapati Chronicler idle (atau memang tidak menjalankannya). Tanpa jalan keluar itu, satu menit yang sepi berarti sekitar lima puluh detik polling idle terus-menerus, yang justru menjadi biaya yang ingin dihindari mode ini di shared hosting.
 

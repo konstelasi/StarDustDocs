@@ -22,12 +22,12 @@ Every entry point that takes one makes it optional and appended, so existing cod
 
 ## Tracing asynchronous work
 
-This is where correlation ids earn their keep. A write that outruns available index capacity logs its exhaustion fallback under your id, and if the background backfill later can't complete that entry, the dead-letter row records your id alongside the id of the worker cycle that failed it, so a support ticket quoting one request id is answerable end to end. Likewise, an export you submit and the `job_complete` a separate Chronicler process emits minutes later share the id you passed.
+This is where correlation ids earn their keep. A write that outruns available index capacity logs its exhaustion fallback under your id. If the background backfill later can't complete that entry, the dead-letter row records your id alongside the id of the worker cycle that failed it, so a support ticket quoting one request id is answerable end to end. Likewise, an export you submit and the `job_complete` a separate Chronicler process emits minutes later share the id you passed.
 
 Two details worth knowing when you read the output:
 
 - **A background worker processes many requests in one batch.** Where that happens, the batch's own correlation id describes the batch, and your id appears under a second key instead. That key is `job_correlation_id` for bulk imports and `origin_correlation_id` on dead-letter rows.
-- **Successful background backfills aren't logged per entry**, only per batch. The absence of a per-entry record is normal; watch queue depth as the signal instead.
+- **Successful background backfills aren't logged per entry**, only per batch. The absence of a per-entry record is normal. Watch queue depth as the signal instead.
 
 ## A tick is its own trace
 

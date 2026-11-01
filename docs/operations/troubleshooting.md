@@ -42,7 +42,7 @@ If nothing else is actually running, a stale lock file left behind by a process 
 
 `bin/stardust tick` reports it was skipped, or its stop reason names lock contention, rather than doing any work. This means another process already held the Watcher's lock file when this `tick` invocation started. This is most often an overlapping cron firing where the previous run hadn't finished yet, or a persistent `bin/stardust watcher` process running against the same `pidFileDir` (which, per the note above, you shouldn't be running alongside `tick` at all). A skip like this touches the database not at all, so it's routine rather than a failure. One skipped run on a per-minute cron schedule is a rounding error, not an incident.
 
-If you're seeing this on nearly every invocation rather than occasionally, check that your crontab's own overlap guard (`flock -n` in the examples on the [deployment page](/operations/deployment#the-tick-command)) is actually working, and that your `--budget` comfortably fits inside your cron interval, since a run that regularly takes longer than the interval between firings will contend with itself.
+If you're seeing this on nearly every invocation rather than occasionally, check two things. First, that your crontab's own overlap guard (`flock -n` in the examples on the [deployment page](/operations/deployment#the-tick-command)) is working. Second, that your `--budget` comfortably fits inside your cron interval, since a run that regularly takes longer than the interval between firings will contend with itself.
 
 ## Rows are piling up in the dead-letter queue
 

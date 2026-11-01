@@ -20,7 +20,7 @@ Saat entri catatan perubahan menyebutkan hal ini secara eksplisit, hentikan daem
 
 Sebuah extension page mempertahankan bentuknya sejak dibuat selama ia ada. Kumpulan kolom terindeksnya, collation-nya, dan semua hal lain tentang DDL-nya tetap sejak dibuat dan tidak pernah disentuh lagi, oleh versi mana pun setelahnya. Inilah yang membuat provisioning aman dijalankan terhadap database yang hidup sejak awal: versi StarDust yang lebih baru mungkin menyediakan page dengan cara berbeda ke depannya, tetapi tidak pernah kembali dan menulis ulang page dari kemarin.
 
-Konsekuensi praktisnya adalah database yang sudah berumur panjang bisa benar-benar menyimpan page dengan lebih dari satu bentuk sekaligus, dibuat di bawah versi yang berbeda-beda, dan itu memang diharapkan, bukan tanda ada yang salah. Tidak ada apa pun dalam pembacaan, penulisan, atau filter yang peduli bentuk apa yang dimiliki sebuah page. Engine membaca apa yang sebenarnya ditawarkan sebuah page alih-alih mengasumsikan tata letak yang tetap.
+Konsekuensi praktisnya adalah database yang sudah berumur panjang bisa menyimpan page dengan lebih dari satu bentuk sekaligus, dibuat di bawah versi yang berbeda-beda, dan itu memang diharapkan, bukan tanda ada yang salah. Tidak ada apa pun dalam pembacaan, penulisan, atau filter yang peduli bentuk apa yang dimiliki sebuah page. Engine membaca apa yang ditawarkan sebuah page alih-alih mengasumsikan tata letak yang tetap.
 
 ## Catatan per versi
 

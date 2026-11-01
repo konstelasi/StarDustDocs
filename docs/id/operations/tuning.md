@@ -32,7 +32,7 @@ Ukuran chunk yang lebih kecil berarti lock individual lebih singkat dan lebih ba
 
 ## Index headroom
 
-`pageIndexHeadroom` (default **4**) mengatur berapa banyak kolom terindeks cadangan dari setiap tipe yang dibawa page yang baru disediakan, melebihi apa yang dibutuhkan permintaan saat ini. Karena kumpulan kolom terindeks sebuah page bersifat tetap selamanya begitu dibuat, headroom-lah yang mencegah serangkaian promosi masing-masing memicu page-nya sendiri: dengan headroom, beberapa field yang dipromosikan berturut-turut mendarat bersama di page yang sudah punya ruang, alih-alih tersebar ke sebanyak page seperti jumlah promosinya.
+`pageIndexHeadroom` (default **4**) mengatur berapa banyak kolom terindeks cadangan dari setiap tipe yang dibawa page yang baru disediakan, melebihi apa yang dibutuhkan permintaan saat ini. Karena kumpulan kolom terindeks sebuah page bersifat tetap selamanya begitu dibuat, headroom-lah yang mencegah serangkaian promosi masing-masing memicu page-nya sendiri. Dengan headroom, beberapa field yang dipromosikan berturut-turut mendarat bersama di page yang sudah punya ruang, alih-alih tersebar ke sebanyak page seperti jumlah promosinya.
 
 Menaikkan ini hanya memengaruhi page yang dibuat sejak saat itu. Ini tidak pernah melebarkan page yang sudah ada. Jika Anda melihat [spread tinggi](/id/operations/slot-maintenance#laporan-spread) pada model yang menambah field secara bertahap, menaikkan `pageIndexHeadroom` sebelum pertumbuhan itu terjadi lebih murah daripada melakukan compaction setelahnya.
 
@@ -56,4 +56,4 @@ Menaikkan budget percobaan ulang membuat sebuah daemon lebih sabar menghadapi ko
 
 Ini hanya relevan jika Anda menjalankan `bin/stardust tick` alih-alih daemon persisten. Lihat [Deployment](/id/operations/deployment#batas-waktu-budget).
 
-`tickBudgetSeconds` (default 50) adalah berapa lama satu pemanggilan `tick` berjalan sebelum berhenti, dikirim lewat `--budget` atau dibiarkan pada default `Config`-nya. `tickBudgetMarginSeconds` (default 5) dikurangkan dari `max_execution_time` milik PHP sendiri saat SAPI melaporkan batas yang bukan nol, sehingga budget efektif tidak pernah melampaui apa yang akan membuat host mematikan prosesnya, jadi Anda tidak perlu menyelaraskan keduanya secara manual. Cukup pastikan `tickBudgetSeconds` nyaman muat di dalam interval cron Anda.
+`tickBudgetSeconds` (default 50) adalah berapa lama satu pemanggilan `tick` berjalan sebelum berhenti, dikirim lewat `--budget` atau dibiarkan pada default `Config`-nya. `tickBudgetMarginSeconds` (default 5) dikurangkan dari `max_execution_time` milik PHP sendiri saat SAPI melaporkan batas yang bukan nol, sehingga budget efektif tidak pernah melampaui apa yang akan membuat host mematikan prosesnya. Anda tidak perlu menyelaraskan keduanya secara manual. Cukup pastikan `tickBudgetSeconds` nyaman muat di dalam interval cron Anda.
