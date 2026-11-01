@@ -24,6 +24,8 @@ The practical consequence is that a long-lived database can genuinely hold pages
 
 ## Version-specific notes
 
-**0.3.0-alpha.1** is the first release of the 0.3 line and the current version — there's no upgrade path from 0.2.x. The two lines share nothing: different schema, different public API, a ground-up rewrite rather than an incremental change. If you're still on a 0.2.x release, see [The 0.2.x line](/project/legacy-0-2) — 0.2.x remains installable from its own tags for as long as you need it, but moving to 0.3 means starting fresh rather than migrating data in place.
+**0.3.0-alpha.1** is the first release of the 0.3 line, and there's no upgrade path from 0.2.x. The two lines share nothing: different schema, different public API, a ground-up rewrite rather than an incremental change. If you're still on a 0.2.x release, see [The 0.2.x line](/project/legacy-0-2) — 0.2.x remains installable from its own tags for as long as you need it, but moving to 0.3 means starting fresh rather than migrating data in place.
 
-This section will carry a note for each release that needs one, in order, as the 0.3 line grows past its first version.
+**0.3.0-alpha.2** is the current version. Moving to it from alpha.1 needs one step that the others don't. Replace every process of the old release before the new release's Watcher builds its first page, which means the four daemons in the reference mode or the scheduled `tick` in the cron mode. A process from alpha.1 can't claim a text slot on a page built with a key, so its Watcher provisions another page on every poll until it is replaced. Nothing else changes. No existing table is altered, existing pages stay as they are, and `bootstrap()` is still safe to re-run. The steps are under [Upgrading a running deployment](/operations/deployment#upgrading-a-running-deployment), and [Text fields on older and newer pages](/operations/deployment#text-fields-on-older-and-newer-pages) explains what an upgraded database holds.
+
+This section will carry a note for each later release that needs one, in the order they ship.

@@ -66,7 +66,7 @@ Check the version the CLI reports:
 
 ```bash
 vendor/bin/stardust --version
-# 0.3.0-alpha.1
+# 0.3.0-alpha.2
 ```
 
 Then check what the engine detected on your database, and that the registry is reachable:

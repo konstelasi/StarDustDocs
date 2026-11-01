@@ -6,7 +6,7 @@ layout: home
 # bagian dokumentasi per kartu, sesuai urutan sidebar.
 landing:
   badge:
-    text: Dokumentasi · v0.3.0-alpha.1
+    text: Dokumentasi · v0.3.0-alpha.2
     link: /id/project/changelog
   titleLine1: Dokumentasi StarDust,
   titleLine2: dari query pertama sampai produksi.

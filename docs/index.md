@@ -6,7 +6,7 @@ layout: home
 # documentation section, in sidebar order.
 landing:
   badge:
-    text: Documentation · v0.3.0-alpha.1
+    text: Documentation · v0.3.0-alpha.2
     link: /project/changelog
   titleLine1: The StarDust documentation,
   titleLine2: from first query to production.

@@ -4,7 +4,7 @@ Before `0.3.0`, StarDust was a CodeIgniter 4 library built on **Virtual Columns*
 
 ## What changed in 0.3
 
-`0.3.0-alpha.1` is a ground-up rewrite, not an upgrade. The motivation was scalability limits and out-of-memory failures the old Virtual Column design ran into under real load, and fixing that meant an architecture change too fundamental to ship as a migration path. Concretely:
+The 0.3 line is a ground-up rewrite, not an upgrade. The motivation was scalability limits and out-of-memory failures the old Virtual Column design ran into under real load, and fixing that meant an architecture change too fundamental to ship as a migration path. Concretely:
 
 - **No framework dependency.** The 0.2.x line was a CodeIgniter 4 library. StarDust is now a framework-neutral Composer package with no runtime dependency beyond `psr/log` and `psr/clock` — CodeIgniter 4 support, if it returns, would be an opt-in companion package rather than a requirement.
 - **A different storage model.** Entries, models and fields are stored in a different schema under different table names. Nothing in a 0.2.x database is compatible with 0.3's tables, and nothing in 0.3 reads a 0.2.x table.

@@ -60,6 +60,6 @@ Around that idea, StarDust adds the parts that make it workable in production:
 
 ## Release status
 
-The current release is **`0.3.0-alpha.1`**, published on 2026-09-23. Everything listed above is implemented and covered by the test suite, but this is an alpha, and **the public API may still change before 0.3.0**. It is a ground-up rewrite of the 0.2.x line and shares no API with it. See [The 0.2.x line](/project/legacy-0-2).
+The current release is **`0.3.0-alpha.2`**, published on 2026-10-31. Everything listed above is implemented and covered by the test suite, but this is an alpha, and **the public API may still change before 0.3.0**. It is a ground-up rewrite of the 0.2.x line and shares no API with it. See [The 0.2.x line](/project/legacy-0-2).
 
 Composer installs only stable versions by default, so installing needs an explicit `@alpha` flag. See [Installation](/guide/installation). To decide whether StarDust suits your project, read [Is StarDust a fit?](/guide/is-it-a-fit) next.

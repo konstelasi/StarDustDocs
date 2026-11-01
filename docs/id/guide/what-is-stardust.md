@@ -60,6 +60,6 @@ Di sekeliling gagasan itu, StarDust menambahkan bagian-bagian yang membuatnya la
 
 ## Status rilis
 
-Rilis saat ini adalah **`0.3.0-alpha.1`**, diterbitkan pada 2026-09-23. Semua yang tercantum di atas sudah diimplementasikan dan tercakup oleh test suite, tetapi ini masih alpha, dan **API publik mungkin masih berubah sebelum 0.3.0**. Rilis ini adalah penulisan ulang dari nol atas seri 0.2.x dan tidak berbagi API dengannya. Lihat [Seri 0.2.x](/id/project/legacy-0-2).
+Rilis saat ini adalah **`0.3.0-alpha.2`**, diterbitkan pada 2026-10-31. Semua yang tercantum di atas sudah diimplementasikan dan tercakup oleh test suite, tetapi ini masih alpha, dan **API publik mungkin masih berubah sebelum 0.3.0**. Rilis ini adalah penulisan ulang dari nol atas seri 0.2.x dan tidak berbagi API dengannya. Lihat [Seri 0.2.x](/id/project/legacy-0-2).
 
 Composer secara bawaan hanya memasang versi stabil, sehingga instalasi membutuhkan flag `@alpha` yang eksplisit. Lihat [Instalasi](/id/guide/installation). Untuk menilai apakah StarDust cocok dengan proyek Anda, baca [Apakah StarDust cocok untuk Anda?](/id/guide/is-it-a-fit) berikutnya.

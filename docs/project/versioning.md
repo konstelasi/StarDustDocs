@@ -2,7 +2,7 @@
 
 ## Pre-release status
 
-The current release is `0.3.0-alpha.1` — the first published version of a ground-up rewrite, and an alpha in the sense that actually matters: the public API may still change before `0.3.0` ships as a stable release. Install it with the `@alpha` flag —
+The current release is `0.3.0-alpha.2`, the second published version of a ground-up rewrite. It is an alpha in the sense that actually matters: the public API may still change before `0.3.0` ships as a stable release. Install it with the `@alpha` flag —
 
 ```bash
 composer require damarbob/stardust:^0.3@alpha
@@ -25,6 +25,6 @@ Everything else is an implementation detail, even where it's visible from outsid
 
 ## How breaking changes are announced
 
-Every release's changes are recorded in [the Changelog](/project/changelog) under Keep a Changelog headings — Added, Changed, Removed, Known limitations. A change to the public API as defined above that breaks existing code is called out under Changed, and, before `1.0`, is published as its own version bump even between two alpha releases rather than folded silently into the next one.
+Every release's changes are recorded in [the Changelog](/project/changelog) under Keep a Changelog headings — Added, Changed, Removed, Fixed, Known limitations. A change to the public API as defined above that breaks existing code is called out under Changed, and, before `1.0`, is published as its own version bump even between two alpha releases rather than folded silently into the next one.
 
 One interface gained a new required method during the `0.3.0` development cycle: a custom search driver written against an earlier snapshot of `EntrySearchInterface` would need to add `supportsSortOn()` to keep implementing it. That's the one breaking change made anywhere in the `0.3.0-alpha.1` build, and it was made deliberately while no tagged release yet existed — so no third-party driver could actually be broken by it. It's also the shape of change you shouldn't expect again inside an already-tagged release: once a version is tagged, a change like that ships as a new release, with the addition called out in the Changelog rather than landing invisibly underneath you.

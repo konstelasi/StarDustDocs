@@ -76,7 +76,7 @@ export default defineConfig({
           { text: 'Operations', link: '/operations/deployment' },
           { text: 'Reference', link: '/reference/api' },
           {
-            text: '0.3.0-alpha.1',
+            text: '0.3.0-alpha.2',
             items: [
               { text: 'Changelog', link: '/project/changelog' },
               { text: 'Contributing', link: '/project/contributing' },
@@ -201,7 +201,7 @@ export default defineConfig({
           { text: 'Menjalankan di Produksi', link: '/id/operations/deployment' },
           { text: 'Referensi', link: '/id/reference/api' },
           {
-            text: '0.3.0-alpha.1',
+            text: '0.3.0-alpha.2',
             items: [
               { text: 'Catatan perubahan', link: '/id/project/changelog' },
               { text: 'Berkontribusi', link: '/id/project/contributing' },

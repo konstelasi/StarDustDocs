@@ -2,6 +2,45 @@
 
 Semua perubahan penting pada proyek ini didokumentasikan di sini. Formatnya berdasarkan [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), dan penomoran versinya mengikuti [Semantic Versioning](https://semver.org/spec/v2.0.0.html) — lihat [Versi dan stabilitas](/id/project/versioning) untuk artinya selama seri alpha.
 
+## 0.3.0-alpha.2
+
+Dirilis 2026-10-31. Rilis ini membuat pembacaan dan penulisan massal lebih murah, mengindeks field teks lewat key yang dihitung dari seluruh nilainya, dan membiarkan pengurutan field memilih ke mana entry tanpa nilai ditempatkan. Rilis ini juga memperbaiki kasus ketika field yang sedang dipromosikan bisa difilter sebelum entry lamanya selesai disalin. Ini masih alpha, jadi API publik mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.
+
+**Upgrade dari 0.3.0-alpha.1.** Ganti semua proses rilis lama sebelum Watcher rilis baru membangun page pertamanya, yaitu keempat daemon pada mode acuan atau `tick` terjadwal pada mode cron. Proses dari alpha.1 tidak bisa mengklaim slot teks di page yang dibangun dengan key, sehingga Watcher-nya membuat page baru di setiap poll sampai prosesnya diganti. Page yang sudah ada tidak pernah diubah, tidak ada tabel yang berubah, dan `bootstrap()` tetap aman dijalankan ulang. Langkahnya ada di [Memperbarui deployment yang sedang berjalan](/id/operations/deployment#memperbarui-deployment-yang-sedang-berjalan).
+
+### Ditambahkan
+
+- **Penempatan null pada pengurutan field**: `SortSpec::byField()` menerima `NullPlacement` opsional (`First` atau `Last`) yang menentukan ke mana entry tanpa nilai untuk field pengurut ditempatkan. Bila dihilangkan, penempatannya mengikuti bawaan database, yaitu paling awal pada urutan menaik dan paling akhir pada urutan menurun, sehingga pemanggil, SQL, dan cursor yang sudah ada tidak berubah. Cursor mencatat penempatan hanya bila bukan bawaan, dan cursor yang diterbitkan dengan satu penempatan ditolak dengan `InvalidCursorException` bila dipakai dengan penempatan lain. `EntrySearchInterface` tidak mendapat method baru, jadi driver kustom yang mengabaikan penempatan akan mengurutkan menurut default-nya sendiri tanpa error, seperti dijelaskan di [Driver pencarian kustom](/id/extending/custom-search-drivers).
+
+### Diubah
+
+- **Field teks di page baru**:
+  - Page yang dibangun rilis ini mengindeks setiap field teks lewat key yang dihitung dari seluruh nilainya, menggantikan 766 karakter pertama. Filter teks cocok secara persis pada panjang berapa pun, dan baris dengan beberapa nilai panjang bisa di-update dan dihapus.
+  - `eq` pada field teks memulai pembacaan terfilter dari key itu di page baru, sehingga database memeriksa kira-kira sebanyak isi satu halaman, berapa pun jumlah entry yang cocok.
+  - Baris di page baru lebih lebar, karena setiap nilai teks membawa key sekitar 50 byte. [Deployment](/id/operations/deployment#field-teks-di-page-lama-dan-baru) memuat biaya yang terukur dan apa yang perlu diharapkan.
+  - Page yang sudah ada tidak diubah, dan tidak ada perintah yang memindahkan field antar jenis page. Field tetap berada di jenis page tempat ia mulai, dan field teks baru mengambil slot kosong di page lama lebih dulu.
+  - Membangun page dengan slot teks membutuhkan fungsi SHA-256 milik server. Pada server yang tidak mengembalikan apa pun untuknya, pembangunan page memunculkan `UnsupportedServerException`.
+- **Pembacaan terfilter**: Di MySQL, pembacaan terfilter dengan urutan bawaan yang memuat `eq` pada field integer, numeric, atau datetime kini dimulai dari index field itu, sehingga database memeriksa kira-kira sebanyak isi satu halaman, berapa pun jumlah entry yang cocok. Bila sebuah `and` memuat beberapa `eq` seperti itu, yang pertama menggerakkan pembacaan, jadi tulis yang paling selektif lebih dulu. Filter lain, dan pengurutan berdasarkan field atau waktu pembuatan, tetap memakai SQL sebelumnya. Peningkatannya diukur di MySQL, dan MariaDB sudah merencanakan pembacaan ini dengan baik.
+- **Lebih sedikit statement per pembacaan**:
+  - Pembacaan dengan filter, pengurutan, atau cursor kini memeriksa schema version satu kali, bukan dua, dan menjawab apakah sebuah field filterable dari snapshot yang baru saja diperiksa.
+  - Pembacaan satu entry mengirim version bersama entry-nya, sehingga `get()` dengan cache hangat hanya satu statement.
+  - Pembacaan pertama sebuah model dalam satu proses memuat lookup index dan key hanya bila pembacaan itu membutuhkannya.
+- **Penulisan massal**: Satu chunk entry ditulis dengan sejumlah statement multi-row yang tetap, sedangkan kode sebelumnya mengirim beberapa statement per entry. Langkah penyalinan pada retype atau promosi juga menulis setiap chunk dengan satu statement.
+- **Bootstrap**: `bootstrap()` melempar `UnsupportedServerException` pada server yang page InnoDB-nya lebih kecil dari 8 KB (bawaannya 16 KB), sebelum membuat tabel apa pun. Kode sebelumnya lolos bootstrap lalu gagal belakangan, saat Watcher mencoba membangun page.
+- **Filter pada field yang belum terindeks**: Pesan `FieldNotFilterableException` kini menyebutkannya bila sebuah field dideklarasikan filterable tetapi belum punya index. Dokumentasi dan docblock tidak lagi menyebut `FieldNotIndexedException` untuk kasus ini, karena engine bawaan tidak pernah memunculkannya.
+- **Isi package**: Deskripsi, kata kunci, dan tautan dukungan Composer diperbarui. Arsip rilis tidak lagi membawa test, contoh, file CI, aturan agen, dan file Docker, dan `bin/stardust --help` tidak lagi menyebut dokumen desain.
+
+### Diperbaiki
+
+- **Promosi atau retype yang menunggu slot**: Field yang promosi atau retype-nya menunggu slot kosong bisa diberi slot yang sudah menjawab filter sebelum entry lamanya selesai disalin, sehingga filter melewatkan entry itu. Salinan latar belakang lalu bisa gagal di setiap lintasan berikutnya. Slot kini dicadangkan dalam status sedang menyalin, dan filter pada field itu ditolak sampai salinan selesai.
+- **Emulated prepared statements**: Pembacaan tidak lagi gagal dengan syntax error MySQL ketika koneksi `PDO` membiarkan `PDO::ATTR_EMULATE_PREPARES` pada bawaan PHP. Kedua pengaturan kini berfungsi, dan seluruh test suite dijalankan dengan keduanya.
+
+### Keterbatasan yang diketahui
+
+- Batasan yang tercantum pada 0.3.0-alpha.1 tetap berlaku, kecuali yang tentang emulated prepared statements.
+- Di page lama, baris yang memuat beberapa nilai panjang pada field teks filterable bisa ditulis tetapi kemudian tidak bisa di-update, dan MySQL memunculkan error 1713. Simpan teks bebas yang panjang di field yang tidak filterable. [Field teks di page lama dan baru](/id/operations/deployment#field-teks-di-page-lama-dan-baru) menjelaskan batasnya.
+- Di page baru, batas awalan atau rentang teks hanya mempersempit index untuk 16 huruf Latin pertamanya, atau sekitar 8 karakter CJK. Pada kolom yang semua nilainya diawali teks panjang yang sama, seperti URL satu situs, pembacaan bisa memeriksa setiap entry milik tenant.
+
 ## 0.3.0-alpha.1
 
 Dirilis 2026-09-23. Rilis pertama dari seri 0.3: sebuah penulisan ulang dari nol, bukan upgrade dari 0.2. Tidak ada jalur upgrade dari 0.2.x — lihat [Seri 0.2.x](/id/project/legacy-0-2). Ini adalah alpha: API publik masih mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.

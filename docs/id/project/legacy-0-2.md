@@ -4,7 +4,7 @@ Sebelum `0.3.0`, StarDust adalah library CodeIgniter 4 yang dibangun di atas **V
 
 ## Apa yang berubah di 0.3
 
-`0.3.0-alpha.1` adalah penulisan ulang dari nol, bukan upgrade. Motivasinya adalah batas skalabilitas dan kegagalan out-of-memory yang dialami desain Virtual Column lama di bawah beban nyata, dan memperbaikinya berarti perubahan arsitektur yang terlalu mendasar untuk dikirim sebagai jalur migrasi. Secara konkret:
+Seri 0.3 adalah penulisan ulang dari nol, bukan upgrade. Motivasinya adalah batas skalabilitas dan kegagalan out-of-memory yang dialami desain Virtual Column lama di bawah beban nyata, dan memperbaikinya berarti perubahan arsitektur yang terlalu mendasar untuk dikirim sebagai jalur migrasi. Secara konkret:
 
 - **Tanpa dependensi framework.** Seri 0.2.x adalah library CodeIgniter 4. StarDust sekarang adalah package Composer yang tidak terikat framework, tanpa dependensi runtime selain `psr/log` dan `psr/clock` — dukungan CodeIgniter 4, bila kembali suatu saat, akan berupa package pendamping opsional, bukan kebutuhan.
 - **Model penyimpanan yang berbeda.** Entry, model, dan field disimpan dalam skema yang berbeda dengan nama tabel yang berbeda. Tidak ada apa pun di database 0.2.x yang kompatibel dengan tabel 0.3, dan tidak ada apa pun di 0.3 yang membaca tabel 0.2.x.
