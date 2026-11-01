@@ -2,9 +2,9 @@
 
 Semua perubahan penting pada proyek ini didokumentasikan di sini. Formatnya berdasarkan [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), dan penomoran versinya mengikuti [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Lihat [Versi dan stabilitas](/id/project/versioning) untuk artinya selama seri alpha.
 
-## 0.3.0-alpha.2
+## [0.3.0-alpha.2] - 2026-10-31
 
-Dirilis 2026-10-31. Rilis ini membuat pembacaan dan penulisan massal lebih murah, mengindeks field teks lewat key yang dihitung dari seluruh nilainya, dan membiarkan pengurutan field memilih ke mana entry tanpa nilai ditempatkan. Rilis ini juga memperbaiki kasus ketika field yang sedang dipromosikan bisa difilter sebelum entry lamanya selesai disalin. Ini masih alpha, jadi API publik mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.
+Rilis ini membuat pembacaan dan penulisan massal lebih murah, mengindeks field teks lewat key yang dihitung dari seluruh nilainya, dan membiarkan pengurutan field memilih ke mana entry tanpa nilai ditempatkan. Rilis ini juga memperbaiki kasus ketika field yang sedang dipromosikan bisa difilter sebelum entry lamanya selesai disalin. Ini masih alpha, jadi API publik mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.
 
 **Upgrade dari 0.3.0-alpha.1.** Ganti semua proses rilis lama sebelum Watcher rilis baru membangun page pertamanya, yaitu keempat daemon pada mode acuan atau `tick` terjadwal pada mode cron. Proses dari alpha.1 tidak bisa mengklaim slot teks di page yang dibangun dengan key, sehingga Watcher-nya membuat page baru di setiap poll sampai prosesnya diganti. Page yang sudah ada tidak pernah diubah, tidak ada tabel yang berubah, dan `bootstrap()` tetap aman dijalankan ulang. Langkahnya ada di [Memperbarui deployment yang sedang berjalan](/id/operations/deployment#memperbarui-deployment-yang-sedang-berjalan).
 
@@ -41,9 +41,9 @@ Dirilis 2026-10-31. Rilis ini membuat pembacaan dan penulisan massal lebih murah
 - Di page lama, baris yang memuat beberapa nilai panjang pada field teks filterable bisa ditulis tetapi kemudian tidak bisa di-update, dan MySQL memunculkan error 1713. Simpan teks bebas yang panjang di field yang tidak filterable. [Field teks di page lama dan baru](/id/operations/deployment#field-teks-di-page-lama-dan-baru) menjelaskan batasnya.
 - Di page baru, batas awalan atau rentang teks hanya mempersempit index untuk 16 huruf Latin pertamanya, atau sekitar 8 karakter CJK. Pada kolom yang semua nilainya diawali teks panjang yang sama, seperti URL satu situs, pembacaan bisa memeriksa setiap entry milik tenant.
 
-## 0.3.0-alpha.1
+## [0.3.0-alpha.1] - 2026-09-23
 
-Dirilis 2026-09-23. Rilis pertama dari seri 0.3: sebuah penulisan ulang dari nol, bukan upgrade dari 0.2. Tidak ada jalur upgrade dari 0.2.x. Lihat [Seri 0.2.x](/id/project/legacy-0-2). Ini adalah alpha: API publik masih mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.
+Rilis pertama dari seri 0.3: sebuah penulisan ulang dari nol, bukan upgrade dari 0.2. Tidak ada jalur upgrade dari 0.2.x. Lihat [Seri 0.2.x](/id/project/legacy-0-2). Ini adalah alpha: API publik masih mungkin berubah sebelum 0.3.0. Instal dengan `composer require damarbob/stardust:^0.3@alpha`.
 
 ### Ditambahkan
 
@@ -75,3 +75,6 @@ Dirilis 2026-09-23. Rilis pertama dari seri 0.3: sebuah penulisan ulang dari nol
 - Paginasi hanya lewat cursor, tanpa nomor halaman, offset, atau jumlah total.
 - Search driver bersifat read-only, dan belum ada change feed untuk menjaga index eksternal tetap sinkron. Lihat [Menjaga indeks eksternal tetap sinkron](/id/extending/custom-search-drivers#menjaga-indeks-eksternal-tetap-sinkron).
 - Di MariaDB, filter rentang dan pengurutan field menempatkan karakter supplementary-plane (kebanyakan emoji) di ujung yang berlawanan dari MySQL.
+
+[0.3.0-alpha.2]: https://github.com/damarbob/StarDust/compare/v0.3.0-alpha.1...v0.3.0-alpha.2
+[0.3.0-alpha.1]: https://github.com/damarbob/StarDust/compare/v0.2.0-alpha.3...v0.3.0-alpha.1
