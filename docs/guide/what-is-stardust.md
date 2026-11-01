@@ -42,15 +42,17 @@ Around that idea, StarDust adds the parts that make it workable in production:
 
 ## What works today
 
-- **Schema bootstrap.** Idempotent, non-destructive creation of every table the engine needs.
-- **Models and fields.** A get-or-create helper to register them, and `listModels()` and `describeModel()` to read them back, including whether each field is declared filterable and whether it can be filtered right now.
-- **Writes.** Single entries, synchronous bulk writes of up to 1 000 entries per call, and background submission for larger batches, with idempotency keys. Payloads can be built from typed objects, arrays or JSON.
-- **Updates and deletes.** `updateEntry()` replaces an entry's fields wholesale and `deleteEntry()` soft-deletes.
-- **Reads and search.** Cursor-paginated reads, point reads, and a unified `search()` with twelve operators and full AND/OR/NOT nesting, available as PHP objects or a JSON wire format with strict validation. Sorting by entry id, creation time or one indexed field.
-- **Pluggable search.** The built-in driver queries MySQL or MariaDB. Implement one interface to serve reads from another backend.
-- **Online schema changes.** Retype a field, promote or demote its filterability, rename a field or model, and delete a field or a model, all while the application keeps running.
-- **Exports.** CSV and JSON exports of a model, produced in the background, with a per-tenant limit on concurrent jobs and resume after a crash.
-- **Operations.** Slot spread and index cardinality reports, model compaction, structured logging with correlation ids, and a bounded `tick` command for hosts that can run cron but not persistent processes.
+| Area | What works today |
+| :-- | :-- |
+| Schema bootstrap | Idempotent, non-destructive creation of every table the engine needs. |
+| Models and fields | A get-or-create helper to register them, and `listModels()` and `describeModel()` to read them back, including whether each field is declared filterable and whether it can be filtered right now. |
+| Writes | Single entries, synchronous bulk writes of up to 1 000 entries per call, and background submission for larger batches, with idempotency keys. Payloads can be built from typed objects, arrays or JSON. |
+| Updates and deletes | `updateEntry()` replaces an entry's fields wholesale and `deleteEntry()` soft-deletes. |
+| Reads and search | Cursor-paginated reads, point reads, and a unified `search()` with twelve operators and full AND/OR/NOT nesting, available as PHP objects or a JSON wire format with strict validation. Sorting by entry id, creation time or one indexed field. |
+| Pluggable search | The built-in driver queries MySQL or MariaDB. Implement one interface to serve reads from another backend. |
+| Online schema changes | Retype a field, promote or demote its filterability, rename a field or model, and delete a field or a model, all while the application keeps running. |
+| Exports | CSV and JSON exports of a model, produced in the background, with a per-tenant limit on concurrent jobs and resume after a crash. |
+| Operations | Slot spread and index cardinality reports, model compaction, structured logging with correlation ids, and a bounded `tick` command for hosts that can run cron but not persistent processes. |
 
 ## Not yet available
 

@@ -48,7 +48,7 @@ php examples/01-field-lifecycle.php
 
 **Pertanyaan yang dijawabnya:** Anda menandai sebuah field filterable, pemanggilannya kembali dengan sukses, tetapi memfilter field itu tetap melempar error. Mengapa, dan sampai kapan?
 
-Inilah kejutan StarDust yang paling umum. Menandai field filterable hanya mencatat *niat* dan ter-commit dalam beberapa milidetik. Pekerjaan yang benar-benar memungkinkan pemfilteran terjadi sesudahnya, di proses latar belakang, dan sampai selesai, `describeModel()` melaporkan `isFilterable: true` sementara setiap filter pada field itu ditolak. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
+Inilah kejutan StarDust yang paling umum. Menandai field filterable hanya mencatat *niat* dan ter-commit dalam beberapa milidetik. Pekerjaan yang memungkinkan pemfilteran terjadi sesudahnya, di proses latar belakang, dan sampai selesai, `describeModel()` melaporkan `isFilterable: true` sementara setiap filter pada field itu ditolak. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).
 
 Skrip berjalan dalam dua babak. Pada **Babak 1** promosi sudah dipanggil dan tidak ada yang menjalankan tick, sehingga tampilannya membeku. Persis seperti itulah instalasi tanpa daemon yang berjalan, tanpa batas waktu. Pada **Babak 2** skrip mulai menjalankan Watcher dan Reconciler di dalam proses, dan baris-baris yang sama menjadi hidup: sebuah page disediakan, sebuah slot dipesan, sebuah cursor merambat menelusuri baris yang sudah ada, dan pemanggilan `read()` yang identik berhenti melempar error dan mulai mengembalikan hasil.
 
@@ -72,7 +72,7 @@ Skrip berjalan dalam dua babak. Pada **Babak 1** promosi sudah dipanggil dan tid
                     NO — FieldNotFilterableException
 ```
 
-Dua perilaku perlu diketahui sebelum Anda menjalankannya, karena skrip akan menunjukkan salah satunya dan keduanya tampak sangat berbeda:
+Dua perilaku perlu diketahui sebelum Anda menjalankannya, karena skrip akan menunjukkan salah satunya dan keduanya tampak berbeda:
 
 - **Jika database Anda tidak punya slot terindeks bebas** dengan tipe yang sesuai, promosi juga tidak bisa memesannya. Watcher harus menyediakan page lebih dulu, baru Reconciler memesan darinya. Kedua daemon dibutuhkan.
 - **Jika slot terindeks bebas sudah ada,** promosi memesannya di dalam transaksinya sendiri dan Watcher tidak terlibat sama sekali. Hanya penyalinan baris yang ditunda.

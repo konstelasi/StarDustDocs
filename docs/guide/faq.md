@@ -57,7 +57,7 @@ In short, StarDust keeps the flexibility of a JSON column and adds real indexes 
 
 ## How many fields can a model have?
 
-StarDust does not set a fixed cap on the number of fields in a model, but the two kinds of field behave very differently:
+StarDust does not set a fixed cap on the number of fields in a model, but the two kinds of field behave differently:
 
 - **Non-filterable fields** cost nothing beyond the space they take in each entry's JSON. A document is limited by your database's `max_allowed_packet` setting.
 - **Filterable fields** each occupy an indexed slot. The Watcher keeps provisioning pages as capacity runs low, so there is no fixed ceiling, but every extra page that a model's filterable fields span adds a join to queries that touch fields on it. Make a field filterable only when you filter or sort on it. See [Slots and pages](/concepts/slots-and-pages#spread-and-why-fewer-pages-means-fewer-joins).

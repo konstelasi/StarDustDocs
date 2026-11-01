@@ -57,7 +57,7 @@ Singkatnya, StarDust mempertahankan fleksibilitas kolom JSON dan menambahkan ind
 
 ## Berapa banyak field yang bisa dimiliki satu model?
 
-StarDust tidak menetapkan batas tetap untuk jumlah field dalam sebuah model, tetapi kedua jenis field berperilaku sangat berbeda:
+StarDust tidak menetapkan batas tetap untuk jumlah field dalam sebuah model, tetapi kedua jenis field berperilaku berbeda:
 
 - **Field non-filterable** tidak menambah biaya selain ruang yang dipakainya di JSON setiap entry. Ukuran satu dokumen dibatasi oleh pengaturan `max_allowed_packet` di database Anda.
 - **Field filterable** masing-masing menempati satu slot terindeks. Watcher terus menyediakan page saat kapasitas menipis, jadi tidak ada batas atas yang tetap, tetapi setiap page tambahan yang dijangkau field filterable milik satu model menambah satu join pada query yang menyentuh field di page itu. Jadikan field filterable hanya bila Anda memfilter atau mengurutkan berdasarkan field itu. Lihat [Slot dan page](/id/concepts/slots-and-pages#spread-dan-mengapa-lebih-sedikit-page-berarti-lebih-sedikit-join).

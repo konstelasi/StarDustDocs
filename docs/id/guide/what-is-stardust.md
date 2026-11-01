@@ -42,15 +42,17 @@ Di sekeliling gagasan itu, StarDust menambahkan bagian-bagian yang membuatnya la
 
 ## Yang sudah bisa digunakan
 
-- **Bootstrap skema.** Pembuatan semua tabel yang dibutuhkan engine yang idempotent dan tidak destruktif.
-- **Model dan field.** Helper get-or-create untuk mendaftarkannya, serta `listModels()` dan `describeModel()` untuk membacanya kembali, termasuk apakah setiap field dideklarasikan filterable dan apakah ia bisa difilter saat ini.
-- **Penulisan.** Entry tunggal, bulk write sinkron hingga 1 000 entry per pemanggilan, dan pengiriman di latar belakang untuk batch yang lebih besar, dengan idempotency key. Payload bisa disusun dari objek bertipe, array, atau JSON.
-- **Update dan delete.** `updateEntry()` mengganti seluruh field sebuah entry dan `deleteEntry()` melakukan soft delete.
-- **Pembacaan dan pencarian.** Pembacaan berhalaman dengan cursor, point read, dan `search()` terpadu dengan dua belas operator serta nesting AND/OR/NOT penuh, tersedia sebagai objek PHP atau format wire JSON dengan validasi ketat. Pengurutan berdasarkan id entry, waktu pembuatan, atau satu field terindeks.
-- **Pencarian yang bisa diganti.** Driver bawaan meng-query MySQL atau MariaDB. Implementasikan satu interface untuk melayani pembacaan dari backend lain.
-- **Perubahan skema online.** Retype field, promosi atau demosi filterability, ganti nama field atau model, serta hapus field atau model, semuanya selagi aplikasi tetap berjalan.
-- **Ekspor.** Ekspor CSV dan JSON dari sebuah model, dibuat di latar belakang, dengan batas jumlah job bersamaan per tenant dan kemampuan melanjutkan setelah crash.
-- **Operasional.** Laporan spread slot dan kardinalitas index, compaction model, logging terstruktur dengan correlation id, dan perintah `tick` terbatas untuk host yang bisa menjalankan cron tetapi tidak proses persisten.
+| Area | Yang sudah bisa digunakan |
+| :-- | :-- |
+| Bootstrap skema | Pembuatan semua tabel yang dibutuhkan engine yang idempotent dan tidak destruktif. |
+| Model dan field | Helper get-or-create untuk mendaftarkannya, serta `listModels()` dan `describeModel()` untuk membacanya kembali, termasuk apakah setiap field dideklarasikan filterable dan apakah ia bisa difilter saat ini. |
+| Penulisan | Entry tunggal, bulk write sinkron hingga 1 000 entry per pemanggilan, dan pengiriman di latar belakang untuk batch yang lebih besar, dengan idempotency key. Payload bisa disusun dari objek bertipe, array, atau JSON. |
+| Update dan delete | `updateEntry()` mengganti seluruh field sebuah entry dan `deleteEntry()` melakukan soft delete. |
+| Pembacaan dan pencarian | Pembacaan berhalaman dengan cursor, point read, dan `search()` terpadu dengan dua belas operator serta nesting AND/OR/NOT penuh, tersedia sebagai objek PHP atau format wire JSON dengan validasi ketat. Pengurutan berdasarkan id entry, waktu pembuatan, atau satu field terindeks. |
+| Pencarian yang bisa diganti | Driver bawaan meng-query MySQL atau MariaDB. Implementasikan satu interface untuk melayani pembacaan dari backend lain. |
+| Perubahan skema online | Retype field, promosi atau demosi filterability, ganti nama field atau model, serta hapus field atau model, semuanya selagi aplikasi tetap berjalan. |
+| Ekspor | Ekspor CSV dan JSON dari sebuah model, dibuat di latar belakang, dengan batas jumlah job bersamaan per tenant dan kemampuan melanjutkan setelah crash. |
+| Operasional | Laporan spread slot dan kardinalitas index, compaction model, logging terstruktur dengan correlation id, dan perintah `tick` terbatas untuk host yang bisa menjalankan cron tetapi tidak proses persisten. |
 
 ## Yang belum tersedia
 

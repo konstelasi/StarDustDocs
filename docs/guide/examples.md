@@ -48,7 +48,7 @@ php examples/01-field-lifecycle.php
 
 **The question it answers:** you marked a field filterable, the call returned successfully, and filtering on it still throws. Why, and for how long?
 
-This is comfortably the most common StarDust surprise. Marking a field filterable records an *intention* and commits in a few milliseconds. The work that makes filtering actually possible happens afterwards, in background processes, and until it finishes `describeModel()` reports `isFilterable: true` while every filter against the field is rejected. See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
+This is comfortably the most common StarDust surprise. Marking a field filterable records an *intention* and commits in a few milliseconds. The work that makes filtering possible happens afterwards, in background processes, and until it finishes `describeModel()` reports `isFilterable: true` while every filter against the field is rejected. See [Filterable vs. indexed](/concepts/filterable-vs-indexed).
 
 The script runs in two acts. In **Act 1** the promotion has been called and nothing is ticking, so the frame sits frozen. That is exactly what an installation with no daemons running looks like, indefinitely. In **Act 2** it starts ticking a Watcher and a Reconciler, and the same rows come alive: a page is provisioned, a slot is reserved, a cursor climbs through the existing rows, and the identical `read()` call stops throwing and starts returning.
 
@@ -72,7 +72,7 @@ The script runs in two acts. In **Act 1** the promotion has been called and noth
                     NO — FieldNotFilterableException
 ```
 
-Two behaviours are worth knowing before you run it, because the script shows you one or the other and they look quite different:
+Two behaviours are worth knowing before you run it, because the script shows you one or the other and they look different:
 
 - **If your database has no free indexed slot** of the right type, the promotion cannot reserve one either. The Watcher must provision a page first, and then the Reconciler reserves from it. Both daemons are needed.
 - **If a free indexed slot already exists,** the promotion reserves it inside its own transaction and the Watcher is never involved. Only the row copy is deferred.
