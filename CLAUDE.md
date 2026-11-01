@@ -19,7 +19,7 @@ Every human-read text here follows StarDust's writing style guide (`.agent/rules
 - One strong claim with a concrete fact beside it is fine. Two in one line, or one in every sentence, reads as generated.
 - Aim for about 80% formal and 20% conversational, nearer fully formal on reference pages. Vary sentence length, and never introduce errors on purpose.
 
-Older pages still have dashes. Follow the rule for every sentence you write or rewrite.
+`node scripts/check-writing-style.mjs` fails on a dash or on a colon or semicolon in a heading, and CI runs it, so keep it passing. The same script and `node scripts/check-consumer-docs.mjs` are the checks to run alongside `npm run docs:build`.
 
 ## Indonesian copy
 
