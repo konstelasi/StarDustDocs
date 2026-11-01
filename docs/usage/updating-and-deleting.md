@@ -1,6 +1,6 @@
 # Updating and deleting entries
 
-Two calls change an existing entry: `updateEntry()` replaces its fields and `deleteEntry()` soft-deletes it. They look like a pair but deliberately differ in how they report "there is nothing to do".
+Two calls change an existing entry: `updateEntry()` replaces its fields and `deleteEntry()` <Term id="soft-deletion">soft-deletes</Term> it. They look like a pair but deliberately differ in how they report "there is nothing to do".
 
 ## Full replace with updateEntry()
 

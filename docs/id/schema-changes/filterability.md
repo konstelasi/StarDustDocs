@@ -1,6 +1,6 @@
 # Promosi dan demosi filterability
 
-Mempromosikan sebuah field membuatnya filterable tanpa mengubah declared type-nya, dan mendemosikannya membalikkan itu. Keduanya melewati lifecycle yang sama dengan [retype](/id/schema-changes/retype), dan penjagaannya pun sama. Memulai salah satu dari keduanya selagi field itu sedang punya rename atau retype yang berjalan akan ditolak dengan `RenameInProgressException` atau `RetypeInProgressException`, atau dengan `FieldDeletionInProgressException` bila field-nya sedang dihapus. Bedanya dari retype, tidak satu pun dari kedua operasi ini mengonversi nilai apa pun: declared type-nya tetap sama seperti semula, jadi tidak ada yang perlu dikoersi.
+<Term id="promotion">Mempromosikan</Term> sebuah field membuatnya filterable tanpa mengubah declared type-nya, dan <Term id="demotion">mendemosikannya</Term> membalikkan itu. Keduanya melewati lifecycle yang sama dengan [retype](/id/schema-changes/retype), dan penjagaannya pun sama. Memulai salah satu dari keduanya selagi field itu sedang punya rename atau retype yang berjalan akan ditolak dengan `RenameInProgressException` atau `RetypeInProgressException`, atau dengan `FieldDeletionInProgressException` bila field-nya sedang dihapus. Bedanya dari retype, tidak satu pun dari kedua operasi ini mengonversi nilai apa pun: declared type-nya tetap sama seperti semula, jadi tidak ada yang perlu dikoersi.
 
 ## Promosi field
 

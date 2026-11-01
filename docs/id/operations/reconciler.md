@@ -31,7 +31,7 @@ Setiap worker mengambil chunk-nya lewat `SELECT … FOR UPDATE SKIP LOCKED`, seh
 
 ## Dead-letter queue
 
-Tidak semua baris bisa direkonsiliasi. Baris yang merujuk pada data entry yang sudah lenyap, atau yang nilai tersimpannya tidak bisa lagi dikonversi ke tipe field-nya, diparkir di dead-letter queue alih-alih dicoba ulang selamanya. Ini disengaja: baris yang memang bermasalah kalau tidak begitu akan menyumbat seluruh antrean di belakangnya, memblokir setiap entry yang datang setelahnya.
+Tidak semua baris bisa direkonsiliasi. Baris yang merujuk pada data entry yang sudah lenyap, atau yang nilai tersimpannya tidak bisa lagi dikonversi ke tipe field-nya, diparkir di <Term id="dead-letter-queue">dead-letter queue</Term> alih-alih dicoba ulang selamanya. Ini disengaja: baris yang memang bermasalah kalau tidak begitu akan menyumbat seluruh antrean di belakangnya, memblokir setiap entry yang datang setelahnya.
 
 Tidak ada yang di dalam dead-letter queue dicoba ulang secara otomatis, dan tidak ada yang kedaluwarsa dengan sendirinya, jadi ini adalah antrean yang memang harus Anda periksa sendiri. Sebuah baris mendarat di sini biasanya berarti masalah data yang mendasarinya perlu diperbaiki secara manual, atau ini bukti adanya sesuatu yang layak diselidiki (aturan konversi yang tidak cocok dengan data Anda, misalnya).
 

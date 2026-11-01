@@ -1,6 +1,6 @@
 # The QueryFilter wire format
 
-QueryFilter is the JSON format for filters, so a filter can travel from a browser or an API client and be validated before it reaches your database. This page is the reference for the document shape, the operators, value types, limits and error codes. To use it in code, see [Searching](/usage/searching#accepting-filters-as-json).
+<Term id="queryfilter">QueryFilter</Term> is the JSON format for filters, so a filter can travel from a browser or an API client and be validated before it reaches your database. This page is the reference for the document shape, the operators, value types, limits and error codes. To use it in code, see [Searching](/usage/searching#accepting-filters-as-json).
 
 ## Document shape
 

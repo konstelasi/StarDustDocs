@@ -31,7 +31,7 @@ Each worker claims its chunk with `SELECT … FOR UPDATE SKIP LOCKED`, so worker
 
 ## The dead-letter queue
 
-Not every row can be reconciled. A row that references entry data that's gone missing, or whose stored value can no longer be coerced to its field's type, is parked in the dead-letter queue instead of being retried forever. This is deliberate: a genuinely bad row would otherwise wedge the whole queue behind it, blocking every entry that arrives after it.
+Not every row can be reconciled. A row that references entry data that's gone missing, or whose stored value can no longer be coerced to its field's type, is parked in the <Term id="dead-letter-queue">dead-letter queue</Term> instead of being retried forever. This is deliberate: a genuinely bad row would otherwise wedge the whole queue behind it, blocking every entry that arrives after it.
 
 Nothing in the dead-letter queue is retried automatically, and nothing expires on its own, so it's a queue you're expected to look at. A row landing here usually means either the underlying data problem needs fixing by hand, or it's evidence of something worth investigating (a coercion rule that doesn't fit your data, for instance).
 

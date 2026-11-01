@@ -1,6 +1,6 @@
 # Promoting and demoting filterability
 
-Promoting a field makes it filterable without changing its declared type, and demoting one takes that back. Both go through the same lifecycle as [retyping](/schema-changes/retype), and the same guards apply. Starting either one while the field has a rename or a retype already running refuses with `RenameInProgressException` or `RetypeInProgressException`, or with `FieldDeletionInProgressException` if the field is already being deleted. The difference from a retype is that neither operation converts a single value: the declared type stays exactly what it was, so there is nothing to coerce.
+<Term id="promotion">Promoting</Term> a field makes it filterable without changing its declared type, and <Term id="demotion">demoting</Term> one takes that back. Both go through the same lifecycle as [retyping](/schema-changes/retype), and the same guards apply. Starting either one while the field has a rename or a retype already running refuses with `RenameInProgressException` or `RetypeInProgressException`, or with `FieldDeletionInProgressException` if the field is already being deleted. The difference from a retype is that neither operation converts a single value: the declared type stays exactly what it was, so there is nothing to coerce.
 
 ## Promoting a field
 

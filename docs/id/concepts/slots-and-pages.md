@@ -36,7 +36,7 @@ Reservasi bersifat atomik, dan setiap field paling banyak memegang satu slot akt
 
 ### Tombstoned lalu direklamasi
 
-Ketika sebuah field [didemosikan](/id/schema-changes/filterability), [dihapus](/id/schema-changes/deleting-fields), atau [di-retype](/id/schema-changes/retype), slot lamanya di-**tombstone**. Slot itu tidak langsung diberikan ke field berikutnya, karena menyerahkan kolom yang masih berisi nilai penghuni sebelumnya akan membuat filter field baru cocok dengan data yang tidak pernah ditulis untuknya.
+Ketika sebuah field [didemosikan](/id/schema-changes/filterability), [dihapus](/id/schema-changes/deleting-fields), atau [di-retype](/id/schema-changes/retype), slot lamanya di-**<Term id="tombstoned-slot">tombstone</Term>**. Slot itu tidak langsung diberikan ke field berikutnya, karena menyerahkan kolom yang masih berisi nilai penghuni sebelumnya akan membuat filter field baru cocok dengan data yang tidak pernah ditulis untuknya.
 
 [Liberator](/id/operations/liberator) mengosongkan kolom itu per chunk yang terbatas dan baru setelahnya menandai slot sebagai free. Slot berstatus `free` dengan demikian selalu terverifikasi kosong.
 

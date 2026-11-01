@@ -36,7 +36,7 @@ Reservation is atomic, and each field holds at most one live slot at a time. The
 
 ### Tombstoned and reclaimed
 
-When a field is [demoted](/schema-changes/filterability), [deleted](/schema-changes/deleting-fields) or [retyped](/schema-changes/retype), its old slot is **tombstoned**. It is not handed straight to the next field, because handing over a column that still holds the previous occupant's values would let the new field's filters match data nobody ever wrote to it.
+When a field is [demoted](/schema-changes/filterability), [deleted](/schema-changes/deleting-fields) or [retyped](/schema-changes/retype), its old slot is **<Term id="tombstoned-slot">tombstoned</Term>**. It is not handed straight to the next field, because handing over a column that still holds the previous occupant's values would let the new field's filters match data nobody ever wrote to it.
 
 The [Liberator](/operations/liberator) clears the column in bounded chunks and only then marks the slot free again. A slot marked `free` is therefore always verified empty.
 

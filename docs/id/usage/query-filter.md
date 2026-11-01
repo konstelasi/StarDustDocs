@@ -1,6 +1,6 @@
 # Format wire QueryFilter
 
-QueryFilter adalah format JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Halaman ini adalah referensi untuk struktur dokumen, operator, tipe nilai, batasan, dan kode error. Untuk memakainya di kode, lihat [Pencarian](/id/usage/searching#menerima-filter-dalam-bentuk-json).
+<Term id="queryfilter">QueryFilter</Term> adalah format JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Halaman ini adalah referensi untuk struktur dokumen, operator, tipe nilai, batasan, dan kode error. Untuk memakainya di kode, lihat [Pencarian](/id/usage/searching#menerima-filter-dalam-bentuk-json).
 
 ## Struktur dokumen
 
