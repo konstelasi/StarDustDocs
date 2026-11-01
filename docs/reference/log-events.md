@@ -16,6 +16,8 @@ Every record carries:
 
 Beyond these, each event carries whatever fields are useful for it (a chunk's row count, a field id, a failure reason). Those payload keys aren't part of a closed contract the way event names are, so treat the ones documented below as stable and anything else as informational.
 
+If a record can't be encoded as JSON, `StdoutNdjsonLogger` writes a smaller fallback instead and drops the original. The fallback has `event` set to `log_encode_failed`, level `error` and a `detail` field with the encoder's message. It carries no `correlation_id`.
+
 ## Writes and reads
 
 | Event | Fires when |
@@ -38,6 +40,7 @@ Beyond these, each event carries whatever fields are useful for it (a chunk's ro
 | :-- | :-- |
 | `poll_started` / `poll_complete` | One Watcher cycle begins and ends. |
 | `provision_started` / `provision_complete` / `provision_failed` | A new extension page is provisioned, or the attempt fails. |
+| `page_provisioned` | A new extension page's registry transaction commits. It carries the page number, the table name and the filterable slots the page holds, and it shares the Watcher cycle's correlation id. |
 | `lock_contention` | The Watcher couldn't take its provisioning advisory lock within its timeout. |
 | `cardinality_sampled` | The periodic or on-demand cardinality advisory runs. |
 | `low_cardinality_index` | That sample finds an index with low selectivity over enough rows to matter. |
@@ -102,5 +105,6 @@ See [Exports](/usage/exports) and [Chronicler](/operations/chronicler).
 | `delete_started` / `delete_complete` | A field deletion begins and finishes. |
 | `model_delete_started` / `model_delete_complete` | A model deletion begins and finishes. |
 | `compaction_planned` / `compaction_complete` | `compactModel()` computes a plan and, unless it was a dry run, finishes executing it. |
+| `slot_reserved` | A slot is reserved for a field, whether by the Reconciler for a field waiting in the queue, by a retype or promotion, or by a compaction relocation. It carries the field id, the page and column, the slot type and the status the slot was given, and it shares the correlation id of the operation that reserved it. |
 
 Every asynchronous pair here shares one correlation id across the process boundary, from the initiating call to the Reconciler chunk that eventually closes it out. See [Tracing asynchronous work](/operations/observability#tracing-asynchronous-work).
