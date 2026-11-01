@@ -33,7 +33,7 @@ The Watcher is a strict singleton, so a second instance exits immediately rather
 
 ### systemd, supervisor and containers
 
-Any supervisor that restarts a crashed process works: systemd units, `supervisord`, or a container orchestrator's own restart policy (Docker Compose's `restart: unless-stopped`, a Kubernetes Deployment, an ECS service). Each daemon is a single long-running foreign process with no special startup ordering requirement beyond `bootstrap()` having run once. The daemons tolerate a database that briefly disconnects and reconnects, and a fresh process simply resumes whatever it finds still queued.
+Any supervisor that restarts a crashed process works: systemd units, `supervisord`, or a container orchestrator's own restart policy (Docker Compose's `restart: unless-stopped`, a Kubernetes Deployment, an ECS service). Each daemon is a single long-running foreground process with no special startup ordering requirement beyond `bootstrap()` having run once. The daemons tolerate a database that briefly disconnects and reconnects, and a fresh process simply resumes whatever it finds still queued.
 
 Daemons honour `SIGTERM`/`SIGINT` for graceful shutdown when `ext-pcntl` is loaded, and `touch <pidFileDir>/<daemon-name>.shutdown` as a signal-free alternative on hosts without it. A `SIGTERM` to a running `chronicler` mid-export does not wait for the job to finish: the worker yields at the next chunk boundary, the job returns to `pending` with its resume anchor intact, and the next worker to claim it (this one restarting, or another already running) continues from that exact point. Exit codes: `0` for a clean shutdown, `1` for a fatal error, `2` for a singleton violation or user error.
 
