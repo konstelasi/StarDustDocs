@@ -16,11 +16,11 @@ for await (const path of glob('docs/**/*.md')) {
   const contents = readFileSync(path, 'utf8')
 
   if (ADR_PATTERN.test(contents)) {
-    failures.push(`${path}: cites an ADR — state the behaviour directly instead.`)
+    failures.push(`${path}: cites an ADR. State the behaviour directly instead.`)
   }
 
   if (PHASE_PATTERN.test(contents)) {
-    failures.push(`${path}: refers to a numbered build phase — name the feature or daemon instead.`)
+    failures.push(`${path}: refers to a numbered build phase. Name the feature or daemon instead.`)
   }
 }
 
@@ -32,4 +32,4 @@ if (failures.length > 0) {
   process.exit(1)
 }
 
-console.log(`Consumer docs guard passed — no ADR citations or numbered build phases found.`)
+console.log('Consumer docs guard passed. No ADR citations or numbered build phases found.')

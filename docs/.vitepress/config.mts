@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 
-// Served at stardust.konstelasi.co.id/docs — every root-relative `head`
+// Served at stardust.konstelasi.co.id/docs, so every root-relative `head`
 // href below must be prefixed by hand, since `head` is injected as raw
 // <head> tags and is not passed through VitePress's `base` resolution
 // the way `themeConfig.logo` and sidebar/nav links are.

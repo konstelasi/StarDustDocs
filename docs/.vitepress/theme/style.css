@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   StarDust docs — theme tokens.
+   StarDust docs, theme tokens.
 
    Ports StarDustWebsite's design tokens (app/globals.css) onto
    VitePress's CSS custom properties. The website is dark-only; the
@@ -11,7 +11,7 @@
    (--vp-c-indigo-*, --vp-c-yellow-*, --vp-c-red-*, --vp-c-green-*)
    rather than the functional aliases built on top of them
    (--vp-c-brand-*, --vp-c-tip-*, --vp-c-warning-*, --vp-c-danger-*,
-   --vp-c-success-*, --vp-c-caution-*) — those aliases already
+   --vp-c-success-*, --vp-c-caution-*). Those aliases already
    reference the primitives via var(), so one override cascades
    everywhere correctly instead of needing to be repeated per alias.
 
@@ -62,7 +62,7 @@
   --vp-c-green-3: #0f766e;
   --vp-c-green-soft: #0f766e22;
 
-  /* Brand button text — the accent scale is a dark neutral in light
+  /* Brand button text. The accent scale is a dark neutral in light
      mode, so button text stays light regardless of state. */
   --vp-button-brand-text: #f5f5f5;
   --vp-button-brand-hover-text: #f5f5f5;
@@ -93,7 +93,7 @@
 }
 
 .dark {
-  /* Backgrounds — ported byte-for-byte from app/globals.css */
+  /* Backgrounds, ported byte-for-byte from app/globals.css */
   --vp-c-bg: #090909;
   --vp-c-bg-alt: #111111;
   --vp-c-bg-elv: #181818;
@@ -109,7 +109,7 @@
   --vp-c-text-2: #aaaaaa;
   --vp-c-text-3: #8a8a8a;
 
-  /* Accent scale — 1 is the website's --accent; 2/3 are the hover and
+  /* Accent scale. 1 is the website's --accent; 2/3 are the hover and
      resting gradient stops of its primary button. */
   --vp-c-indigo-1: #bebebe;
   --vp-c-indigo-2: #c9c9c9;
@@ -134,7 +134,7 @@
   --vp-c-green-3: #2fd4bd;
   --vp-c-green-soft: #2fd4bd1f;
 
-  /* Brand button text — the accent scale is a light neutral in dark
+  /* Brand button text. The accent scale is a light neutral in dark
      mode (website's --on-accent), so button text stays dark. */
   --vp-button-brand-text: #0f0f0f;
   --vp-button-brand-hover-text: #0f0f0f;
@@ -145,7 +145,7 @@
   --sd-danger: #ff6b81;
   --sd-well: #0e0e0e;
 
-  /* Landing page — the website's hero tokens, ported as-is. */
+  /* Landing page. The website's hero tokens, ported as-is. */
   --sd-accent-rgb: 190, 190, 190;
   --sd-indexed-rgb: 47, 212, 189;
   --sd-glow-alpha: 0.16;
@@ -164,7 +164,7 @@
 }
 
 :root {
-  /* Poppins — "Konstelasi's brand typeface" per the website's own
+  /* Poppins, "Konstelasi's brand typeface" per the website's own
      comment. Loaded via Google Fonts link in config.mts; the fallback
      stack below is the website's exact one. */
   --vp-font-family-base:
