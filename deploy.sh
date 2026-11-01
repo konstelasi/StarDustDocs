@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# Manual deploy: build the VitePress static site and push it to the live
-# cPanel host, at stardust.konstelasi.co.id/docs.
+# Build the VitePress static site and push it to the live cPanel host, at
+# stardust.konstelasi.co.id/docs.
 #
-# Deliberately not run from CI — this script assumes an `stardustwebsite`
-# entry already exists in the operator's ~/.ssh/config (host/port/user/key),
-# so no credential of any kind lives in this repo. The entry is shared with
-# StarDustWebsite's own deploy.sh: both sites live under the same cPanel
-# account.
+# A push to main runs this from the Deploy workflow, and `bash deploy.sh` runs
+# it by hand. Both assume a `stardustwebsite` entry in ~/.ssh/config
+# (host/port/user/key). The workflow writes that entry from repository secrets
+# and a laptop has its own, so no credential of any kind lives in this repo.
+# The entry is shared with StarDustWebsite's own deploy.sh, because both sites
+# live under the same cPanel account. The workflow builds in a separate job
+# that has no key and sets SKIP_BUILD, so this script then only packages and
+# uploads docs/.vitepress/dist.
 set -euo pipefail
 
 REMOTE_HOST="stardustwebsite"
@@ -23,9 +26,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "==> Building the docs site..."
-npm ci
-npm run docs:build
+if [ -z "${SKIP_BUILD:-}" ]; then
+  echo "==> Building the docs site..."
+  npm ci
+  npm run docs:build
+fi
 
 if [ ! -d docs/.vitepress/dist ]; then
   echo "Error: docs/.vitepress/dist not found after build." >&2
