@@ -23,7 +23,7 @@ $bulk->chunks;           // satu hasil per chunk, berurutan
 - **Tenant id setiap payload divalidasi di awal**, sebelum chunk pertama berjalan, sehingga satu record bermasalah di indeks 47 tidak membuat 46 entry ter-commit lebih dulu.
 - `interChunkDelayMicros` memberi jeda antar chunk (tidak pernah sebelum yang pertama atau setelah yang terakhir), untuk saat Anda ingin meringankan beban database yang sibuk.
 
-Berikan `correlationId` di `BulkIngestOptions` untuk mengikat event log setiap chunk ke request Anda. Factory `EntryPayload::listFromJson()` dan `listFromArray()` menyusun daftarnya dari format wire. Lihat [Menulis entry](/id/usage/writing-entries#menyusun-entrypayload).
+Berikan `correlationId` di `BulkIngestOptions` untuk mengikat event log setiap chunk ke request Anda. Factory `EntryPayload::listFromJson()` dan `listFromArray()` menyusun daftarnya dari wire format. Lihat [Menulis entry](/id/usage/writing-entries#menyusun-entrypayload).
 
 ## Pengiriman asinkron untuk batch besar
 

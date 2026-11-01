@@ -190,7 +190,7 @@ Mengubah field non-filterable menjadi filterable pada sistem yang sedang berjala
 
 ### QueryFilter
 
-Format wire JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Decoding-nya ketat dan kegagalannya presisi: setiap penolakan membawa kode error yang bisa dibaca mesin, penunjuk ke node yang bermasalah di JSON Anda, dan rincian ketidakcocokannya, cukup untuk membuat HTTP 400 yang berguna tanpa menulis handler untuk tiap jenis kegagalan.
+Wire format JSON untuk filter, sehingga sebuah filter bisa dikirim dari browser atau klien API dan divalidasi sebelum mencapai database Anda. Decoding-nya ketat dan kegagalannya presisi: setiap penolakan membawa kode error yang bisa dibaca mesin, penunjuk ke node yang bermasalah di JSON Anda, dan rincian ketidakcocokannya, cukup untuk membuat HTTP 400 yang berguna tanpa menulis handler untuk tiap jenis kegagalan.
 
 **Lihat juga:** [Filter tree](#filter-tree), [Pre-flight rejection](#pre-flight-rejection).
 

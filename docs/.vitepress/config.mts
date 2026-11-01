@@ -263,7 +263,7 @@ export default defineConfig({
               { text: 'Memperbarui dan menghapus entry', link: '/id/usage/updating-and-deleting' },
               { text: 'Membaca entry', link: '/id/usage/reading-entries' },
               { text: 'Pencarian', link: '/id/usage/searching' },
-              { text: 'Format wire QueryFilter', link: '/id/usage/query-filter' },
+              { text: 'Wire format QueryFilter', link: '/id/usage/query-filter' },
               { text: 'Ekspor', link: '/id/usage/exports' },
               { text: 'Integrasi dengan aplikasi Anda', link: '/id/usage/integrating' },
               { text: 'Menguji kode yang memakai StarDust', link: '/id/usage/testing-your-app' },
