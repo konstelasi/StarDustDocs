@@ -1,6 +1,6 @@
 # Slots and pages
 
-Slots are the engine's finite resource, and most capacity planning in StarDust is really slot planning. This page explains what they are, how they move through their lifecycle, and why a model's slots can end up scattered.
+Slots are the engine's finite resource, and most capacity planning in StarDust is slot planning. This page explains what they are, how they move through their lifecycle, and why a model's slots can end up scattered.
 
 ## Extension pages
 
@@ -57,6 +57,6 @@ If capacity runs out before the Watcher catches up, writes still succeed. See [W
 
 Spread is not a bug. It is the natural consequence of pages being immutable and slots being handed out from whichever page has room, and a model that grew field by field over a year can easily end up spread across several pages.
 
-The engine measures it as **excess pages**: the pages a model actually occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run <Term id="compaction">compaction</Term>, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
+The engine measures it as **excess pages**: the pages a model occupies, minus the fewest it could fit on. The measurement is advisory and never changes anything on its own. To act on it you run <Term id="compaction">compaction</Term>, which relocates a model's filterable fields onto the fewest pages that can hold them, one field at a time. It is deliberate and operator-initiated, because it needs a running Reconciler and briefly makes one field unfilterable while it moves.
 
 The reports and the compaction command are covered in [Slot maintenance](/operations/slot-maintenance).

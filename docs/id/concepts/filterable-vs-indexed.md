@@ -13,7 +13,7 @@ Menyalakan flag hanya mengubah apa yang tercatat di registry. Flag itu sendiri t
 
 ## Indexed adalah kenyataan
 
-Sebuah field berstatus <Term id="indexed">indexed</Term> ketika slotnya aktif *saat ini juga*, artinya filter pada field itu benar-benar akan berfungsi. Inilah properti yang perlu dicek kode Anda sebelum menawarkan sebuah filter.
+Sebuah field berstatus <Term id="indexed">indexed</Term> ketika slotnya aktif *saat ini juga*, artinya filter pada field itu akan berfungsi. Inilah properti yang perlu dicek kode Anda sebelum menawarkan sebuah filter.
 
 Setiap field yang dideskripsikan oleh `describeModel()` melaporkan keduanya:
 

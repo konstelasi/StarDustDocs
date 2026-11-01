@@ -4,7 +4,7 @@ Three nouns describe the shape of your data. A <Term id="tenant">tenant</Term> i
 
 ## Tenants and isolation
 
-A tenant is whatever your application calls one customer, one workspace or one account. Every query the engine builds carries the tenant id on every `WHERE` and every `JOIN`, so one tenant's data is not merely filtered out of another tenant's results, it is unreachable at the SQL level.
+A tenant is whatever your application calls one customer, one workspace or one account. Every query the engine builds carries the tenant id on every `WHERE` and every `JOIN`, so one tenant's data cannot be reached from another tenant's queries at the SQL level.
 
 What this means for you in practice:
 

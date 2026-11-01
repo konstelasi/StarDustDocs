@@ -1,6 +1,6 @@
 # Slot dan page
 
-Slot adalah sumber daya terbatas milik engine, dan sebagian besar perencanaan kapasitas di StarDust sebenarnya adalah perencanaan slot. Halaman ini menjelaskan apa itu slot, bagaimana ia bergerak melewati siklus hidupnya, dan mengapa slot milik satu model bisa tersebar.
+Slot adalah sumber daya terbatas milik engine, dan sebagian besar perencanaan kapasitas di StarDust adalah perencanaan slot. Halaman ini menjelaskan apa itu slot, bagaimana ia bergerak melewati siklus hidupnya, dan mengapa slot milik satu model bisa tersebar.
 
 ## Extension page
 
@@ -57,6 +57,6 @@ Kalau kapasitas habis sebelum Watcher sempat menyusul, penulisan tetap berhasil.
 
 Spread bukan bug. Ia konsekuensi wajar dari page yang tidak bisa diubah dan slot yang dibagikan dari page mana pun yang masih punya ruang, dan model yang tumbuh field demi field selama setahun sangat mungkin akhirnya tersebar di beberapa page.
 
-Engine mengukurnya sebagai **excess pages**: jumlah page yang benar-benar ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan <Term id="compaction">compaction</Term>, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
+Engine mengukurnya sebagai **excess pages**: jumlah page yang ditempati model, dikurangi jumlah paling sedikit yang bisa memuatnya. Pengukuran ini hanya bersifat saran dan tidak pernah mengubah apa pun dengan sendirinya. Untuk menindaklanjutinya Anda menjalankan <Term id="compaction">compaction</Term>, yang memindahkan field filterable milik sebuah model ke jumlah page paling sedikit yang bisa memuatnya, satu field per satu waktu. Prosesnya disengaja dan dimulai oleh operator, karena membutuhkan Reconciler yang berjalan dan sesaat membuat satu field tidak bisa difilter selama dipindahkan.
 
 Laporan dan perintah compaction dibahas di [Perawatan slot](/id/operations/slot-maintenance).

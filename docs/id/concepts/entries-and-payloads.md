@@ -38,6 +38,6 @@ Menghapus entry dengan `deleteEntry()` hanya mengisi sebuah timestamp. Barisnya 
 
 ## Membaca dari payload saat slot belum ada
 
-Saat Anda membaca entry, setiap field diambil dari slot terindeks-nya bila ia punya slot aktif, dan dari payload JSON bila tidak. Dengan begitu ketersediaan di sisi baca terjaga: field yang belum punya slot tetap dikembalikan, hanya tanpa kemampuan untuk difilter atau diurutkan.
+Saat Anda membaca entry, setiap field diambil dari slot terindeks-nya bila ia punya slot aktif, dan dari payload JSON bila tidak. Dengan begitu ketersediaan di sisi baca terjaga: field yang belum punya slot tetap dikembalikan, tetapi tidak bisa difilter atau diurutkan.
 
 Inilah yang membuat pembacaan tetap berfungsi selama setiap [backfill window](/id/concepts/background-work#backfill-window). Di antara saat Anda mempromosikan sebuah field dan saat slotnya terisi, pembacaan tetap mengembalikan nilainya langsung dari payload. Yang tidak bisa dilakukan pada rentang itu adalah *memfilter* berdasarkan field tersebut. Lihat [Filterable vs. indexed](/id/concepts/filterable-vs-indexed).

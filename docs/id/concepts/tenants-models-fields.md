@@ -4,7 +4,7 @@ Tiga istilah menggambarkan bentuk data Anda. <Term id="tenant">Tenant</Term> ada
 
 ## Tenant dan isolasi data
 
-Tenant adalah apa pun yang di aplikasi Anda disebut satu pelanggan, satu workspace, atau satu akun. Setiap query yang dibangun engine membawa tenant id di setiap `WHERE` dan setiap `JOIN`. Jadi data satu tenant bukan sekadar disaring dari hasil tenant lain, tetapi memang tidak terjangkau di level SQL.
+Tenant adalah apa pun yang di aplikasi Anda disebut satu pelanggan, satu workspace, atau satu akun. Setiap query yang dibangun engine membawa tenant id di setiap `WHERE` dan setiap `JOIN`. Jadi data satu tenant tidak bisa dijangkau dari query tenant lain di level SQL.
 
 Dalam praktiknya, artinya:
 

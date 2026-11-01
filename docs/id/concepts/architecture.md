@@ -42,7 +42,7 @@ Field yang Anda tandai <Term id="filterable">filterable</Term> juga disalin ke s
 
 Dua konsekuensi dari pemisahan ini perlu diingat:
 
-- **Field non-filterable itu gratis.** Ia tidak memakai slot dan tidak menambah beban pemeliharaan index. Jadikan sebuah field filterable hanya bila Anda memang perlu memfilter atau mengurutkan berdasarkan field itu.
+- **Field non-filterable tanpa biaya.** Ia tidak memakai slot dan tidak menambah beban pemeliharaan index. Jadikan sebuah field filterable hanya bila Anda perlu memfilter atau mengurutkan berdasarkan field itu.
 - **Slot bisa dibangun ulang kapan saja.** Karena payload adalah sumber yang sah, engine bebas mengosongkan, memindahkan, atau mengisi ulang slot tanpa risiko apa pun bagi data Anda. Konversi yang gagal atau slot yang kosong hanya memengaruhi apa yang bisa di-*query*, tidak pernah apa yang *tersimpan*.
 
 Sebuah page dibuat dengan sekumpulan kolom terindeks yang tetap dan tidak pernah diubah sesudahnya. Lihat [Slot dan page](/id/concepts/slots-and-pages) untuk cara kapasitas dikelola.
@@ -55,7 +55,7 @@ Registry menyimpan satu penghitung <Term id="schema-version">schema version</Ter
 
 ## Empat daemon latar belakang
 
-Empat proses yang berjalan lama menjaga mesin slot tetap sehat. Semuanya dijalankan lewat `bin/stardust`:
+Empat proses yang berjalan lama menjaga sistem slot tetap sehat. Semuanya dijalankan lewat `bin/stardust`:
 
 ```text
         ┌──────────── MySQL — sole coordination point ──────────────┐
