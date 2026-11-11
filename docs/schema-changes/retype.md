@@ -27,7 +27,7 @@ Converting to the same type is a pass-through (a `datetime` value is normalised 
 | :-- | :-- |
 | `string` → `int` | A base-10 integer literal only, with no decimals, no thousands separators and no leading `+`. Must fit a signed 64-bit integer. |
 | `string` → `numeric` | A JSON-number literal, made of an optional sign, digits, an optional fraction and an optional exponent. No `NaN` or `Infinity`. |
-| `string` → `datetime` | Strict RFC 3339 with an explicit UTC offset (`Z` or `±HH:MM`). A value with no offset does not convert. |
+| `string` → `datetime` | Strict RFC 3339 with an explicit UTC offset (`Z` or `±HH:MM`) and at most six fractional digits. A value with no offset, a longer fraction or a date that does not exist, such as `2026-02-31`, does not convert. |
 | `int` → `string` | Decimal digits, with a leading `-` for negatives. |
 | `int` → `numeric` | Lossless, because every `int` value is representable as `numeric`. |
 | `numeric` → `string` | The shortest decimal form that round-trips, no scientific notation. |

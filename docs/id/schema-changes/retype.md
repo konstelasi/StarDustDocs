@@ -27,7 +27,7 @@ Mengonversi ke tipe yang sama hanya lewat begitu saja (nilai `datetime` dinormal
 | :-- | :-- |
 | `string` → `int` | Hanya literal integer basis-10, tanpa desimal, tanpa pemisah ribuan, dan tanpa `+` di depan. Harus masuk dalam integer 64-bit bertanda. |
 | `string` → `numeric` | Literal angka JSON, yang terdiri dari tanda opsional, digit, pecahan opsional, dan eksponen opsional. Tidak menerima `NaN` atau `Infinity`. |
-| `string` → `datetime` | RFC 3339 ketat dengan offset UTC eksplisit (`Z` atau `±HH:MM`). Nilai tanpa offset tidak akan terkonversi. |
+| `string` → `datetime` | RFC 3339 ketat dengan offset UTC eksplisit (`Z` atau `±HH:MM`) dan pecahan detik paling banyak enam digit. Nilai tanpa offset, dengan pecahan lebih panjang, atau dengan tanggal yang tidak ada seperti `2026-02-31`, tidak akan terkonversi. |
 | `int` → `string` | Digit desimal, dengan `-` di depan untuk nilai negatif. |
 | `int` → `numeric` | Tanpa kehilangan apa pun, karena setiap nilai `int` bisa direpresentasikan sebagai `numeric`. |
 | `numeric` → `string` | Bentuk desimal paling singkat yang bisa dibalik lagi, tanpa notasi ilmiah. |
