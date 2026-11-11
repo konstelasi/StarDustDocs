@@ -96,7 +96,7 @@ Nilai yang tidak sesuai ditolak dengan `value_type_mismatch`, atau `value_out_of
 
 Nilai `datetime` harus membawa offset UTC eksplisit, baik `Z` di akhir maupun `±HH:MM`. Nilai polos `2026-01-01T10:00:00` ditolak dengan `value_type_mismatch`, karena datetime yang tersimpan selalu UTC dan menebak zona waktu yang dimaksud pemanggil bukan tugas engine.
 
-Offset yang Anda kirim kemudian **diterapkan**: engine mengonversi batas itu ke instan yang dimaksud sebelum mencocokkan. Memfilter `2026-01-01T10:00:00+07:00` menemukan entry yang ditulis pada instan yang sama, apa pun offset yang dipakai keduanya. Pecahan detik diterima dan diperhitungkan saat membandingkan, meskipun nilai yang tersimpan berketelitian detik penuh.
+Offset yang Anda kirim kemudian **diterapkan**: engine mengonversi batas itu ke instan yang dimaksud sebelum mencocokkan. Memfilter `2026-01-01T10:00:00+07:00` menemukan entry yang ditulis pada instan yang sama, apa pun offset yang dipakai keduanya. Pecahan detik diterima dan diperhitungkan saat membandingkan, meskipun nilai yang tersimpan berketelitian detik penuh. Batas yang menyebut tanggal atau jam yang tidak ada, seperti `2026-02-31T00:00:00Z`, atau membawa pecahan detik lebih dari enam digit, juga ditolak dengan `value_type_mismatch`.
 
 ## Batasan
 

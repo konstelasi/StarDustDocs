@@ -96,7 +96,7 @@ A value that does not fit is rejected with `value_type_mismatch`, or `value_out_
 
 A `datetime` value must carry an explicit UTC offset, either a trailing `Z` or `±HH:MM`. A naive `2026-01-01T10:00:00` is rejected with `value_type_mismatch`, because a stored datetime is always UTC and guessing which zone the caller meant is not the engine's job.
 
-The offset you send is then **applied**: the engine converts the bound to the instant it names before matching. Filtering `2026-01-01T10:00:00+07:00` finds an entry written as that same instant, whatever offset either was expressed in. Fractional seconds are accepted and honoured when comparing, though the stored value has whole-second precision.
+The offset you send is then **applied**: the engine converts the bound to the instant it names before matching. Filtering `2026-01-01T10:00:00+07:00` finds an entry written as that same instant, whatever offset either was expressed in. Fractional seconds are accepted and honoured when comparing, though the stored value has whole-second precision. A bound that names a date or time that does not exist, such as `2026-02-31T00:00:00Z`, or carries more than six fractional digits, is also rejected with `value_type_mismatch`.
 
 ## Limits
 
