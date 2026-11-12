@@ -1,6 +1,6 @@
 # Membaca entry
 
-Ada dua cara membaca: `get()` mengambil satu entry berdasarkan id, dan `read()` mengembalikan satu halaman hasil yang difilter, diurutkan, dan dipaginasi. Keduanya terisolasi per tenant di setiap query, dan keduanya membaca sebuah field dari slot terindeks bila ada dan dari payload JSON bila tidak, sehingga field tanpa slot tetap ikut kembali.
+Ada tiga cara membaca: `get()` mengambil satu entry berdasarkan id, `getMany()` mengambil beberapa sekaligus, dan `read()` mengembalikan satu halaman hasil yang difilter, diurutkan, dan dipaginasi. Keduanya terisolasi per tenant di setiap query, dan keduanya membaca sebuah field dari slot terindeks bila ada dan dari payload JSON bila tidak, sehingga field tanpa slot tetap ikut kembali.
 
 ## Membaca satu entry dengan get()
 
@@ -13,6 +13,23 @@ $entry?->createdAt;
 ```
 
 `get()` mengembalikan `null` bila entry tidak ada untuk tenant ini, atau sudah di-soft-delete. Entry milik tenant lain tidak bisa dibedakan dari yang memang tidak ada.
+
+## Membaca beberapa entry dengan getMany()
+
+```php
+$entries = $engine->getMany(tenantId: 42, entryIds: [$firstId, $secondId, $thirdId]);
+// array<int, Entry>, dengan id entry sebagai key, berurutan seperti id yang diberikan
+
+$name = $entries[$secondId]->fields['name'] ?? null;
+```
+
+Pakai ini bila Anda sudah memegang daftar id, misalnya entry yang ditunjuk sebuah field relasi. Hanya satu statement yang dikirim, berapa pun panjang daftarnya, sedangkan perulangan `get()` mengirim satu statement untuk setiap id.
+
+Setiap entry sama persis dengan yang dikembalikan `get()`. Id yang tidak ada, milik tenant lain, atau sudah di-soft-delete tidak ikut dikembalikan, jadi cari entry berdasarkan id dan siapkan diri bahwa sebagian tidak ada. Id yang muncul berulang hanya dikembalikan sekali. Id boleh berasal dari model yang berbeda, dan model yang sedang dihapus tidak menyumbang apa pun.
+
+Satu panggilan menerima paling banyak 1000 id, dihitung dari daftar apa adanya, termasuk yang berulang. Daftar yang lebih panjang memunculkan `TooManyEntryIdsException` sebelum statement apa pun dikirim. Elemen yang bukan integer memunculkan `InvalidArgumentException`, jadi ubah dulu ke integer id yang datang sebagai string. Daftar kosong mengembalikan array kosong tanpa menyentuh database.
+
+Search driver kustom tidak perlu diubah. Driver yang tidak mengimplementasikan `StarDust\Search\BatchPointReadInterface` ditanyai untuk setiap id yang berbeda lewat `get()`-nya sendiri, dan hanya biayanya yang berbeda. Lihat [Driver pencarian kustom](/id/extending/custom-search-drivers).
 
 ## Query dengan read()
 
@@ -170,4 +187,4 @@ Artinya bagi Anda:
 
 Objek `StarDust` yang belum pernah membaca sebuah model akan memuat skema model itu lebih dulu, lalu menyimpannya selama objek tersebut hidup. Pada proses yang berjalan lama, itu hanya terjadi sekali. Pada proses yang dimulai untuk setiap request, misalnya PHP-FPM yang membangun objek `StarDust` per request, setiap request menanggungnya pada pembacaan pertama setiap model, karena engine tidak menyimpan skema di antara proses.
 
-Pada pembacaan pertama itu, pembacaan satu entry mengirim dua statement, yaitu entry-nya dan satu statement untuk field, slot, dan page milik model. Pembacaan dengan filter mengirim empat, yaitu pemeriksaan schema version, statement model yang sama tadi, dan dua query yang menemukan lalu mengambil halamannya. Filter dengan `eq` pada field integer, numeric, atau datetime, atau dengan kondisi teks apa pun, juga membaca definisi tabel dari page milik model itu lewat `information_schema`, satu query untuk index-nya dan, untuk kondisi teks di page yang mengindeks lewat key yang dihitung, satu lagi untuk kolom key-nya.
+Pada pembacaan pertama itu, pembacaan satu entry mengirim dua statement, yaitu entry-nya dan satu statement untuk field, slot, dan page milik model. Pembacaan beberapa id sekaligus mengirim dua statement yang sama, ditambah satu statement jenis kedua untuk setiap model lain di antara id itu. Pembacaan dengan filter mengirim empat, yaitu pemeriksaan schema version, statement model yang sama tadi, dan dua query yang menemukan lalu mengambil halamannya. Filter dengan `eq` pada field integer, numeric, atau datetime, atau dengan kondisi teks apa pun, juga membaca definisi tabel dari page milik model itu lewat `information_schema`, satu query untuk index-nya dan, untuk kondisi teks di page yang mengindeks lewat key yang dihitung, satu lagi untuk kolom key-nya.
