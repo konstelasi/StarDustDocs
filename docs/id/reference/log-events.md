@@ -105,6 +105,6 @@ Lihat [Ekspor](/id/usage/exports) dan [Chronicler](/id/operations/chronicler).
 | `delete_started` / `delete_complete` | Sebuah penghapusan field dimulai dan selesai. |
 | `model_delete_started` / `model_delete_complete` | Sebuah penghapusan model dimulai dan selesai. |
 | `compaction_planned` / `compaction_complete` | `compactModel()` menghitung sebuah rencana dan, kecuali dry run, selesai menjalankannya. |
-| `slot_reserved` | Sebuah slot dipesan untuk sebuah field, entah oleh Reconciler untuk field yang masih mengantre, oleh retype atau promosi, atau oleh relokasi compaction. Event ini membawa id field, page dan kolomnya, tipe slot, serta status yang diberikan pada slot itu, dan berbagi correlation id dengan operasi yang memesannya. |
+| `slot_reserved` | Sebuah slot dipesan untuk sebuah field, entah oleh Reconciler untuk field yang masih mengantre, oleh retype atau promosi, oleh pendaftaran field filterable pada model tanpa entry, atau oleh relokasi compaction. Event ini membawa id field, page dan kolomnya, tipe slot, serta status yang diberikan pada slot itu, dan berbagi correlation id dengan operasi yang memesannya. |
 
 Setiap pasangan asinkron di sini berbagi satu correlation id lintas batas proses, dari pemanggilan yang menginisiasi sampai chunk Reconciler yang akhirnya menuntaskannya. Lihat [Menelusuri pekerjaan asinkron](/id/operations/observability#menelusuri-pekerjaan-asinkron).

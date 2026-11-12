@@ -2,7 +2,7 @@
 
 ## Field filterable ditolak saat difilter
 
-Filter pada field yang Anda yakin filterable tetap saja memunculkan `FieldNotFilterableException` atau `FieldNotSortableException`. Ini hampir selalu soal backfill window: `isFilterable` (apa yang dideklarasikan registry) dan `isIndexed` (apakah filter padanya benar-benar bekerja *saat ini*) adalah dua flag yang berbeda, dan keduanya tidak sinkron selama backfill promosi atau retype berlangsung, juga pada field yang baru didaftarkan sampai penulisan pertamanya selesai diproses. Periksa keduanya:
+Filter pada field yang Anda yakin filterable tetap saja memunculkan `FieldNotFilterableException` atau `FieldNotSortableException`. Ini hampir selalu soal backfill window: `isFilterable` (apa yang dideklarasikan registry) dan `isIndexed` (apakah filter padanya benar-benar bekerja *saat ini*) adalah dua flag yang berbeda, dan keduanya tidak sinkron selama backfill promosi atau retype berlangsung, juga pada field yang baru didaftarkan dan tidak mendapat slot saat pendaftaran (modelnya sudah punya entry, atau tidak ada slot terindeks yang tersedia) sampai penulisan pertamanya selesai diproses. Periksa keduanya:
 
 ```php
 $field = $engine->describeModel($tenantId, $modelId)?->fields[...];

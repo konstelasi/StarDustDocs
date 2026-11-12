@@ -24,11 +24,13 @@ Every field described by `describeModel()` reports both:
 
 ## When the two diverge
 
-`isFilterable` and `isIndexed` disagree for the whole of a [backfill window](/concepts/background-work#backfill-windows), and also for a newly registered filterable field until its first write has been processed. Typical cases:
+`isFilterable` and `isIndexed` disagree for the whole of a [backfill window](/concepts/background-work#backfill-windows), and also for a newly registered filterable field that did not get a slot at registration, until its first write has been processed. Typical cases:
 
 - You [promote](/schema-changes/filterability) an existing field to filterable. It is `isFilterable: true` at once, and `isIndexed: false` until the Reconciler has copied every stored value into the new slot.
 - You [retype](/schema-changes/retype) a filterable field. Its old slot is tombstoned and a new one is filled, so it is not indexed until that finishes.
-- You register a filterable field. It is `isFilterable: true` at once, and `isIndexed: false` until its first write has been processed. The Watcher provisions a page, and a running Reconciler claims a slot for the field while it drains that write, so even a model with no entries rejects filters on the field until then.
+- You register a filterable field on a model that already has entries, or while no indexed slot is free. It is `isFilterable: true` at once, and `isIndexed: false` until its first write has been processed. The Watcher provisions a page, and a running Reconciler claims a slot for the field while it drains that write.
+
+A filterable field registered on a model with no entries is the exception. When an indexed slot is free, registration reserves it in the same call, so `isIndexed` is already true when `createModel()` returns.
 
 The engine enforces the difference with <Term id="pre-flight-rejection">pre-flight rejection</Term>: filtering or sorting on a field that is unknown, not filterable, or not yet indexed raises a typed exception at the API boundary, before the database is touched. You get a loud, fast, catchable error rather than a query that appears to work and then table-scans as the tenant grows.
 

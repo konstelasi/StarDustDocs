@@ -105,6 +105,6 @@ See [Exports](/usage/exports) and [Chronicler](/operations/chronicler).
 | `delete_started` / `delete_complete` | A field deletion begins and finishes. |
 | `model_delete_started` / `model_delete_complete` | A model deletion begins and finishes. |
 | `compaction_planned` / `compaction_complete` | `compactModel()` computes a plan and, unless it was a dry run, finishes executing it. |
-| `slot_reserved` | A slot is reserved for a field, whether by the Reconciler for a field waiting in the queue, by a retype or promotion, or by a compaction relocation. It carries the field id, the page and column, the slot type and the status the slot was given, and it shares the correlation id of the operation that reserved it. |
+| `slot_reserved` | A slot is reserved for a field, whether by the Reconciler for a field waiting in the queue, by a retype or promotion, by registering a filterable field on a model with no entries, or by a compaction relocation. It carries the field id, the page and column, the slot type and the status the slot was given, and it shares the correlation id of the operation that reserved it. |
 
 Every asynchronous pair here shares one correlation id across the process boundary, from the initiating call to the Reconciler chunk that eventually closes it out. See [Tracing asynchronous work](/operations/observability#tracing-asynchronous-work).

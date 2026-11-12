@@ -23,7 +23,7 @@ Each `FieldDefinition` takes a name, a declared type (`string`, `int`, `numeric`
 
 For finer-grained registration there are two smaller methods. `defineModel(int $tenantId, string $name)` registers a model with no fields and returns its id. `defineField(int $modelId, string $name, string $declaredType, bool $isFilterable = false)` adds one field to an existing model and returns its id.
 
-`SchemaBuilder` registers rows in the registry and nothing more. It does not provision pages or reserve slots, which is the subject of [Making filterable fields queryable](#making-filterable-fields-queryable).
+`SchemaBuilder` registers rows in the registry and provisions no page. It reserves a slot in one case, covered in [Making filterable fields queryable](#making-filterable-fields-queryable).
 
 ## Setup scripts are safe to re-run
 
@@ -49,9 +49,11 @@ Two consequences to keep in mind:
 
 Registering a field records *intent*. The field becomes filterable once its value lands in an indexed slot column.
 
-**In a running deployment this is automatic.** The Watcher notices fields waiting for a slot and provisions pages indexed for them, and the Reconciler then claims a slot for any filterable field it finds still unmapped. Write an entry that touches the field and it becomes queryable a moment later, without you reserving anything. Until that first write has been processed, a filter on the field is rejected with `FieldNotFilterableException`, even on a model with no entries, and `describeModel()` reports the field with `isIndexed` false. Gate a filter control on `isIndexed` rather than on `isFilterable`.
+**When the model has no entries yet, registration reserves the slot.** `createModel()` and `defineField()` give a new filterable field an indexed slot in the same call, as long as the model has no entries and an indexed slot is free. `describeModel()` then reports `isIndexed` true, and a filter on the field is accepted at once and returns nothing until you write. Set `reserveSlotAtRegistration: false` on `Config` to turn this off. A field registered on a model that already has entries, or while no indexed slot is free, gets its slot as described next.
 
-The manual route below is for one-off setup: a seed script, a test fixture, or a deployment where you want the slot in place before the first write. A page is created with exactly the slot columns you name, and every one of them is indexed, so name the slots your filterable fields will use, then reserve one per field:
+**In a running deployment the rest is automatic.** The Watcher notices fields waiting for a slot and provisions pages indexed for them, and the Reconciler then claims a slot for any filterable field it finds still unmapped. Write an entry that touches the field and it becomes queryable a moment later, without you reserving anything. Until that first write has been processed, a filter on the field is rejected with `FieldNotFilterableException`, and `describeModel()` reports the field with `isIndexed` false. Gate a filter control on `isIndexed` rather than on `isFilterable`.
+
+The manual route below is for one-off setup: a seed script, a test fixture, or a deployment where you want the slot in place before the first write. A fresh install has no page when you register the model, so registration reserved nothing and the route applies as written. If an indexed slot was already free when you registered, the field holds it and reserving again fails with a duplicate key error, so reserve only for a field whose `isIndexed` is false. A page is created with exactly the slot columns you name, and every one of them is indexed, so name the slots your filterable fields will use, then reserve one per field:
 
 ```php
 use StarDust\Page\PageProvisioner;
