@@ -37,6 +37,12 @@ interface EntrySearchInterface
 
 The `SortSpec` can also carry a `NullPlacement`, which says whether entries with no value for the sort field come first or last. Read it through `SortSpec::effectiveNulls()` and order to match. There is no capability method for it, so a driver that ignores it orders by its own default and raises no error.
 
+## Offering batch reads
+
+`StarDust::getMany()` reads several entries by id. A driver can serve it in one round trip by also implementing `StarDust\Search\BatchPointReadInterface`, which has one method, `getMany(int $tenantId, array $entryIds)`. The engine checks the list first, so your method receives a non-empty list of integer ids with no repeats and no more than 1000. Return the entries that exist as a map keyed by id, in the order the ids were given, with the answers `get()` gives for each id. That means leaving out an id that is missing, belongs to another tenant or is soft-deleted, and everything in a model that is being deleted.
+
+The interface is separate from `EntrySearchInterface` on purpose, so a driver written before it existed keeps working. One that does not implement it is asked for each distinct id with its own `get()`, and only the cost differs.
+
 ## Registering your driver
 
 Inject an instance through `Config::$searchDriver`:
