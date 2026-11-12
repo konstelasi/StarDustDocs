@@ -97,3 +97,9 @@ See [Time budgets](/operations/deployment#time-budgets).
 | :-- | :-- | :-- |
 | `pidFileDir` | `sys_get_temp_dir() . '/stardust'` | Where the Watcher's lock file and every daemon's shutdown-flag file live. |
 | `lockNamespace` | `null` | Qualifies the engine's two database advisory lock names so two installations sharing one database server don't collide. `null` derives it from the database name. See [Shared hosting and the lock namespace](/usage/configuration#shared-hosting-and-the-lock-namespace). |
+
+## Schema registration
+
+| Field | Default | Governs |
+| :-- | :-- | :-- |
+| `reserveSlotAtRegistration` | `true` | Whether registering a new filterable field on a model with no entries reserves its indexed slot in the same call. `false` leaves the slot to be reserved after the field's first write. See [Making filterable fields queryable](/usage/defining-schema#making-filterable-fields-queryable). |
