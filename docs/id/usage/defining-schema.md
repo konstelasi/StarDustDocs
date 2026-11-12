@@ -23,7 +23,7 @@ Setiap `FieldDefinition` menerima nama, declared type (`string`, `int`, `numeric
 
 Untuk pendaftaran yang lebih terperinci ada dua method yang lebih kecil. `defineModel(int $tenantId, string $name)` mendaftarkan model tanpa field dan mengembalikan id-nya. `defineField(int $modelId, string $name, string $declaredType, bool $isFilterable = false)` menambahkan satu field ke model yang sudah ada dan mengembalikan id-nya.
 
-`SchemaBuilder` hanya mendaftarkan baris di registry, tidak lebih. Ia tidak menyediakan page maupun memesan slot, yang dibahas di [Menyiapkan field filterable agar bisa di-query](#menyiapkan-field-filterable-agar-bisa-di-query).
+`SchemaBuilder` mendaftarkan baris di registry dan tidak menyediakan page. Ia memesan slot hanya dalam satu kasus, yang dibahas di [Menyiapkan field filterable agar bisa di-query](#menyiapkan-field-filterable-agar-bisa-di-query).
 
 ## Skrip setup aman dijalankan ulang
 
@@ -49,9 +49,11 @@ Dua konsekuensi yang perlu diingat:
 
 Mendaftarkan field hanya mencatat *niat*. Field baru menjadi filterable setelah nilainya masuk ke kolom slot terindeks.
 
-**Pada deployment yang berjalan, ini otomatis.** Watcher menyadari field yang menunggu slot dan menyediakan page yang diindeks untuknya, lalu Reconciler mengklaim slot bagi setiap field filterable yang ia temukan belum terpetakan. Tulis satu entry yang menyentuh field itu dan ia bisa di-query sesaat kemudian, tanpa Anda memesan apa pun. Sampai penulisan pertama itu diproses, filter pada field tersebut ditolak dengan `FieldNotFilterableException`, bahkan pada model yang belum punya entry, dan `describeModel()` melaporkan field itu dengan `isIndexed` bernilai false. Munculkan kontrol filter berdasarkan `isIndexed`, bukan `isFilterable`.
+**Pada model yang belum punya entry, pendaftaran langsung memesan slot.** `createModel()` dan `defineField()` memberi field filterable yang baru sebuah slot terindeks dalam panggilan yang sama, selama model itu belum punya entry dan ada slot terindeks yang tersedia. `describeModel()` lalu melaporkan `isIndexed` bernilai true, dan filter pada field itu langsung diterima serta tidak mengembalikan apa pun sampai Anda menulis. Setel `reserveSlotAtRegistration: false` pada `Config` untuk mematikannya. Field yang didaftarkan pada model yang sudah punya entry, atau saat tidak ada slot terindeks yang tersedia, mendapat slotnya dengan cara yang dijelaskan berikutnya.
 
-Cara manual di bawah ini untuk setup sekali jalan: skrip seed, fixture test, atau deployment yang menghendaki slot sudah tersedia sebelum penulisan pertama. Sebuah page dibuat dengan persis kolom slot yang Anda sebutkan, dan semuanya diindeks, jadi sebutkan slot yang akan dipakai field filterable Anda, lalu pesan satu slot per field:
+**Pada deployment yang berjalan, sisanya otomatis.** Watcher menyadari field yang menunggu slot dan menyediakan page yang diindeks untuknya, lalu Reconciler mengklaim slot bagi setiap field filterable yang ia temukan belum terpetakan. Tulis satu entry yang menyentuh field itu dan ia bisa di-query sesaat kemudian, tanpa Anda memesan apa pun. Sampai penulisan pertama itu diproses, filter pada field tersebut ditolak dengan `FieldNotFilterableException`, dan `describeModel()` melaporkan field itu dengan `isIndexed` bernilai false. Munculkan kontrol filter berdasarkan `isIndexed`, bukan `isFilterable`.
+
+Cara manual di bawah ini untuk setup sekali jalan: skrip seed, fixture test, atau deployment yang menghendaki slot sudah tersedia sebelum penulisan pertama. Instalasi baru belum punya page saat Anda mendaftarkan model, jadi pendaftaran tidak memesan apa pun dan cara di bawah berlaku apa adanya. Jika sudah ada slot terindeks yang tersedia saat Anda mendaftar, field itu sudah memegangnya, dan memesan lagi gagal dengan error duplicate key, jadi pesan hanya untuk field yang `isIndexed`-nya false. Sebuah page dibuat dengan persis kolom slot yang Anda sebutkan, dan semuanya diindeks, jadi sebutkan slot yang akan dipakai field filterable Anda, lalu pesan satu slot per field:
 
 ```php
 use StarDust\Page\PageProvisioner;

@@ -97,3 +97,9 @@ Lihat [Batas waktu (budget)](/id/operations/deployment#batas-waktu-budget).
 | :-- | :-- | :-- |
 | `pidFileDir` | `sys_get_temp_dir() . '/stardust'` | Tempat file lock Watcher dan flag-file shutdown setiap daemon berada. |
 | `lockNamespace` | `null` | Mengkualifikasi dua nama advisory lock database milik engine agar dua instalasi yang berbagi satu server database tidak bertabrakan. `null` menurunkannya dari nama database. Lihat [Shared hosting dan lock namespace](/id/usage/configuration#shared-hosting-dan-lock-namespace). |
+
+## Pendaftaran skema
+
+| Field | Bawaan | Mengatur |
+| :-- | :-- | :-- |
+| `reserveSlotAtRegistration` | `true` | Menentukan apakah mendaftarkan field filterable baru pada model tanpa entry langsung memesan slot terindeksnya dalam panggilan yang sama. `false` membiarkan slot dipesan setelah penulisan pertama field itu. Lihat [Menyiapkan field filterable agar bisa di-query](/id/usage/defining-schema#menyiapkan-field-filterable-agar-bisa-di-query). |

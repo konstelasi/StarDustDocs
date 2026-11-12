@@ -2,7 +2,7 @@
 
 ## A filterable field is rejected in filters
 
-A filter against a field you're sure is filterable raises `FieldNotFilterableException` or `FieldNotSortableException` anyway. This is almost always the backfill window: `isFilterable` (what the registry declares) and `isIndexed` (whether a filter against it works *right now*) are different flags, and they disagree for the whole of a promotion or retype backfill, and for a newly registered field until its first write has been processed. Check both:
+A filter against a field you're sure is filterable raises `FieldNotFilterableException` or `FieldNotSortableException` anyway. This is almost always the backfill window: `isFilterable` (what the registry declares) and `isIndexed` (whether a filter against it works *right now*) are different flags, and they disagree for the whole of a promotion or retype backfill, and for a newly registered field that got no slot at registration (its model already had entries, or no indexed slot was free) until its first write has been processed. Check both:
 
 ```php
 $field = $engine->describeModel($tenantId, $modelId)?->fields[...];

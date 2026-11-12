@@ -24,11 +24,13 @@ Setiap field yang dideskripsikan oleh `describeModel()` melaporkan keduanya:
 
 ## Saat keduanya tidak sama
 
-`isFilterable` dan `isIndexed` berbeda selama seluruh [backfill window](/id/concepts/background-work#backfill-window), dan juga pada field filterable yang baru didaftarkan, sampai penulisan pertamanya selesai diproses. Contoh yang umum:
+`isFilterable` dan `isIndexed` berbeda selama seluruh [backfill window](/id/concepts/background-work#backfill-window), dan juga pada field filterable yang baru didaftarkan dan tidak mendapat slot saat pendaftaran, sampai penulisan pertamanya selesai diproses. Contoh yang umum:
 
 - Anda [mempromosikan](/id/schema-changes/filterability) field yang sudah ada menjadi filterable. Ia langsung `isFilterable: true`, dan `isIndexed: false` sampai Reconciler selesai menyalin semua nilai tersimpan ke slot baru.
 - Anda me-[retype](/id/schema-changes/retype) field filterable. Slot lamanya di-tombstone dan slot baru diisi, jadi ia belum indexed sampai proses itu selesai.
-- Anda mendaftarkan field filterable. Ia langsung `isFilterable: true`, dan `isIndexed: false` sampai penulisan pertamanya selesai diproses. Watcher menyediakan page, dan Reconciler yang berjalan mengklaim slot untuk field itu saat memproses penulisan tersebut. Karena itu, bahkan model yang belum punya entry menolak filter pada field itu sampai saat itu.
+- Anda mendaftarkan field filterable pada model yang sudah punya entry, atau saat tidak ada slot terindeks yang tersedia. Ia langsung `isFilterable: true`, dan `isIndexed: false` sampai penulisan pertamanya selesai diproses. Watcher menyediakan page, dan Reconciler yang berjalan mengklaim slot untuk field itu saat memproses penulisan tersebut.
+
+Field filterable yang didaftarkan pada model tanpa entry adalah pengecualiannya. Jika ada slot terindeks yang tersedia, pendaftaran memesannya dalam panggilan yang sama, sehingga `isIndexed` sudah true saat `createModel()` kembali.
 
 Engine menegakkan perbedaan ini lewat <Term id="pre-flight-rejection">pre-flight rejection</Term>: memfilter atau mengurutkan berdasarkan field yang tidak dikenal, tidak filterable, atau belum indexed akan memunculkan exception bertipe di batas API, sebelum database disentuh sama sekali. Anda mendapat error yang jelas, cepat, dan bisa di-catch, bukan query yang tampak berjalan lalu melakukan table scan seiring tenant membesar.
 
