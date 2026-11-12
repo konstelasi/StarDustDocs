@@ -37,6 +37,7 @@ Setiap method yang menerima `tenantId` memvalidasinya sebelum menyentuh database
 | :-- | :-- |
 | `read(EntryQuery $query): EntryPage` | Satu halaman hasil yang difilter, diurutkan, dan dipaginasi cursor. Lihat [Query dengan read()](/id/usage/reading-entries#query-dengan-read). |
 | `get(int $tenantId, int $entryId): ?Entry` | Satu entry berdasarkan id. `null` bila tidak ada, milik tenant lain, atau sudah di-soft-delete. Lihat [Membaca satu entry dengan get()](/id/usage/reading-entries#membaca-satu-entry-dengan-get). |
+| `getMany(int $tenantId, array $entryIds): array` | Beberapa entry berdasarkan id dalam satu statement, dengan id entry sebagai key. Id yang tidak ada, milik tenant lain, atau sudah di-soft-delete tidak ikut dikembalikan, dan paling banyak 1000 id diterima. Lihat [Membaca beberapa entry dengan getMany()](/id/usage/reading-entries#membaca-beberapa-entry-dengan-getmany). |
 | `search(SearchRequest $request): SearchResult` | Padanan `read()` yang ditopang driver, untuk filter yang disusun dari JSON. Lihat [Pencarian](/id/usage/searching). |
 
 ## Introspeksi skema

@@ -1,6 +1,6 @@
 # Reading entries
 
-There are two ways to read: `get()` fetches one entry by id, and `read()` returns a filtered, sorted, paginated page. Both are tenant-isolated on every query, and both read a field from its indexed slot when it has one and from the JSON payload otherwise, so a field without a slot still comes back.
+There are three ways to read: `get()` fetches one entry by id, `getMany()` fetches several at once, and `read()` returns a filtered, sorted, paginated page. Both are tenant-isolated on every query, and both read a field from its indexed slot when it has one and from the JSON payload otherwise, so a field without a slot still comes back.
 
 ## Reading one entry with get()
 
@@ -13,6 +13,23 @@ $entry?->createdAt;
 ```
 
 `get()` returns `null` when the entry does not exist for this tenant, or has been soft-deleted. An entry that belongs to another tenant is indistinguishable from one that does not exist.
+
+## Reading several entries with getMany()
+
+```php
+$entries = $engine->getMany(tenantId: 42, entryIds: [$firstId, $secondId, $thirdId]);
+// array<int, Entry>, keyed by entry id, in the order the ids were given
+
+$name = $entries[$secondId]->fields['name'] ?? null;
+```
+
+Use it when you already hold a list of ids, such as the entries a relation field points at. It sends one statement however long the list is, where a loop of `get()` calls sends one for each id.
+
+Each entry is the one `get()` returns. An id that does not exist, belongs to another tenant or has been soft-deleted is left out of the result, so look entries up by id and expect some to be missing. A repeated id comes back once. The ids may belong to different models, and a model that is being deleted contributes nothing.
+
+A call takes at most 1000 ids, counted on the list as you pass it, repeats included. A longer list raises `TooManyEntryIdsException` before any statement is sent. An element that is not an integer raises `InvalidArgumentException`, so cast ids that arrive as strings first. An empty list returns an empty array without touching the database.
+
+A custom search driver does not have to change. One that does not implement `StarDust\Search\BatchPointReadInterface` is asked for each distinct id with its own `get()`, and only the cost differs. See [Custom search drivers](/extending/custom-search-drivers).
 
 ## Querying with read()
 
@@ -170,4 +187,4 @@ What that means for you:
 
 A `StarDust` object that has not read a model yet loads the model's schema first, and keeps it for as long as the object lives. In a long-running process that happens once. In a process that starts for every request, such as PHP-FPM building a `StarDust` object per request, each request pays for it on its first read of each model, because nothing in the engine keeps the schema between processes.
 
-On that first read, a point read sends two statements, the entry and one for the model's fields, slots and pages. A filtered read sends four, which are the schema version check, that same statement for the model, and the two queries that find and fetch the page. A filter with an equality on an integer, numeric or datetime field, or with any text condition, also reads the table definitions of the model's pages from `information_schema`, one query for their indexes and, for a text condition on a page indexed through a computed key, one for the key columns.
+On that first read, a point read sends two statements, the entry and one for the model's fields, slots and pages. A batch read of ids sends the same two, with one more of the second kind for each further model among the ids. A filtered read sends four, which are the schema version check, that same statement for the model, and the two queries that find and fetch the page. A filter with an equality on an integer, numeric or datetime field, or with any text condition, also reads the table definitions of the model's pages from `information_schema`, one query for their indexes and, for a text condition on a page indexed through a computed key, one for the key columns.

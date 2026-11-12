@@ -37,6 +37,7 @@ Every method that takes a `tenantId` validates it before touching the database. 
 | :-- | :-- |
 | `read(EntryQuery $query): EntryPage` | A filtered, sorted, cursor-paginated page. See [Reading entries](/usage/reading-entries#querying-with-read). |
 | `get(int $tenantId, int $entryId): ?Entry` | One entry by id. `null` for not-found, another tenant's, or soft-deleted. See [Reading one entry with get()](/usage/reading-entries#reading-one-entry-with-get). |
+| `getMany(int $tenantId, array $entryIds): array` | Several entries by id in one statement, keyed by entry id. An id that is missing, another tenant's or soft-deleted is left out, and at most 1000 ids are accepted. See [Reading several entries with getMany()](/usage/reading-entries#reading-several-entries-with-getmany). |
 | `search(SearchRequest $request): SearchResult` | The driver-backed equivalent of `read()`, for filters built from JSON. See [Searching](/usage/searching). |
 
 ## Schema introspection
